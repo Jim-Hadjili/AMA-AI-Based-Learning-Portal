@@ -66,7 +66,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($user['userPosition'] === 'student') {
         $redirect_url = './content/dashboards/studentsDashboard.php';
     } else if ($user['userPosition'] === 'teacher') {
-        $redirect_url = './content/dashboards/teachersDashboard.php';
+        $redirect_url = './Teacher/Contents/Dashboard/teachersDashboard.php';
     } else {
         $redirect_url = './content/dashboards/adminDashboard.php';
     }

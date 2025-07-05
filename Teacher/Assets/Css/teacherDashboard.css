@@ -1,0 +1,52 @@
+/* Custom styles for sidebar expansion */
+.sidebar-base {
+  width: 4rem; /* 64px - collapsed width */
+  transition: width 0.3s ease-in-out;
+}
+
+.sidebar-expanded {
+  width: 16rem !important; /* 256px - expanded width */
+}
+
+.sidebar-expanded .sidebar-text {
+  opacity: 1 !important;
+}
+
+.sidebar-text {
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  white-space: nowrap;
+}
+
+/* Mobile sidebar styles */
+@media (max-width: 1023px) {
+  .sidebar-mobile {
+    width: 16rem !important; /* Always expanded on mobile when visible */
+  }
+
+  .sidebar-mobile .sidebar-text {
+    opacity: 1 !important;
+  }
+}
+
+/* Modal backdrop animation */
+.modal-backdrop {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+}
+
+/* Modal content animation */
+.modal-content {
+  transform: translateY(-20px);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.modal-content.show {
+  transform: translateY(0);
+  opacity: 1;
+}
