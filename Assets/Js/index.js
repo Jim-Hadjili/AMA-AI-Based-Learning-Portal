@@ -65,8 +65,7 @@ document
     btnLoading.classList.remove("hidden");
 
     try {
-      // Fix path: Ensure correct path to SignIn function
-      const response = await fetch("./Functions/Auth/signInFunction.php", {
+      const response = await fetch("./Assets/Auth/signInFunction.php", {
         method: "POST",
         body: formData,
       });
@@ -109,14 +108,10 @@ document
     btnLoading.classList.remove("hidden");
 
     try {
-      // Fix path: Ensure correct path to student signup function
-      const response = await fetch(
-        "./Functions/Auth/signUpStudentFunction.php",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("./Assets/Auth/signUpStudentFunction.php", {
+        method: "POST",
+        body: formData,
+      });
 
       const result = await response.json();
 
@@ -155,14 +150,10 @@ document
     btnLoading.classList.remove("hidden");
 
     try {
-      // Fix path: Ensure correct path to teacher signup function
-      const response = await fetch(
-        "./Functions/Auth/signUpTeacherFunction.php",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
+      const response = await fetch("./Assets/Auth/signUpTeacherFunction.php", {
+        method: "POST",
+        body: formData,
+      });
 
       const result = await response.json();
 

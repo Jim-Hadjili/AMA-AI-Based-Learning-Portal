@@ -1,10 +1,8 @@
 <?php
 header('Content-Type: application/json');
-require_once '../Sessions/sessionsCheck.php';
+session_start();
 include_once '../../Connection/conn.php';
-
-// Initialize session
-initSession();
+include_once 'sessionCheck.php'; // Include session functions
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'] ?? '';
@@ -61,19 +59,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['user_email'] = $user['userEmail'];
     $_SESSION['user_position'] = $user['userPosition'];
     $_SESSION['login_time'] = time();
-    
-    // Register this session in the database
-    // This will invalidate any existing session for this user
-    registerUserSession($user['user_id']);
+    $_SESSION['session_token'] = generateSessionToken(); // Add a unique session token
     
     // Determine redirect URL based on role
     $redirect_url = '';
     if ($user['userPosition'] === 'student') {
-        $redirect_url = './Components/Dashboards/studentsDashboards.php';
+        $redirect_url = './content/dashboards/studentsDashboard.php';
     } else if ($user['userPosition'] === 'teacher') {
-        $redirect_url = './Components/Dashboards/teachersDashboard.php';
+        $redirect_url = './content/dashboards/teachersDashboard.php';
     } else {
-        $redirect_url = './Components/Dashboards/adminDashboards.php';
+        $redirect_url = './content/dashboards/adminDashboard.php';
     }
     
     echo json_encode([
