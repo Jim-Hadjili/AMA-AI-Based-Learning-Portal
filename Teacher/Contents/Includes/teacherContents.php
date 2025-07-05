@@ -123,7 +123,7 @@
                             <p class="text-xs text-gray-500">18 active students</p>
                         </div>
                     </div>
-                    <a href="../Class/classDetails.php?class_id=<?php echo $topClassId; ?>" class="text-purple-primary hover:text-purple-dark text-sm font-medium">
+                    <a href="../Tabs/classDetails.php?class_id=<?php echo $topClassId; ?>" class="text-purple-primary hover:text-purple-dark text-sm font-medium">
                         View
                     </a>
                 </div>

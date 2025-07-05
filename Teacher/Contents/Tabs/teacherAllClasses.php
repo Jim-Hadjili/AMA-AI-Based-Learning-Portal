@@ -174,7 +174,7 @@ $displayClasses = array_slice($classes, $startIndex, $itemsPerPage);
                                             <i class="fas fa-key mr-1"></i>
                                             Code: <span class="font-mono font-medium"><?php echo htmlspecialchars($class['class_code']); ?></span>
                                         </div>
-                                        <a href="../Class/classDetails.php?class_id=<?php echo $class['class_id']; ?>" class="text-purple-primary hover:text-purple-dark text-sm font-medium">
+                                        <a href="../Tabs/classDetails.php?class_id=<?php echo $class['class_id']; ?>" class="text-purple-primary hover:text-purple-dark text-sm font-medium">
                                             View Class <i class="fas fa-arrow-right ml-1"></i>
                                         </a>
                                     </div>
