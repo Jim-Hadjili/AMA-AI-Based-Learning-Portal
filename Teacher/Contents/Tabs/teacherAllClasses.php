@@ -81,22 +81,48 @@ $displayClasses = array_slice($classes, $startIndex, $itemsPerPage);
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         <?php 
                         foreach ($displayClasses as $class): 
-                            // Count enrolled students for this class
-                            $enrollmentQuery = "SELECT COUNT(*) as student_count FROM class_enrollments_tb WHERE class_id = ? AND status = 'active'";
-                            $enrollmentStmt = $conn->prepare($enrollmentQuery);
-                            $enrollmentStmt->bind_param("i", $class['class_id']);
-                            $enrollmentStmt->execute();
-                            $enrollmentResult = $enrollmentStmt->get_result();
-                            $studentCount = $enrollmentResult->fetch_assoc()['student_count'];
+                            // Count enrolled students for this class - with error handling
+                            $studentCount = 0; // Default value
                             
-                            // Get quiz count for this class
-                            $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND status = 'published'";
-                            $quizStmt = $conn->prepare($quizQuery);
-                            $quizStmt->bind_param("i", $class['class_id']);
-                            $quizStmt->execute();
-                            $quizResult = $quizStmt->get_result();
-                            $quizCount = $quizResult->fetch_assoc()['quiz_count'];
+                            try {
+                                // Check if the table exists first
+                                $tableCheckQuery = "SHOW TABLES LIKE 'class_enrollments_tb'";
+                                $tableCheckResult = $conn->query($tableCheckQuery);
+                                
+                                if ($tableCheckResult->num_rows > 0) {
+                                    // Table exists, proceed with the count
+                                    $enrollmentQuery = "SELECT COUNT(*) as student_count FROM class_enrollments_tb WHERE class_id = ? AND status = 'active'";
+                                    $enrollmentStmt = $conn->prepare($enrollmentQuery);
+                                    $enrollmentStmt->bind_param("i", $class['class_id']);
+                                    $enrollmentStmt->execute();
+                                    $enrollmentResult = $enrollmentStmt->get_result();
+                                    $studentCount = $enrollmentResult->fetch_assoc()['student_count'];
+                                }
+                            } catch (Exception $e) {
+                                // Silently handle the error, keeping the default value
+                            }
 
+                            // Get quiz count for this class - with error handling
+                            $quizCount = 0; // Default value
+                            
+                            try {
+                                // Check if the table exists first
+                                $tableCheckQuery = "SHOW TABLES LIKE 'quizzes_tb'";
+                                $tableCheckResult = $conn->query($tableCheckQuery);
+                                
+                                if ($tableCheckResult->num_rows > 0) {
+                                    // Table exists, proceed with the count
+                                    $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND status = 'published'";
+                                    $quizStmt = $conn->prepare($quizQuery);
+                                    $quizStmt->bind_param("i", $class['class_id']);
+                                    $quizStmt->execute();
+                                    $quizResult = $quizStmt->get_result();
+                                    $quizCount = $quizResult->fetch_assoc()['quiz_count'];
+                                }
+                            } catch (Exception $e) {
+                                // Silently handle the error, keeping the default value
+                            }
+                            
                             // Define status badge colors
                             $statusColors = [
                                 'active' => 'bg-green-100 text-green-800',
