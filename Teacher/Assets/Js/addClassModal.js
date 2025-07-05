@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function () {
+  console.log("addClassModal.js loaded");
+
   // Elements
   const addClassBtn = document.getElementById("addClassBtn");
   const addClassModal = document.getElementById("addClassModal");
@@ -10,6 +12,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const generateCodeBtn = document.getElementById("generateCode");
   const courseCodeInput = document.getElementById("class_code");
   const addClassForm = document.getElementById("addClassForm");
+
+  // Log element existence for debugging
+  console.log("addClassBtn exists:", !!addClassBtn);
+  console.log("addClassModal exists:", !!addClassModal);
+  console.log("addClassForm exists:", !!addClassForm);
+
+  // Check if elements exist
+  if (!addClassBtn || !addClassModal) {
+    console.error("Required elements not found for modal functionality");
+    return;
+  }
 
   // Make these functions global so they can be called from HTML onclick if needed
   window.openAddClassModal = function () {
@@ -42,15 +55,10 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Add event listeners if elements exist
-  if (addClassBtn) {
-    addClassBtn.addEventListener("click", function (e) {
-      e.preventDefault();
-      window.openAddClassModal();
-    });
-    console.log("Add Class button event listener added");
-  } else {
-    console.error("Add Class button not found");
-  }
+  addClassBtn.addEventListener("click", function (e) {
+    e.preventDefault();
+    window.openAddClassModal();
+  });
 
   if (closeAddClassModal) {
     closeAddClassModal.addEventListener("click", window.closeAddClassModal);
@@ -72,59 +80,66 @@ document.addEventListener("DOMContentLoaded", function () {
   if (addClassForm) {
     addClassForm.addEventListener("submit", function (e) {
       e.preventDefault();
-      window.submitAddClassForm(e);
+
+      // Show loading state
+      const submitBtn = document.getElementById("submitAddClass");
+      const originalText = submitBtn.innerHTML;
+      submitBtn.disabled = true;
+      submitBtn.innerHTML =
+        '<i class="fas fa-spinner fa-spin mr-1"></i> Adding...';
+
+      // Get form data
+      const formData = new FormData(addClassForm);
+
+      // AJAX call to submit the form data
+      fetch("../../Functions/createClass.php", {
+        method: "POST",
+        body: formData,
+      })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.success) {
+            // Show success notification
+            showNotification("Class created successfully!", "success");
+
+            // Close the modal
+            window.closeAddClassModal();
+
+            // Reload the page to show the new class
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
+          } else {
+            // Show error notification
+            showNotification(data.message || "Error creating class", "error");
+
+            // Reset button
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = originalText;
+          }
+        })
+        .catch((error) => {
+          showNotification("An error occurred. Please try again.", "error");
+          console.error("Error:", error);
+
+          // Reset button
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        });
     });
   }
 
-  // Form submission handler
-  window.submitAddClassForm = function (e) {
-    e.preventDefault();
-    console.log("Form submitted");
-
-    // Get form data
-    const formData = new FormData(addClassForm);
-
-    // AJAX call to submit the form data
-    fetch("../../Functions/addClass.php", {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          // Show success notification
-          window.showNotification("Class created successfully!", "success");
-
-          // Close the modal
-          window.closeAddClassModal();
-
-          // Reload the page to show the new class
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          // Show error notification
-          window.showNotification(
-            data.message || "Error creating class",
-            "error"
-          );
-        }
-      })
-      .catch((error) => {
-        window.showNotification(
-          "An error occurred. Please try again.",
-          "error"
-        );
-        console.error("Error:", error);
-      });
-  };
-
   // Notification function
-  window.showNotification = function (message, type) {
+  function showNotification(message, type) {
     const notification = document.createElement("div");
     notification.className = `px-4 py-2 rounded-lg shadow-lg text-white ${
       type === "success" ? "bg-green-500" : "bg-red-500"
-    } flex items-center animate-fade-in`;
+    } flex items-center animate-fadeIn`;
 
     const icon = document.createElement("i");
     icon.className = `fas ${
@@ -138,18 +153,32 @@ document.addEventListener("DOMContentLoaded", function () {
     if (container) {
       container.appendChild(notification);
 
+      // Add CSS animation
+      notification.style.opacity = "0";
+      notification.style.transform = "translateY(20px)";
+
+      // Trigger animation
+      setTimeout(() => {
+        notification.style.transition =
+          "opacity 0.3s ease, transform 0.3s ease";
+        notification.style.opacity = "1";
+        notification.style.transform = "translateY(0)";
+      }, 10);
+
       // Remove notification after 3 seconds
       setTimeout(() => {
-        notification.classList.add("animate-fade-out");
+        notification.style.opacity = "0";
+        notification.style.transform = "translateY(-20px)";
+
         setTimeout(() => {
-          container.removeChild(notification);
+          if (container.contains(notification)) {
+            container.removeChild(notification);
+          }
         }, 300);
       }, 3000);
     }
-  };
+  }
 
   // Debug check for elements
   console.log("Modal initialization complete");
-  console.log("Modal element exists:", !!addClassModal);
-  console.log("Add Class button exists:", !!addClassBtn);
 });

@@ -10,6 +10,13 @@ preventBackButton();
 checkUserAccess('teacher');
 
 include_once '../../Functions/userInfo.php';
+
+// Include function to fetch classes
+include_once '../../Functions/fetchClasses.php';
+
+// Get teacher's classes
+$teacher_id = $_SESSION['user_id'];
+$classes = getTeacherClasses($conn, $teacher_id);
 ?>
 
 <!DOCTYPE html>

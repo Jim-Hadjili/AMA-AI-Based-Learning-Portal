@@ -16,10 +16,10 @@
                 </button>
             </div>
             
-            <form id="addClassForm" class="p-6">
+            <form id="addClassForm" class="p-6" method="post">
                 <div class="space-y-4">
                     <div>
-                        <label for="class_name" class="block text-sm font-medium text-gray-700 mb-1">Class Name</label>
+                        <label for="class_name" class="block text-sm font-medium text-gray-700 mb-1">Class Name<span class="text-red-500">*</span></label>
                         <input 
                             type="text" 
                             id="class_name" 
@@ -32,7 +32,7 @@
                     
                     <div class="flex space-x-3">
                         <div class="flex-1">
-                            <label for="class_code" class="block text-sm font-medium text-gray-700 mb-1">Class Code</label>
+                            <label for="class_code" class="block text-sm font-medium text-gray-700 mb-1">Class Code<span class="text-red-500">*</span></label>
                             <div class="relative">
                                 <input 
                                     type="text" 
@@ -68,7 +68,7 @@
                     
                     <div class="grid grid-cols-2 gap-4">
                         <div>
-                            <label for="grade_level" class="block text-sm font-medium text-gray-700 mb-1">Grade Level</label>
+                            <label for="grade_level" class="block text-sm font-medium text-gray-700 mb-1">Grade Level<span class="text-red-500">*</span></label>
                             <select 
                                 id="grade_level" 
                                 name="grade_level" 
@@ -108,12 +108,12 @@
                     >
                         Cancel
                     </button>
-                    <button 
+                    <button
                         type="submit"
                         id="submitAddClass" 
                         class="px-4 py-2 bg-purple-primary text-white rounded-lg hover:bg-purple-dark transition-colors duration-200"
                     >
-                        Add Class
+                        <i class="fas fa-plus mr-1"></i> Add Class
                     </button>
                 </div>
             </form>
