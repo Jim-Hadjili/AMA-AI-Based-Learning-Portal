@@ -88,36 +88,29 @@ $activeQuizCount = $stats['activeQuizCount'];
         
         <!-- Main Content Area -->
         <main class="p-4 lg:p-6">
-            <!-- Class Header -->
-            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 mb-6">
-                <div>
-                    <div class="flex items-center space-x-3 mb-2">
-                        <a href="../Dashboard/teachersDashboard.php" class="bg-white/80 hover:bg-white text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200/50">
+            <!-- Class Header - Sticky -->
+            <div class="sticky top-0 bg-white/95 backdrop-blur-sm rounded-xl z-10 p-4 shadow-sm border border-gray-400 mb-6">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex items-center space-x-3">
+                        <a href="../Dashboard/teachersDashboard.php" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
                             <i class="fas fa-arrow-left mr-2"></i> Dashboard
                         </a>
-                        <h1 class="text-2xl font-bold text-gray-900"><?php echo htmlspecialchars($classDetails['class_name']); ?></h1>
-                        <span class="px-2.5 py-1 text-xs rounded-full <?php echo $classDetails['status'] === 'active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'; ?>">
-                            <?php echo ucfirst($classDetails['status']); ?>
-                        </span>
+                    
                     </div>
-                    <p class="text-sm text-gray-600 ml-1"><?php echo htmlspecialchars($classDetails['class_description'] ?? 'No description available'); ?></p>
-                </div>
-                <div class="flex flex-wrap gap-2">
-                    <button id="editClassBtn" class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-md hover:bg-gray-50 transition-all duration-300 flex items-center shadow-sm">
-                        <i class="fas fa-edit mr-2"></i>
-                        <span>Edit Class</span>
-                    </button>
-                    <button id="addQuizBtn" class="px-4 py-2 bg-purple-primary text-white rounded-md hover:bg-purple-dark transition-all duration-300 flex items-center shadow-sm">
-                        <i class="fas fa-plus mr-2"></i>
-                        <span>Add Quiz</span>
-                    </button>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h1 class="text-2xl font-bold text-gray-900"><?php echo htmlspecialchars($classDetails['class_name']); ?></h1>
+                            
+                        </div>
+                        <p class="text-sm text-gray-600"><?php echo htmlspecialchars($classDetails['class_description'] ?? 'No description available'); ?></p>
+                    </div>
                 </div>
             </div>
 
             <!-- Class Summary Stats -->
             <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
                 <!-- Students Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-400 p-4">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-sm font-medium text-gray-600">Students</span>
                         <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -133,7 +126,7 @@ $activeQuizCount = $stats['activeQuizCount'];
                 </div>
                 
                 <!-- Quizzes Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-400 p-4">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-sm font-medium text-gray-600">Quizzes</span>
                         <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -149,7 +142,7 @@ $activeQuizCount = $stats['activeQuizCount'];
                 </div>
                 
                 <!-- Class Code Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-400 p-4">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-sm font-medium text-gray-600">Class Code</span>
                         <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -167,7 +160,7 @@ $activeQuizCount = $stats['activeQuizCount'];
                 </div>
                 
                 <!-- Grade Level Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
+                <div class="bg-white rounded-lg shadow-sm border border-gray-400 p-4">
                     <div class="flex items-center justify-between mb-1">
                         <span class="text-sm font-medium text-gray-600">Grade Level</span>
                         <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
@@ -184,15 +177,10 @@ $activeQuizCount = $stats['activeQuizCount'];
             </div>
 
             <!-- Class Details Grid -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <!-- Main Content - 2/3 width on large screens -->
-                <div class="lg:col-span-2 space-y-6">
-                    <?php include "../Includes/classDetailsTabs.php"; ?>
-                </div>
-                
-                <!-- Sidebar - 1/3 width on large screens -->
+            <div class="grid grid-cols-1 lg:grid-cols-1 gap-6 mb-8">
+                <!-- Main Content - full width on all screens -->
                 <div class="space-y-6">
-                    <?php include "../Includes/classDetailsSidebar.php"; ?>
+                    <?php include "../Includes/classDetailsTabs.php"; ?>
                 </div>
             </div>
         </main>
