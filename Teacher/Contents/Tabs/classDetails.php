@@ -209,6 +209,8 @@ $activeQuizCount = $stats['activeQuizCount'];
     // Check if the files exist before including
     $editClassModalFile = $modalsDir . '/editClassModal.php';
     $addQuizModalFile = $modalsDir . '/addQuizModal.php';
+    $quizTypeModalFile = $modalsDir . '/quizTypeModal.php';
+    $quizQuestionsModalFile = $modalsDir . '/quizQuestionsModal.php';
     
     // Include modal files if they exist, otherwise display inline modals
     if (file_exists($editClassModalFile)) {
@@ -239,6 +241,42 @@ $activeQuizCount = $stats['activeQuizCount'];
                     <p class="text-gray-600 mb-4">This is a placeholder. Create the modal file at: ' . htmlspecialchars($addQuizModalFile) . '</p>
                     <div class="flex justify-end">
                         <button onclick="document.getElementById(\'addQuizModal\').classList.add(\'hidden\')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>';
+    }
+    
+    // Include quiz type modal
+    if (file_exists($quizTypeModalFile)) {
+        include $quizTypeModalFile;
+    } else {
+        // Basic inline quiz type modal
+        echo '<div id="quizTypeModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Select Quiz Type</h3>
+                    <p class="text-gray-600 mb-4">This is a placeholder. Create the modal file at: ' . htmlspecialchars($quizTypeModalFile) . '</p>
+                    <div class="flex justify-end">
+                        <button onclick="document.getElementById(\'quizTypeModal\').classList.add(\'hidden\')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>';
+    }
+    
+    // Include quiz questions modal
+    if (file_exists($quizQuestionsModalFile)) {
+        include $quizQuestionsModalFile;
+    } else {
+        // Basic inline quiz questions modal
+        echo '<div id="quizQuestionsModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
+            <div class="flex items-center justify-center min-h-screen p-4">
+                <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
+                    <h3 class="text-lg font-medium text-gray-900 mb-4">Create Questions</h3>
+                    <p class="text-gray-600 mb-4">This is a placeholder. Create the modal file at: ' . htmlspecialchars($quizQuestionsModalFile) . '</p>
+                    <div class="flex justify-end">
+                        <button onclick="document.getElementById(\'quizQuestionsModal\').classList.add(\'hidden\')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded">Close</button>
                     </div>
                 </div>
             </div>

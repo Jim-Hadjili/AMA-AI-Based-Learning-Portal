@@ -87,6 +87,15 @@
 </div>
 
 <script>
+    // Store current class_id in a global variable to use across modals
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const classId = urlParams.get('class_id');
+        if (classId) {
+            window.currentClassId = classId;
+        }
+    });
+
     // Function to open the add quiz modal
     function openAddQuizModal() {
         document.getElementById('addQuizModal').classList.remove('hidden');
@@ -137,13 +146,17 @@
                     window.showNotification('Quiz created successfully!', 'success');
                 }
                 
-                // Close modal
+                // Close first modal
                 closeAddQuizModal();
                 
-                // Redirect to quiz editor after a short delay
+                // Store quiz ID and class ID for later use
+                window.createdQuizId = data.quiz_id;
+                window.currentClassId = window.currentClassId || document.querySelector('input[name="class_id"]').value;
+                
+                // Open quiz type selection modal instead of redirecting
                 setTimeout(() => {
-                    window.location.href = `../Quiz/quizEditor.php?quiz_id=${data.quiz_id}`;
-                }, 1500);
+                    openQuizTypeModal();
+                }, 500);
             } else {
                 // Show error notification
                 if (typeof window.showNotification === 'function') {
@@ -153,6 +166,12 @@
         })
         .catch(error => {
             console.error('Error:', error);
+            // Log the error details to the console
+            console.log('Error details:', {
+                message: error.message,
+                stack: error.stack
+            });
+            
             // Show error notification
             if (typeof window.showNotification === 'function') {
                 window.showNotification('An error occurred. Please try again.', 'error');
@@ -172,4 +191,25 @@
             addFirstQuizBtn.addEventListener('click', openAddQuizModal);
         }
     });
+    
+    /**
+     * Get the correct base path for redirections
+     * This helps avoid path issues like duplicate "Contents" folder
+     */
+    function getBasePath() {
+        // Check if we're in a development environment (localhost)
+        if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+            return '/AMA-AI-Based-Learning-Portal/Teacher';
+        }
+        
+        // For production, get the path relative to domain
+        const pathParts = window.location.pathname.split('/');
+        const teacherIndex = pathParts.indexOf('Teacher');
+        
+        if (teacherIndex !== -1) {
+            return '/' + pathParts.slice(0, teacherIndex + 1).join('/');
+        }
+        
+        return '';
+    }
 </script>

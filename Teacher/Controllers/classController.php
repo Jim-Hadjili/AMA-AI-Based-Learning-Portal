@@ -12,6 +12,9 @@
  */
 function getClassDetails($conn, $class_id) {
     try {
+        // Ensure necessary tables exist
+        ensureClassTablesExist($conn);
+        
         // Check if the class exists and belongs to the current teacher
         $query = "SELECT * FROM teacher_classes_tb WHERE class_id = ? AND th_id = ?";
         $stmt = $conn->prepare($query);
@@ -141,5 +144,50 @@ function getClassMaterials($conn, $class_id) {
     }
     
     return $materials;
+}
+
+/**
+ * Ensure that necessary tables for class functionality exist
+ * 
+ * @param object $conn Database connection
+ */
+function ensureClassTablesExist($conn) {
+    // Check and create teacher_classes_tb if it doesn't exist
+    $tableCheckQuery = "SHOW TABLES LIKE 'teacher_classes_tb'";
+    $tableCheckResult = $conn->query($tableCheckQuery);
+    
+    if ($tableCheckResult && $tableCheckResult->num_rows === 0) {
+        $createTableQuery = "CREATE TABLE teacher_classes_tb (
+            class_id INT AUTO_INCREMENT PRIMARY KEY,
+            th_id VARCHAR(50) NOT NULL,
+            class_name VARCHAR(255) NOT NULL,
+            class_description TEXT,
+            class_code VARCHAR(10) UNIQUE,
+            grade_level VARCHAR(50),
+            strand VARCHAR(50),
+            status ENUM('active', 'archived', 'deleted') DEFAULT 'active',
+            date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )";
+        
+        $conn->query($createTableQuery);
+    }
+    
+    // Check and create class_enrollments_tb if it doesn't exist
+    $tableCheckQuery = "SHOW TABLES LIKE 'class_enrollments_tb'";
+    $tableCheckResult = $conn->query($tableCheckQuery);
+    
+    if ($tableCheckResult && $tableCheckResult->num_rows === 0) {
+        $createTableQuery = "CREATE TABLE class_enrollments_tb (
+            enrollment_id INT AUTO_INCREMENT PRIMARY KEY,
+            class_id INT NOT NULL,
+            st_id VARCHAR(50) NOT NULL,
+            enrollment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            status ENUM('active', 'inactive', 'pending') DEFAULT 'active',
+            FOREIGN KEY (class_id) REFERENCES teacher_classes_tb(class_id) ON DELETE CASCADE
+        )";
+        
+        $conn->query($createTableQuery);
+    }
 }
 ?>
