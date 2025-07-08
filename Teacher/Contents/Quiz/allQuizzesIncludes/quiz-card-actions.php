@@ -56,7 +56,7 @@
                     
                     <div class="border-t border-gray-100 my-1"></div>
                     
-                    <button class="delete-quiz-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center" 
+                    <button class="open-delete-modal-btn w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 flex items-center" 
                             data-quiz-id="<?php echo $quiz['quiz_id']; ?>" 
                             data-quiz-title="<?php echo htmlspecialchars($quiz['quiz_title']); ?>">
                         <i class="fas fa-trash mr-2"></i>

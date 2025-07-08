@@ -1,4 +1,4 @@
-<div class="quiz-card bg-white rounded-lg border border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-200">
+<div class="quiz-card bg-white rounded-lg border border-gray-400 shadow-sm hover:shadow-md transition-all duration-200 hover:border-blue-200" data-quiz-id="<?php echo $quiz['quiz_id']; ?>">
     <!-- Card Header -->
     <div class="p-5 border-b border-gray-100">
         <div class="flex items-start justify-between mb-3">

@@ -250,5 +250,11 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
         animation: fadeOut 0.3s ease-out forwards;
     }
     </style>
+
+    <!-- Include delete quiz modal -->
+    <?php include 'allQuizzesIncludes/delete-quiz-modal.php'; ?>
+
+    <!-- Add the delete handler script -->
+    <script src="../../Assets/Js/quizDeleteHandler.js"></script>
 </body>
 </html>
