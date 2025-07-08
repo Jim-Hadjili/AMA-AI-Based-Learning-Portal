@@ -134,7 +134,25 @@ $activeQuizCount = $stats['activeQuizCount'];
                         </div>
                     </div>
                     <div class="flex items-end">
-                        <span class="text-xl font-bold text-gray-900"><?php echo count($quizzes); ?></span>
+                        <span class="text-xl font-bold text-gray-900">
+                            <?php 
+                                // Debug info
+                                if (isset($class_id)) {
+                                    $debug_stmt = $conn->prepare("SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ?");
+                                    $debug_stmt->bind_param("i", $class_id);
+                                    $debug_stmt->execute();
+                                    $debug_result = $debug_stmt->get_result();
+                                    $debug_row = $debug_result->fetch_assoc();
+                                    $direct_count = $debug_row['quiz_count'];
+                                    
+                                    // Display direct count from database
+                                    echo $direct_count;
+                                } else {
+                                    echo '0';
+                                }
+                            ?>
+                        </span>
+                        <span class="ml-1 text-xs text-gray-500">total</span>
                         <?php if ($activeQuizCount > 0): ?>
                         <span class="ml-1 text-xs text-gray-500">(<?php echo $activeQuizCount; ?> active)</span>
                         <?php endif; ?>

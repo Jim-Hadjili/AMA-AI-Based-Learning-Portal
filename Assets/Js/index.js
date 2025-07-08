@@ -210,7 +210,7 @@ function switchTab(tab) {
       brandTitle.textContent = "Start Your Learning Journey";
       brandMessage.textContent =
         "Experience personalized education with our adaptive AI system designed to help you excel in your academic pursuits.";
-      brandLogo.src = "./assets/images/student.png";
+      brandLogo.src = "../Assets/Images/student.png";
       brandLogo.alt = "AMA College Logo";
     } else if (tab === "signup_teacher") {
       signupTeacherForm.classList.remove("hidden");
@@ -219,7 +219,7 @@ function switchTab(tab) {
       brandTitle.textContent = "Shape the Future of Education";
       brandMessage.textContent =
         "Empower your teaching with AI-driven insights and tools designed to enhance student learning outcomes.";
-      brandLogo.src = "./assets/images/teacher.png";
+      brandLogo.src = "../Assets/Images/teacher.png";
       brandLogo.alt = "AMA College Logo";
     } else {
       signinForm.classList.remove("hidden");
@@ -228,7 +228,7 @@ function switchTab(tab) {
       brandTitle.textContent = "Welcome to the Future of Learning";
       brandMessage.textContent =
         "Experience our AI-powered adaptive education platform designed specifically for AMA Senior High School students and educators.";
-      brandLogo.src = "./assets/images/logo.png";
+      brandLogo.src = "../Assets/Images/Logo.png";
       brandLogo.alt = "AMA College Logo";
     }
 

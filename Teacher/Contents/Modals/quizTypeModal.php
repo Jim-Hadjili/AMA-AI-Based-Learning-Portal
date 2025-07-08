@@ -7,19 +7,19 @@
         </div>
 
         <!-- Modal panel -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-3xl w-full">
+        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle max-w-xl w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <div class="sm:flex sm:items-start">
                     <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
                         <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
-                            Select Quiz Type
+                            Create Quiz
                         </h3>
                         
                         <p class="text-sm text-gray-500 mb-6">
-                            Choose how you'd like to create your quiz. You can create a quiz manually, generate it with AI, or import questions from a file.
+                            Create your quiz by adding questions manually.
                         </p>
                         
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="flex justify-center">
                             <!-- Manual Quiz Creation -->
                             <div class="quiz-type-card border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow cursor-pointer" data-quiz-type="manual">
                                 <div class="flex flex-col items-center text-center">
@@ -28,28 +28,6 @@
                                     </div>
                                     <h4 class="font-medium text-gray-900 mb-2">Manual Creation</h4>
                                     <p class="text-sm text-gray-500">Create questions manually with multiple question types.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- AI Generated Quiz -->
-                            <div class="quiz-type-card border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow cursor-pointer" data-quiz-type="ai">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-4">
-                                        <i class="fas fa-robot text-blue-600 text-xl"></i>
-                                    </div>
-                                    <h4 class="font-medium text-gray-900 mb-2">AI Generated</h4>
-                                    <p class="text-sm text-gray-500">Let AI generate questions based on your topic or learning materials.</p>
-                                </div>
-                            </div>
-                            
-                            <!-- Import Quiz -->
-                            <div class="quiz-type-card border border-gray-200 rounded-lg p-5 hover:shadow-md transition-shadow cursor-pointer" data-quiz-type="import">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
-                                        <i class="fas fa-file-import text-green-600 text-xl"></i>
-                                    </div>
-                                    <h4 class="font-medium text-gray-900 mb-2">Import Questions</h4>
-                                    <p class="text-sm text-gray-500">Import questions from CSV, Excel, or Word document.</p>
                                 </div>
                             </div>
                         </div>
@@ -98,24 +76,8 @@
                 // Close the quiz type modal
                 closeQuizTypeModal();
                 
-                // Handle different quiz types
-                switch(quizType) {
-                    case 'manual':
-                        // Open the quiz editor for manual creation
-                        openQuizQuestionsModal(quizId, 'manual');
-                        break;
-                    case 'ai':
-                        // Open the AI generation modal
-                        openAiQuizGenerationModal(quizId);
-                        break;
-                    case 'import':
-                        // Open the import quiz modal
-                        openImportQuizModal(quizId);
-                        break;
-                    default:
-                        // Redirect to the quiz editor as fallback
-                        window.location.href = `../../Quiz/quizEditor.php?quiz_id=${quizId}`;
-                }
+                // Since we only have manual option, directly open the quiz questions modal
+                openQuizQuestionsModal(quizId, 'manual');
             });
         });
     });
@@ -134,23 +96,5 @@
             // If modal doesn't exist yet, redirect to editor
             window.location.href = `../Quiz/quizEditor.php?quiz_id=${quizId}&mode=${mode}`;
         }
-    }
-    
-    // Function to open the AI quiz generation modal
-    function openAiQuizGenerationModal(quizId) {
-        // Get the class ID
-        const classId = window.currentClassId;
-        
-        // Redirect to AI generator with both quiz_id and class_id parameters
-        window.location.href = `../../Quiz/aiQuizGenerator.php?quiz_id=${quizId}&class_id=${classId}`;
-    }
-    
-    // Function to open the import quiz modal
-    function openImportQuizModal(quizId) {
-        // Get the class ID
-        const classId = window.currentClassId;
-        
-        // Redirect to import page with both quiz_id and class_id parameters
-        window.location.href = `../../Quiz/importQuiz.php?quiz_id=${quizId}&class_id=${classId}`;
     }
 </script>

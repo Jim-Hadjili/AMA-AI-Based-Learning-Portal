@@ -27,7 +27,7 @@ include_once './Assets/php/notifications.php';
                 <div class="relative z-10">
                     <div class="flex items-center mb-6">
                         <div class="w-16 h-16 logo-container rounded-xl flex items-center justify-center mr-3 p-2">
-                            <img src="./assets/images/logo.png" alt="AMA College Logo" class="w-full h-full object-contain">
+                            <img src="Assets/Images/Logo.png" alt="AMA College Logo" class="w-full h-full object-contain">
                         </div>
                         <div>
                             <h1 class="text-xl font-bold">AMA College</h1>
