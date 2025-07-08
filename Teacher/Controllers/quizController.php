@@ -40,6 +40,12 @@ switch ($action) {
     case 'deleteQuiz':
         $response = deleteQuiz($conn);
         break;
+    case 'publishQuiz':
+        $response = publishQuiz($conn);
+        break;
+    case 'unpublishQuiz':
+        $response = unpublishQuiz($conn);
+        break;
     // Other actions can be added here
     default:
         // Invalid action, response is already set
@@ -720,6 +726,94 @@ function deleteQuiz($conn) {
     } catch (Exception $e) {
         error_log("Error deleting quiz: " . $e->getMessage());
         return ['success' => false, 'message' => 'An error occurred while deleting the quiz: ' . $e->getMessage()];
+    }
+}
+
+/**
+ * Publish a quiz
+ * 
+ * @param object $conn Database connection
+ * @return array Response array with success status and message
+ */
+function publishQuiz($conn) {
+    try {
+        if (!isset($_POST['quiz_id']) || empty($_POST['quiz_id'])) {
+            return ['success' => false, 'message' => 'Quiz ID is required'];
+        }
+
+        $quiz_id = intval($_POST['quiz_id']);
+        $teacher_id = $_SESSION['user_id'];
+        
+        // Verify the quiz belongs to this teacher
+        $checkSql = "SELECT q.quiz_id FROM quizzes_tb q 
+                    JOIN teacher_classes_tb c ON q.class_id = c.class_id 
+                    WHERE q.quiz_id = ? AND c.th_id = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("is", $quiz_id, $teacher_id);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            return ['success' => false, 'message' => 'You do not have permission to modify this quiz'];
+        }
+        
+        // Update quiz status to published
+        $updateSql = "UPDATE quizzes_tb SET status = 'published', updated_at = NOW() WHERE quiz_id = ?";
+        $updateStmt = $conn->prepare($updateSql);
+        $updateStmt->bind_param("i", $quiz_id);
+        
+        if ($updateStmt->execute()) {
+            return ['success' => true, 'message' => 'Quiz published successfully'];
+        } else {
+            return ['success' => false, 'message' => 'Failed to publish quiz: ' . $conn->error];
+        }
+    } catch (Exception $e) {
+        error_log("Error publishing quiz: " . $e->getMessage());
+        return ['success' => false, 'message' => 'An error occurred while publishing the quiz: ' . $e->getMessage()];
+    }
+}
+
+/**
+ * Unpublish a quiz
+ * 
+ * @param object $conn Database connection
+ * @return array Response array with success status and message
+ */
+function unpublishQuiz($conn) {
+    try {
+        if (!isset($_POST['quiz_id']) || empty($_POST['quiz_id'])) {
+            return ['success' => false, 'message' => 'Quiz ID is required'];
+        }
+
+        $quiz_id = intval($_POST['quiz_id']);
+        $teacher_id = $_SESSION['user_id'];
+        
+        // Verify the quiz belongs to this teacher
+        $checkSql = "SELECT q.quiz_id FROM quizzes_tb q 
+                    JOIN teacher_classes_tb c ON q.class_id = c.class_id 
+                    WHERE q.quiz_id = ? AND c.th_id = ?";
+        $checkStmt = $conn->prepare($checkSql);
+        $checkStmt->bind_param("is", $quiz_id, $teacher_id);
+        $checkStmt->execute();
+        $result = $checkStmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            return ['success' => false, 'message' => 'You do not have permission to modify this quiz'];
+        }
+        
+        // Update quiz status to draft
+        $updateSql = "UPDATE quizzes_tb SET status = 'draft', updated_at = NOW() WHERE quiz_id = ?";
+        $updateStmt = $conn->prepare($updateSql);
+        $updateStmt->bind_param("i", $quiz_id);
+        
+        if ($updateStmt->execute()) {
+            return ['success' => true, 'message' => 'Quiz unpublished successfully'];
+        } else {
+            return ['success' => false, 'message' => 'Failed to unpublish quiz: ' . $conn->error];
+        }
+    } catch (Exception $e) {
+        error_log("Error unpublishing quiz: " . $e->getMessage());
+        return ['success' => false, 'message' => 'An error occurred while unpublishing the quiz: ' . $e->getMessage()];
     }
 }
 ?>

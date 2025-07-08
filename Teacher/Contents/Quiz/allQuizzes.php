@@ -256,5 +256,14 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
 
     <!-- Add the delete handler script -->
     <script src="../../Assets/Js/quizDeleteHandler.js"></script>
+
+    <!-- Include publish/unpublish quiz modals -->
+    <?php include 'allQuizzesIncludes/publish-quiz-modal.php'; ?>
+
+    <!-- Add the publish handler script -->
+    <script src="../../Assets/Js/quizPublishHandler.js"></script>
+
+    <!-- Include no questions warning modal -->
+    <?php include 'allQuizzesIncludes/no-questions-warning-modal.php'; ?>
 </body>
 </html>

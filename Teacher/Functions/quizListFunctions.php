@@ -19,9 +19,9 @@ function getClassInfo($conn, $class_id, $teacher_id) {
 /**
  * Get quizzes with filtering, sorting, and pagination
  */
-function getQuizzesByFilters($conn, $class_id, $teacher_id, $searchTerm, $statusFilter, $sortBy, $currentPage, $quizzesPerPage) {
+function getQuizzesByFilters($conn, $class_id, $teacher_id, $searchTerm = '', $statusFilter = 'all', $sortBy = 'newest', $page = 1, $perPage = 10) {
     // Calculate offset for pagination
-    $offset = ($currentPage - 1) * $quizzesPerPage;
+    $offset = ($page - 1) * $perPage;
     
     // Build the WHERE clause for filtering
     $whereConditions = ["q.class_id = ? AND q.th_id = ?"];
@@ -48,7 +48,7 @@ function getQuizzesByFilters($conn, $class_id, $teacher_id, $searchTerm, $status
 
     // Get total count for pagination
     $totalQuizzes = getQuizzesCount($conn, $whereClause, $paramTypes, $params);
-    $totalPages = ceil($totalQuizzes / $quizzesPerPage);
+    $totalPages = ceil($totalQuizzes / $perPage);
 
     // Fetch quizzes for current page
     $quizzes = [];
@@ -57,7 +57,7 @@ function getQuizzesByFilters($conn, $class_id, $teacher_id, $searchTerm, $status
             $conn, 
             $whereClause, 
             $orderBy, 
-            $quizzesPerPage, 
+            $perPage, 
             $offset, 
             $paramTypes, 
             $params

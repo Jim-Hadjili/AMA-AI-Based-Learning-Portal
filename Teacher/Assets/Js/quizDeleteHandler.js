@@ -52,14 +52,20 @@ function initDeleteQuizModal() {
       this.disabled = true;
 
       // Send AJAX request to delete the quiz
-      fetch("../../Controllers/quizController.php?action=deleteQuiz", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: "quiz_id=" + quizId,
-      })
-        .then((response) => response.json())
+      fetch(
+        "../../../Teacher/Controllers/quizController.php?action=deleteQuiz",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: "quiz_id=" + quizId,
+        }
+      )
+        .then((response) => {
+          console.log("Delete Response Status:", response.status);
+          return response.json();
+        })
         .then((data) => {
           if (data.success) {
             // Show success notification
