@@ -179,12 +179,23 @@
         });
     });
     
-    // Initialize modal behavior with add quiz button
+    // Initialize modal behavior with all potential add quiz buttons
     document.addEventListener('DOMContentLoaded', function() {
-        // Only attach to addFirstQuizBtn here since addQuizBtn is handled in allQuizzes.php
+        // Connect all the possible "add quiz" buttons
         const addFirstQuizBtn = document.getElementById('addFirstQuizBtn');
+        const addQuizTabBtn = document.getElementById('addQuizTabBtn');
+        const addQuizBtn = document.getElementById('addQuizBtn');
+        
         if (addFirstQuizBtn) {
             addFirstQuizBtn.addEventListener('click', openAddQuizModal);
+        }
+        
+        if (addQuizTabBtn) {
+            addQuizTabBtn.addEventListener('click', openAddQuizModal);
+        }
+        
+        if (addQuizBtn) {
+            addQuizBtn.addEventListener('click', openAddQuizModal);
         }
     });
     

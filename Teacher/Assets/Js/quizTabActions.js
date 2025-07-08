@@ -5,6 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
   initPublishQuizModal();
   initUnpublishQuizModal();
   initNoQuestionsWarningModal();
+
+  // Connect the empty state "Create Your First Quiz" button
+  const addQuizTabBtn = document.getElementById("addQuizTabBtn");
+  if (addQuizTabBtn) {
+    addQuizTabBtn.addEventListener("click", function () {
+      // Directly call openAddQuizModal without checking if it exists first
+      openAddQuizModal();
+    });
+  }
 });
 
 // Toggle dropdown menu for quiz actions
@@ -486,5 +495,15 @@ function showNotification(message, type = "info") {
         }
       }, 300);
     }, 5000);
+  }
+}
+
+// Add a local implementation of openAddQuizModal in case the global one is not available
+function openAddQuizModal() {
+  const modal = document.getElementById("addQuizModal");
+  if (modal) {
+    modal.classList.remove("hidden");
+  } else {
+    console.error("Add Quiz Modal not found in the DOM");
   }
 }
