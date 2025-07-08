@@ -30,13 +30,16 @@
                 <div class="py-1">
                     <?php if ($quiz['status'] === 'draft'): ?>
                         <button class="publish-quiz-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center" 
-                                data-quiz-id="<?php echo $quiz['quiz_id']; ?>">
+                                data-quiz-id="<?php echo $quiz['quiz_id']; ?>"
+                                data-quiz-title="<?php echo htmlspecialchars($quiz['quiz_title']); ?>"
+                                data-question-count="<?php echo isset($quiz['question_count']) ? $quiz['question_count'] : 0; ?>">
                             <i class="fas fa-paper-plane mr-2 text-green-500"></i>
                             Publish Quiz
                         </button>
                     <?php elseif ($quiz['status'] === 'published'): ?>
                         <button class="unpublish-quiz-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center" 
-                                data-quiz-id="<?php echo $quiz['quiz_id']; ?>">
+                                data-quiz-id="<?php echo $quiz['quiz_id']; ?>"
+                                data-quiz-title="<?php echo htmlspecialchars($quiz['quiz_title']); ?>">
                             <i class="fas fa-pause mr-2 text-yellow-500"></i>
                             Unpublish
                         </button>

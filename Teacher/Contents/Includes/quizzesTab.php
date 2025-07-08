@@ -36,8 +36,11 @@ $hasMoreQuizzes = count($quizzes) > 6;
     <?php endif; ?>
 </div>
 
-<!-- Delete Quiz Modal -->
+<!-- Quiz Modals -->
 <?php include __DIR__ . '/../Quiz/components/delete-quiz-modal.php'; ?>
+<?php include __DIR__ . '/../Quiz/components/publish-quiz-modal.php'; ?>
+<?php include __DIR__ . '/../Quiz/components/unpublish-quiz-modal.php'; ?>
+<?php include __DIR__ . '/../Quiz/components/no-questions-warning-modal.php'; ?>
 
 <!-- Include JavaScript -->
 <script src="../../Assets/Js/notificationUtils.js"></script>

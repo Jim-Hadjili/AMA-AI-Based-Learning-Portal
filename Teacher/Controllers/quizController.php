@@ -747,7 +747,7 @@ function publishQuiz($conn) {
         // Verify the quiz belongs to this teacher
         $checkSql = "SELECT q.quiz_id FROM quizzes_tb q 
                     JOIN teacher_classes_tb c ON q.class_id = c.class_id 
-                    WHERE q.quiz_id = ? AND c.th_id = ?";
+                    WHERE q.quiz_id = ? AND q.th_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("is", $quiz_id, $teacher_id);
         $checkStmt->execute();
@@ -757,7 +757,7 @@ function publishQuiz($conn) {
             return ['success' => false, 'message' => 'You do not have permission to modify this quiz'];
         }
         
-        // Update quiz status to published
+        // Update quiz status to published - FIXED TABLE NAME HERE
         $updateSql = "UPDATE quizzes_tb SET status = 'published', updated_at = NOW() WHERE quiz_id = ?";
         $updateStmt = $conn->prepare($updateSql);
         $updateStmt->bind_param("i", $quiz_id);
@@ -791,7 +791,7 @@ function unpublishQuiz($conn) {
         // Verify the quiz belongs to this teacher
         $checkSql = "SELECT q.quiz_id FROM quizzes_tb q 
                     JOIN teacher_classes_tb c ON q.class_id = c.class_id 
-                    WHERE q.quiz_id = ? AND c.th_id = ?";
+                    WHERE q.quiz_id = ? AND q.th_id = ?";
         $checkStmt = $conn->prepare($checkSql);
         $checkStmt->bind_param("is", $quiz_id, $teacher_id);
         $checkStmt->execute();
@@ -801,7 +801,7 @@ function unpublishQuiz($conn) {
             return ['success' => false, 'message' => 'You do not have permission to modify this quiz'];
         }
         
-        // Update quiz status to draft
+        // Update quiz status to draft - FIXED TABLE NAME HERE
         $updateSql = "UPDATE quizzes_tb SET status = 'draft', updated_at = NOW() WHERE quiz_id = ?";
         $updateStmt = $conn->prepare($updateSql);
         $updateStmt->bind_param("i", $quiz_id);
