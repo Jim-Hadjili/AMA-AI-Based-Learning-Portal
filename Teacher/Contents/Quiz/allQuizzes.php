@@ -52,7 +52,7 @@ $totalPages = $quizzesData['totalPages'];
 $offset = $quizzesData['offset'];
 
 // Stats
-$statsData = calculateQuizStats($quizzes);
+$statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $statusFilter);
 ?>
 
 <!DOCTYPE html>
@@ -99,5 +99,156 @@ $statsData = calculateQuizStats($quizzes);
 
     <!-- JavaScript -->
     <script src="../../Assets/Js/quizList.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize the Add Quiz button
+        const addQuizBtn = document.getElementById('addQuizBtn');
+        if (addQuizBtn) {
+            addQuizBtn.addEventListener('click', function() {
+                if (typeof window.openAddQuizModal === 'function') {
+                    window.openAddQuizModal();
+                } else {
+                    console.error('openAddQuizModal function not found');
+                }
+            });
+        }
+    });
+    </script>
+
+    <!-- Include modals -->
+    <?php
+    // Create the Modals directory if it doesn't exist
+    $modalsDir = __DIR__ . '/../../Contents/Modals';
+    if (!file_exists($modalsDir)) {
+        mkdir($modalsDir, 0755, true);
+    }
+
+    // Include modal files
+    $addQuizModalFile = $modalsDir . '/addQuizModal.php';
+    $quizTypeModalFile = $modalsDir . '/quizTypeModal.php';
+    $quizQuestionsModalFile = $modalsDir . '/quizQuestionsModal.php';
+
+    // Include each modal if it exists
+    if (file_exists($addQuizModalFile)) {
+        include $addQuizModalFile;
+    } else {
+        echo "<!-- Modal file not found: $addQuizModalFile -->";
+    }
+
+    if (file_exists($quizTypeModalFile)) {
+        include $quizTypeModalFile;
+    } else {
+        echo "<!-- Modal file not found: $quizTypeModalFile -->";
+    }
+
+    if (file_exists($quizQuestionsModalFile)) {
+        include $quizQuestionsModalFile;
+    } else {
+        echo "<!-- Modal file not found: $quizQuestionsModalFile -->";
+    }
+    ?>
+
+    <!-- Add notification functionality -->
+    <div id="notification-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2"></div>
+
+    <script>
+    // Add notification function
+    function showNotification(message, type = 'info') {
+        const container = document.getElementById('notification-container');
+        const notification = document.createElement('div');
+        
+        // Set classes based on notification type
+        const baseClasses = 'p-4 rounded-md shadow-lg flex items-center justify-between max-w-md animate-fadeIn';
+        let typeClasses = '';
+        
+        switch(type) {
+            case 'success':
+                typeClasses = 'bg-green-600 text-white';
+                break;
+            case 'error':
+                typeClasses = 'bg-red-600 text-white';
+                break;
+            case 'warning':
+                typeClasses = 'bg-yellow-500 text-white';
+                break;
+            default:
+                typeClasses = 'bg-blue-600 text-white';
+        }
+        
+        notification.className = `${baseClasses} ${typeClasses}`;
+        notification.innerHTML = `
+            <div class="flex items-center">
+                <span>${message}</span>
+            </div>
+            <button class="ml-4 text-white hover:text-gray-200">
+                <i class="fas fa-times"></i>
+            </button>
+        `;
+        
+        // Add click event to close button
+        const closeBtn = notification.querySelector('button');
+        closeBtn.addEventListener('click', () => {
+            notification.classList.add('animate-fadeOut');
+            setTimeout(() => {
+                if (notification.parentElement) {
+                    notification.remove();
+                }
+            }, 300);
+        });
+        
+        container.appendChild(notification);
+        
+        // Auto remove after 5 seconds
+        setTimeout(() => {
+            if (notification.parentElement) {
+                notification.classList.add('animate-fadeOut');
+                setTimeout(() => {
+                    if (notification.parentElement) {
+                        notification.remove();
+                    }
+                }, 300);
+            }
+        }, 5000);
+    }
+
+    // Make showNotification available globally
+    window.showNotification = showNotification;
+
+    // Initialize the Add Quiz button
+    document.addEventListener('DOMContentLoaded', function() {
+        const addQuizBtn = document.getElementById('addQuizBtn');
+        
+        if (addQuizBtn) {
+            addQuizBtn.addEventListener('click', function() {
+                if (typeof window.openAddQuizModal === 'function') {
+                    window.openAddQuizModal();
+                } else {
+                    console.error('openAddQuizModal function not found');
+                    showNotification('Error: Could not open quiz modal. Please refresh the page.', 'error');
+                }
+            });
+        }
+    });
+    </script>
+
+    <style>
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeOut {
+        from { opacity: 1; transform: translateY(0); }
+        to { opacity: 0; transform: translateY(10px); }
+    }
+
+    .animate-fadeIn {
+        animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .animate-fadeOut {
+        animation: fadeOut 0.3s ease-out forwards;
+    }
+    </style>
 </body>
 </html>

@@ -15,11 +15,11 @@
                 </div>
             </div>
             
-            <a href="../Quiz/createQuiz.php?class_id=<?php echo $class_id; ?>" 
-               class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition-colors shadow-sm">
+            <button id="addQuizBtn" 
+                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 transition-colors shadow-sm">
                 <i class="fas fa-plus mr-2"></i>
                 New Quiz
-            </a>
+            </button>
         </div>
     </div>
 </div>

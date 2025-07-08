@@ -140,22 +140,60 @@ function fetchQuizzesWithStats($conn, $whereClause, $orderBy, $limit, $offset, $
 /**
  * Calculate quiz statistics for display
  */
-function calculateQuizStats($quizzes) {
-    $publishedCount = 0;
-    $draftCount = 0;
-    $totalAttempts = 0;
+function calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm = '', $statusFilter = 'all') {
+    // Start building query and parameters
+    $params = [$class_id, $teacher_id];
+    $paramTypes = "is";
+    $whereConditions = ["q.class_id = ? AND q.th_id = ?"];
     
-    foreach($quizzes as $quiz) {
-        if($quiz['status'] === 'published') $publishedCount++;
-        if($quiz['status'] === 'draft') $draftCount++;
-        $totalAttempts += $quiz['attempt_count'];
+    // Add search conditions if provided
+    if (!empty($searchTerm)) {
+        $whereConditions[] = "(q.quiz_title LIKE ? OR q.quiz_topic LIKE ? OR q.quiz_description LIKE ?)";
+        $searchParam = "%{$searchTerm}%";
+        $params = array_merge($params, [$searchParam, $searchParam, $searchParam]);
+        $paramTypes .= "sss";
     }
     
-    return [
-        'published' => $publishedCount,
-        'drafts' => $draftCount,
-        'attempts' => $totalAttempts
+    // Build WHERE clause
+    $whereClause = implode(" AND ", $whereConditions);
+    
+    // Query to get counts by status
+    $query = "
+        SELECT 
+            q.status,
+            COUNT(*) as count,
+            SUM((SELECT COUNT(*) FROM quiz_attempts_tb qa WHERE qa.quiz_id = q.quiz_id AND qa.status = 'completed')) as attempts
+        FROM quizzes_tb q
+        WHERE {$whereClause}
+        GROUP BY q.status
+    ";
+    
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param($paramTypes, ...$params);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    // Initialize counters
+    $stats = [
+        'published' => 0,
+        'drafts' => 0,
+        'archived' => 0,
+        'attempts' => 0
     ];
+    
+    // Process results
+    while ($row = $result->fetch_assoc()) {
+        if ($row['status'] === 'published') {
+            $stats['published'] = $row['count'];
+        } else if ($row['status'] === 'draft') {
+            $stats['drafts'] = $row['count'];
+        } else if ($row['status'] === 'archived') {
+            $stats['archived'] = $row['count'];
+        }
+        $stats['attempts'] += ($row['attempts'] ?: 0);
+    }
+    
+    return $stats;
 }
 
 /**

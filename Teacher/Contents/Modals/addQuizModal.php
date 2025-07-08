@@ -181,11 +181,7 @@
     
     // Initialize modal behavior with add quiz button
     document.addEventListener('DOMContentLoaded', function() {
-        const addQuizBtn = document.getElementById('addQuizBtn');
-        if (addQuizBtn) {
-            addQuizBtn.addEventListener('click', openAddQuizModal);
-        }
-        
+        // Only attach to addFirstQuizBtn here since addQuizBtn is handled in allQuizzes.php
         const addFirstQuizBtn = document.getElementById('addFirstQuizBtn');
         if (addFirstQuizBtn) {
             addFirstQuizBtn.addEventListener('click', openAddQuizModal);
