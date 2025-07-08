@@ -1,0 +1,1 @@
+<p class="text-gray-500 italic">Preview not available for this question type.</p>
