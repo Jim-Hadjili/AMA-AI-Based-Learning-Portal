@@ -11,6 +11,9 @@
         <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="materials">
             <i class="fas fa-book mr-2"></i> Materials
         </button>
+        <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="announcements">
+            <i class="fas fa-bullhorn mr-2"></i> Announcements
+        </button>
         <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="info">
             <i class="fas fa-info-circle mr-2"></i> Class Info
         </button>
@@ -173,6 +176,61 @@
             <?php endif; ?>
         </div>
 
+        <!-- Announcements Tab -->
+        <div id="announcements-tab" class="tab-content p-6 hidden">
+            <?php if (empty($announcements)): ?>
+                <div class="text-center py-8">
+                    <i class="fas fa-bullhorn text-gray-300 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Announcements Yet</h3>
+                    <p class="text-gray-500 mb-4">Create announcements to keep your students informed and engaged.</p>
+                    <button id="addFirstAnnouncementBtn" class="px-4 py-2 bg-purple-primary text-white rounded-lg hover:bg-purple-dark transition-colors duration-200">
+                        <i class="fas fa-plus mr-2"></i>Create Announcement
+                    </button>
+                </div>
+            <?php else: ?>
+                <div class="mb-4 flex justify-between items-center">
+                    <h3 class="font-medium text-gray-900">Class Announcements (<?php echo count($announcements); ?>)</h3>
+                    <button id="addAnnouncementBtn" class="px-3 py-1.5 bg-purple-primary text-white rounded-md hover:bg-purple-dark text-sm">
+                        <i class="fas fa-plus mr-1"></i> New Announcement
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <?php foreach ($announcements as $announcement): ?>
+                        <div class="border border-gray-200 rounded-lg p-4 hover:border-purple-200 transition-colors">
+                            <div class="flex justify-between items-start mb-2">
+                                <h4 class="font-medium text-gray-900"><?php echo htmlspecialchars($announcement['title']); ?></h4>
+                                <div class="flex items-center space-x-2">
+                                    <button class="edit-announcement-btn text-blue-600 hover:text-blue-900 text-sm" 
+                                            data-announcement-id="<?php echo $announcement['announcement_id']; ?>">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="delete-announcement-btn text-red-600 hover:text-red-900 text-sm" 
+                                            data-announcement-id="<?php echo $announcement['announcement_id']; ?>">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <p class="text-gray-700 mb-3"><?php echo nl2br(htmlspecialchars($announcement['content'])); ?></p>
+                            
+                            <div class="flex justify-between items-center text-sm text-gray-500">
+                                <span>
+                                    <i class="fas fa-calendar-alt mr-1"></i> 
+                                    <?php echo date('M d, Y', strtotime($announcement['created_at'])); ?>
+                                </span>
+                                <?php if ($announcement['is_pinned']): ?>
+                                    <span class="text-yellow-600">
+                                        <i class="fas fa-thumbtack mr-1"></i> Pinned
+                                    </span>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </div>
+
         <!-- Class Info Tab -->
         <div id="info-tab" class="tab-content p-6 hidden">
             <div class="flex justify-between items-center mb-4">
@@ -315,5 +373,56 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+    
+    // Add event listeners for Announcement buttons
+    const addFirstAnnouncementBtn = document.getElementById('addFirstAnnouncementBtn');
+    const addAnnouncementBtn = document.getElementById('addAnnouncementBtn');
+    
+    if (addFirstAnnouncementBtn) {
+        addFirstAnnouncementBtn.addEventListener('click', function() {
+            if (typeof window.openAnnouncementModal === 'function') {
+                window.openAnnouncementModal();
+            } else {
+                document.getElementById('announcementModal').classList.remove('hidden');
+            }
+        });
+    }
+    
+    if (addAnnouncementBtn) {
+        addAnnouncementBtn.addEventListener('click', function() {
+            if (typeof window.openAnnouncementModal === 'function') {
+                window.openAnnouncementModal();
+            } else {
+                document.getElementById('announcementModal').classList.remove('hidden');
+            }
+        });
+    }
+    
+    // Add event listeners for edit and delete announcement buttons
+    const editAnnouncementBtns = document.querySelectorAll('.edit-announcement-btn');
+    const deleteAnnouncementBtns = document.querySelectorAll('.delete-announcement-btn');
+    
+    editAnnouncementBtns.forEach(button => {
+        button.addEventListener('click', function() {
+            const announcementId = this.getAttribute('data-announcement-id');
+            if (typeof window.editAnnouncement === 'function') {
+                window.editAnnouncement(announcementId);
+            }
+        });
+    });
+    
+    deleteAnnouncementBtns.forEach(button => {
+        button.addEventListener('click', function() {
+            const announcementId = this.getAttribute('data-announcement-id');
+            if (typeof window.deleteAnnouncement === 'function') {
+                window.deleteAnnouncement(announcementId);
+            } else {
+                if (confirm('Are you sure you want to delete this announcement?')) {
+                    // Basic deletion functionality if no global function exists
+                    console.log('Delete announcement:', announcementId);
+                }
+            }
+        });
+    });
 });
 </script>
