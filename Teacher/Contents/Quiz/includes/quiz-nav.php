@@ -1,10 +1,9 @@
-<!-- Header -->
-<div class="bg-white shadow-sm border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex justify-between items-center py-4">
+<div class="max-w-7xl sticky top-0 bg-white/95 backdrop-blur-sm rounded-xl z-10 shadow-sm border border-gray-400 mb-4 mt-6 mx-auto">
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="flex items-center justify-between">
             <div class="flex items-center space-x-4">
-                <a href="../Contents/Tabs/classDetails.php?class_id=<?php echo $quiz['class_id']; ?>" 
-                   class="flex items-center text-gray-600 hover:text-gray-900 transition-colors">
+                <a href="/AMA-AI-Based-Learning-Portal/Teacher/Contents/Tabs/classDetails.php?class_id=<?php echo $quiz['class_id']; ?>" 
+                   class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
                     <i class="fas fa-arrow-left mr-2"></i>
                     Back to Class
                 </a>
@@ -19,14 +18,9 @@
                 </div>
             </div>
             
-            <div class="flex items-center space-x-3">
-                <button id="previewQuizBtn" class="px-4 py-2 text-purple-600 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition-colors">
-                    <i class="fas fa-eye mr-2"></i>Preview
-                </button>
-                <button id="saveQuizBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
+            <button id="saveQuizBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors">
                     <i class="fas fa-save mr-2"></i>Save Changes
                 </button>
-            </div>
         </div>
     </div>
 </div>
