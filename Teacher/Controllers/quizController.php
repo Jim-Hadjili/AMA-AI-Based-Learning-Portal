@@ -643,8 +643,80 @@ function updateQuiz($conn) {
  */
 function deleteQuiz($conn) {
     try {
-        // Implementation for deleting quiz
-        return ['success' => false, 'message' => 'Delete quiz function not yet implemented'];
+        // Check if quiz_id is provided
+        if (!isset($_POST['quiz_id'])) {
+            return ['success' => false, 'message' => 'Missing quiz ID'];
+        }
+        
+        $quizId = intval($_POST['quiz_id']);
+        $teacherId = $_SESSION['user_id'];
+        
+        // First, verify that the quiz belongs to the logged-in teacher
+        $stmt = $conn->prepare("SELECT quiz_id FROM quizzes_tb WHERE quiz_id = ? AND th_id = ?");
+        $stmt->bind_param("is", $quizId, $teacherId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            return ['success' => false, 'message' => 'Quiz not found or you do not have permission to delete it'];
+        }
+        
+        // Begin transaction to ensure clean deletion
+        $conn->begin_transaction();
+        
+        try {
+            // Delete associated question options first (due to foreign key constraints)
+            $deleteOptionsQuery = "DELETE qo FROM question_options_tb qo 
+                                 JOIN quiz_questions_tb qq ON qo.question_id = qq.question_id 
+                                 WHERE qq.quiz_id = ?";
+            $stmt = $conn->prepare($deleteOptionsQuery);
+            $stmt->bind_param("i", $quizId);
+            $stmt->execute();
+            
+            // Delete any short answers if they exist
+            $shortAnswerTableExists = $conn->query("SHOW TABLES LIKE 'short_answer_tb'")->num_rows > 0;
+            if ($shortAnswerTableExists) {
+                $deleteShortAnswersQuery = "DELETE sa FROM short_answer_tb sa 
+                                          JOIN quiz_questions_tb qq ON sa.question_id = qq.question_id 
+                                          WHERE qq.quiz_id = ?";
+                $stmt = $conn->prepare($deleteShortAnswersQuery);
+                $stmt->bind_param("i", $quizId);
+                $stmt->execute();
+            }
+            
+            // Delete questions
+            $deleteQuestionsQuery = "DELETE FROM quiz_questions_tb WHERE quiz_id = ?";
+            $stmt = $conn->prepare($deleteQuestionsQuery);
+            $stmt->bind_param("i", $quizId);
+            $stmt->execute();
+            
+            // Delete any quiz attempts if they exist
+            $attemptsTableExists = $conn->query("SHOW TABLES LIKE 'quiz_attempts_tb'")->num_rows > 0;
+            if ($attemptsTableExists) {
+                $deleteAttemptsQuery = "DELETE FROM quiz_attempts_tb WHERE quiz_id = ?";
+                $stmt = $conn->prepare($deleteAttemptsQuery);
+                $stmt->bind_param("i", $quizId);
+                $stmt->execute();
+            }
+            
+            // Finally delete the quiz itself
+            $deleteQuizQuery = "DELETE FROM quizzes_tb WHERE quiz_id = ?";
+            $stmt = $conn->prepare($deleteQuizQuery);
+            $stmt->bind_param("i", $quizId);
+            $stmt->execute();
+            
+            // Commit the transaction
+            $conn->commit();
+            
+            return [
+                'success' => true, 
+                'message' => 'Quiz deleted successfully'
+            ];
+        } catch (Exception $e) {
+            // Rollback the transaction on error
+            $conn->rollback();
+            throw $e;
+        }
     } catch (Exception $e) {
         error_log("Error deleting quiz: " . $e->getMessage());
         return ['success' => false, 'message' => 'An error occurred while deleting the quiz: ' . $e->getMessage()];
