@@ -47,7 +47,7 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-xs text-gray-500"><?php echo formatFileSize($material['file_size'] ?? 0); ?></span>
                                 <div>
-                                    <a href="<?php echo htmlspecialchars($material['file_path']); ?>" download class="text-blue-600 hover:text-blue-900 text-sm mr-2">
+                                    <a href="<?php echo '../../../' . htmlspecialchars($material['file_path']); ?>" download="<?php echo htmlspecialchars($material['file_name']); ?>" class="text-blue-600 hover:text-blue-900 text-sm mr-2">
                                         <i class="fas fa-download"></i>
                                     </a>
                                     <button class="delete-material-btn text-red-600 hover:text-red-900 text-sm" data-material-id="<?php echo $material['material_id']; ?>">
