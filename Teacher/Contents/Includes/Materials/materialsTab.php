@@ -1,4 +1,3 @@
-
 <div id="materials-tab" class="tab-content p-6 hidden">
     <?php if (empty($materials)): ?>
         <div class="text-center py-8">

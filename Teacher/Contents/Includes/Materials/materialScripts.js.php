@@ -5,7 +5,25 @@
         initFileHandling();
         initFormHandling();
         initMaterialActions();
+        initMaterialCardClicks(); // Add this new function call
     });
+
+    // Initialize material card click handling
+    function initMaterialCardClicks() {
+        const materialCards = document.querySelectorAll('.material-card');
+        
+        materialCards.forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Don't navigate if clicking on a button
+                if (e.target.closest('button')) {
+                    return;
+                }
+                
+                const materialId = this.getAttribute('data-material-id');
+                window.location.href = '../filePreview.php?id=' + materialId;
+            });
+        });
+    }
 
     // Initialize modal controls
     function initMaterialModals() {

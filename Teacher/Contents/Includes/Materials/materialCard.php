@@ -1,4 +1,6 @@
-<div class="border border-gray-200 rounded-lg p-4 hover:border-purple-200 transition-colors">
+<div class="border border-gray-200 rounded-lg p-4 hover:border-purple-200 transition-colors cursor-pointer material-card"
+     data-material-id="<?php echo $material['material_id']; ?>"
+     data-material-path="<?php echo '../../../' . htmlspecialchars($material['file_path']); ?>">
     <div class="flex items-start">
         <div class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
             <?php
