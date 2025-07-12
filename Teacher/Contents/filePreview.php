@@ -89,9 +89,13 @@ function formatFileSize($bytes) {
                     <p class="text-sm text-gray-600">From <?php echo htmlspecialchars($material['class_name']); ?></p>
                 </div>
                 <div class="flex items-center space-x-2">
-                    <a href="<?php echo $file_path; ?>" download="<?php echo htmlspecialchars($material['file_name']); ?>" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-all duration-200">
+                    <!-- Change the download button to show the modal instead of directly downloading -->
+                    <button id="downloadBtn" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-all duration-200">
                         <i class="fas fa-download mr-2"></i> Download File
-                    </a>
+                    </button>
+                    <button id="deleteBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg flex items-center text-sm font-medium transition-all duration-200">
+                        <i class="fas fa-trash-alt mr-2"></i> Delete Material
+                    </button>
                 </div>
             </div>
         </div>
@@ -168,10 +172,14 @@ function formatFileSize($bytes) {
         </div>
     </div>
 
+    <!-- Include the download modal -->
+    <?php include_once "./Modals/materialDownloadModal.php"; ?>
+        <?php include_once "./Modals/materialDeleteModal.php"; ?>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             <?php if ($extension === 'pdf'): ?>
-            // Initialize PDF.js viewer
+            // PDF.js viewer code
             const url = '<?php echo $file_path; ?>';
             
             // Load the PDF
@@ -263,6 +271,203 @@ function formatFileSize($bytes) {
                 });
             });
             <?php endif; ?>
+
+            // Initialize download modal functionality
+            const downloadBtn = document.getElementById('downloadBtn');
+            const downloadConfirmationModal = document.getElementById('downloadConfirmationModal');
+            const closeDownloadModalBtn = document.getElementById('closeDownloadModalBtn');
+            const cancelDownloadBtn = document.getElementById('cancelDownloadBtn');
+            const confirmDownloadBtn = document.getElementById('confirmDownloadBtn');
+            const materialTitleToDownload = document.getElementById('materialTitleToDownload');
+            
+            // Open download modal when download button is clicked
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', function() {
+                    materialTitleToDownload.textContent = '<?php echo htmlspecialchars($material['file_name']); ?>';
+                    window.materialDownloadPath = '<?php echo $file_path; ?>';
+                    window.materialDownloadFilename = '<?php echo htmlspecialchars($material['file_name']); ?>';
+                    downloadConfirmationModal.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                });
+            }
+            
+            // Close modal functions
+            function closeDownloadModal() {
+                downloadConfirmationModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+            
+            // Close modal event handlers
+            if (closeDownloadModalBtn) {
+                closeDownloadModalBtn.addEventListener('click', closeDownloadModal);
+            }
+            
+            if (cancelDownloadBtn) {
+                cancelDownloadBtn.addEventListener('click', closeDownloadModal);
+            }
+            
+            // Confirm download
+            if (confirmDownloadBtn) {
+                confirmDownloadBtn.addEventListener('click', function() {
+                    // Create a temporary anchor element to trigger the download
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = window.materialDownloadPath;
+                    downloadLink.download = window.materialDownloadFilename;
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    
+                    // Close the modal
+                    closeDownloadModal();
+                });
+            }
+
+            // Initialize delete modal functionality
+            const deleteBtn = document.getElementById('deleteBtn');
+            const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
+            const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+            const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+            const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+            const materialTitleToDelete = document.getElementById('materialTitleToDelete');
+            
+            // Open delete modal when delete button is clicked
+            if (deleteBtn) {
+                deleteBtn.addEventListener('click', function() {
+                    materialTitleToDelete.textContent = '<?php echo htmlspecialchars($material['material_title']); ?>';
+                    window.materialIdToDelete = <?php echo $material_id; ?>;
+                    deleteConfirmationModal.classList.remove('hidden');
+                    document.body.classList.add('overflow-hidden');
+                });
+            }
+            
+            // Close delete modal function
+            function closeDeleteModal() {
+                deleteConfirmationModal.classList.add('hidden');
+                document.body.classList.remove('overflow-hidden');
+            }
+            
+            // Close delete modal event handlers
+            if (closeDeleteModalBtn) {
+                closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
+            }
+            
+            if (cancelDeleteBtn) {
+                cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+            }
+            
+            // Confirm delete
+            if (confirmDeleteBtn) {
+                confirmDeleteBtn.addEventListener('click', function() {
+                    const formData = new FormData();
+                    formData.append('material_id', window.materialIdToDelete);
+                    formData.append('class_id', <?php echo $material['class_id']; ?>);
+                    
+                    // Show loading state
+                    this.disabled = true;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Deleting...';
+                    
+                    // Send delete request to server
+                    fetch('../Controllers/materialController.php?action=delete', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => {
+                        console.log("Response status:", response.status);
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log("Response data:", data);
+                        if (data.success) {
+                            // Show success notification
+                            showNotification('Success', 'Material deleted successfully', 'success');
+                            
+                            // Redirect back to class details page after successful deletion
+                            setTimeout(() => {
+                                window.location.href = './Tabs/classDetails.php?class_id=<?php echo $material['class_id']; ?>';
+                            }, 1500);
+                        } else {
+                            // Show error notification
+                            showNotification('Error', data.message || 'Failed to delete material', 'error');
+                            closeDeleteModal();
+                            
+                            // Reset button state
+                            this.disabled = false;
+                            this.innerHTML = '<i class="fas fa-trash-alt mr-1.5"></i>Delete';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error details:', error);
+                        showNotification('Error', 'An error occurred while deleting material. Check console for details.', 'error');
+                        closeDeleteModal();
+                        
+                        // Reset button state
+                        this.disabled = false;
+                        this.innerHTML = '<i class="fas fa-trash-alt mr-1.5"></i>Delete';
+                    });
+                });
+            }
+            
+            // Notification function
+            window.showNotification = function(title, message, type) {
+                const notificationContainer = document.createElement('div');
+                notificationContainer.className = `fixed bottom-4 right-4 z-50 p-4 rounded-lg shadow-lg max-w-md animate-fadeIn ${
+                    type === 'success' ? 'bg-green-50 border-l-4 border-green-500' : 
+                    type === 'error' ? 'bg-red-50 border-l-4 border-red-500' : 
+                    'bg-blue-50 border-l-4 border-blue-500'
+                }`;
+                
+                notificationContainer.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="fas ${
+                                type === 'success' ? 'fa-check-circle text-green-500' : 
+                                type === 'error' ? 'fa-exclamation-circle text-red-500' : 
+                                'fa-info-circle text-blue-500'
+                            } text-lg"></i>
+                        </div>
+                        <div class="ml-3">
+                            <h3 class="font-medium ${
+                                type === 'success' ? 'text-green-800' : 
+                                type === 'error' ? 'text-red-800' : 
+                                'text-blue-800'
+                            }">${title}</h3>
+                            <p class="mt-1 text-sm ${
+                                type === 'success' ? 'text-green-700' : 
+                                type === 'error' ? 'text-red-700' : 
+                                'text-blue-700'
+                            }">${message}</p>
+                        </div>
+                        <div class="ml-auto pl-3">
+                            <button class="close-notification">
+                                <i class="fas fa-times text-gray-400 hover:text-gray-600"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                // Add to DOM
+                document.body.appendChild(notificationContainer);
+                
+                // Add click event to close button
+                notificationContainer.querySelector('.close-notification').addEventListener('click', function() {
+                    notificationContainer.classList.replace('animate-fadeIn', 'animate-fadeOut');
+                    setTimeout(() => {
+                        document.body.removeChild(notificationContainer);
+                    }, 300);
+                });
+                
+                // Auto-remove after 5 seconds
+                setTimeout(() => {
+                    if (document.body.contains(notificationContainer)) {
+                        notificationContainer.classList.replace('animate-fadeIn', 'animate-fadeOut');
+                        setTimeout(() => {
+                            if (document.body.contains(notificationContainer)) {
+                                document.body.removeChild(notificationContainer);
+                            }
+                        }, 300);
+                    }
+                }, 5000);
+            }
         });
     </script>
 </body>
