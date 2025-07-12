@@ -47,10 +47,16 @@
                             <div class="flex justify-between items-center">
                                 <span class="text-xs text-gray-500"><?php echo formatFileSize($material['file_size'] ?? 0); ?></span>
                                 <div>
-                                    <a href="<?php echo '../../../' . htmlspecialchars($material['file_path']); ?>" download="<?php echo htmlspecialchars($material['file_name']); ?>" class="text-blue-600 hover:text-blue-900 text-sm mr-2">
+                                    <button class="download-material-btn text-blue-600 hover:text-blue-900 text-sm mr-2" 
+                                            data-material-id="<?php echo $material['material_id']; ?>"
+                                            data-material-title="<?php echo htmlspecialchars($material['material_title']); ?>"
+                                            data-material-filename="<?php echo htmlspecialchars($material['file_name']); ?>"
+                                            data-material-path="<?php echo '../../../' . htmlspecialchars($material['file_path']); ?>">
                                         <i class="fas fa-download"></i>
-                                    </a>
-                                    <button class="delete-material-btn text-red-600 hover:text-red-900 text-sm" data-material-id="<?php echo $material['material_id']; ?>">
+                                    </button>
+                                    <button class="delete-material-btn text-red-600 hover:text-red-900 text-sm" 
+                                            data-material-id="<?php echo $material['material_id']; ?>"
+                                            data-material-title="<?php echo htmlspecialchars($material['material_title']); ?>">
                                         <i class="fas fa-trash-alt"></i>
                                     </button>
                                 </div>
@@ -66,12 +72,87 @@
 <!-- Include the material upload modal -->
 <?php include_once "../Modals/materialUploadModal.php"; ?>
 
+<!-- Delete Confirmation Modal -->
+<div id="deleteConfirmationModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+        <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-lg font-medium text-gray-900">Confirm Deletion</h3>
+            <button type="button" id="closeDeleteModalBtn" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="px-6 py-4">
+            <div class="flex items-center mb-4 text-red-600">
+                <i class="fas fa-exclamation-triangle text-xl mr-3"></i>
+                <span class="text-lg font-medium">Warning</span>
+            </div>
+            <p class="text-gray-700">Are you sure you want to delete the material:</p>
+            <p class="font-medium text-gray-900 mt-1" id="materialTitleToDelete"></p>
+            <p class="text-sm text-gray-500 mt-2">This action cannot be undone.</p>
+        </div>
+        <div class="bg-gray-50 px-6 py-3 flex justify-end space-x-2 rounded-b-lg">
+            <button type="button" id="cancelDeleteBtn" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Cancel
+            </button>
+            <button type="button" id="confirmDeleteBtn" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                Delete
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Download Confirmation Modal -->
+<div id="downloadConfirmationModal" class="fixed inset-0 bg-gray-900 bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+        <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+            <h3 class="text-lg font-medium text-gray-900">Confirm Download</h3>
+            <button type="button" id="closeDownloadModalBtn" class="text-gray-400 hover:text-gray-500">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="px-6 py-4">
+            <div class="flex items-center mb-4 text-blue-600">
+                <i class="fas fa-download text-xl mr-3"></i>
+                <span class="text-lg font-medium">Download Material</span>
+            </div>
+            <p class="text-gray-700">You're about to download:</p>
+            <p class="font-medium text-gray-900 mt-1" id="materialTitleToDownload"></p>
+            <p class="text-sm text-gray-500 mt-2">Click "Download" to continue or "Cancel" to go back.</p>
+        </div>
+        <div class="bg-gray-50 px-6 py-3 flex justify-end space-x-2 rounded-b-lg">
+            <button type="button" id="cancelDownloadBtn" class="px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Cancel
+            </button>
+            <button type="button" id="confirmDownloadBtn" class="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Download
+            </button>
+        </div>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         // Open modal buttons
         const addFirstMaterialBtn = document.getElementById('addFirstMaterialBtn');
         const addMaterialBtn = document.getElementById('addMaterialBtn');
         const materialModal = document.getElementById('materialUploadModal');
+        
+        // Delete modal elements
+        const deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
+        const closeDeleteModalBtn = document.getElementById('closeDeleteModalBtn');
+        const cancelDeleteBtn = document.getElementById('cancelDeleteBtn');
+        const confirmDeleteBtn = document.getElementById('confirmDeleteBtn');
+        const materialTitleToDelete = document.getElementById('materialTitleToDelete');
+        let materialIdToDelete = null;
+        
+        // Download modal elements
+        const downloadConfirmationModal = document.getElementById('downloadConfirmationModal');
+        const closeDownloadModalBtn = document.getElementById('closeDownloadModalBtn');
+        const cancelDownloadBtn = document.getElementById('cancelDownloadBtn');
+        const confirmDownloadBtn = document.getElementById('confirmDownloadBtn');
+        const materialTitleToDownload = document.getElementById('materialTitleToDownload');
+        let materialDownloadPath = null;
+        let materialDownloadFilename = null;
         
         // Close modal buttons
         const closeMaterialModalBtn = document.getElementById('closeMaterialModalBtn');
@@ -90,7 +171,7 @@
         // Form element
         const materialUploadForm = document.getElementById('materialUploadForm');
         
-        // Functions to open and close modal
+        // Functions to open and close modals
         function openMaterialModal() {
             materialModal.classList.remove('hidden');
             document.body.classList.add('overflow-hidden');
@@ -100,6 +181,34 @@
             materialModal.classList.add('hidden');
             document.body.classList.remove('overflow-hidden');
             resetForm();
+        }
+        
+        function openDeleteModal(materialId, materialTitle) {
+            materialIdToDelete = materialId;
+            materialTitleToDelete.textContent = materialTitle;
+            deleteConfirmationModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeDeleteModal() {
+            deleteConfirmationModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            materialIdToDelete = null;
+        }
+        
+        function openDownloadModal(materialTitle, path, filename) {
+            materialTitleToDownload.textContent = materialTitle;
+            materialDownloadPath = path;
+            materialDownloadFilename = filename;
+            downloadConfirmationModal.classList.remove('hidden');
+            document.body.classList.add('overflow-hidden');
+        }
+        
+        function closeDownloadModal() {
+            downloadConfirmationModal.classList.add('hidden');
+            document.body.classList.remove('overflow-hidden');
+            materialDownloadPath = null;
+            materialDownloadFilename = null;
         }
         
         // Reset form function
@@ -144,7 +253,7 @@
             return icon;
         }
         
-        // Add click event listeners
+        // Add click event listeners for material modal
         if (addFirstMaterialBtn) {
             addFirstMaterialBtn.addEventListener('click', openMaterialModal);
         }
@@ -159,6 +268,102 @@
         
         if (cancelMaterialUploadBtn) {
             cancelMaterialUploadBtn.addEventListener('click', closeMaterialModal);
+        }
+        
+        // Add click event listeners for delete modal
+        if (closeDeleteModalBtn) {
+            closeDeleteModalBtn.addEventListener('click', closeDeleteModal);
+        }
+        
+        if (cancelDeleteBtn) {
+            cancelDeleteBtn.addEventListener('click', closeDeleteModal);
+        }
+        
+        if (confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener('click', function() {
+                if (materialIdToDelete) {
+                    // Show loading state
+                    this.disabled = true;
+                    this.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Deleting...';
+                    
+                    fetch('../../Controllers/materialController.php?action=delete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: `material_id=${materialIdToDelete}&class_id=<?php echo $class_id; ?>`
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        closeDeleteModal();
+                        
+                        if (data.success) {
+                            showNotification('Success', 'Material deleted successfully!', 'success');
+                            
+                            // Remove the material element from DOM
+                            const deletedMaterial = document.querySelector(`.delete-material-btn[data-material-id="${materialIdToDelete}"]`);
+                            if (deletedMaterial) {
+                                const materialElement = deletedMaterial.closest('.border');
+                                if (materialElement) {
+                                    materialElement.remove();
+                                }
+                            }
+                            
+                            // Reload if no more materials
+                            const remainingMaterials = document.querySelectorAll('#materials-tab .grid > div');
+                            if (remainingMaterials.length === 0) {
+                                setTimeout(() => {
+                                    window.location.reload();
+                                }, 1000);
+                            }
+                        } else {
+                            showNotification('Error', data.message || 'Failed to delete material', 'error');
+                        }
+                        
+                        // Reset button state
+                        this.disabled = false;
+                        this.innerHTML = 'Delete';
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        showNotification('Error', 'An unexpected error occurred', 'error');
+                        closeDeleteModal();
+                        
+                        // Reset button state
+                        this.disabled = false;
+                        this.innerHTML = 'Delete';
+                    });
+                }
+            });
+        }
+        
+        // Add click event listeners for download modal
+        if (closeDownloadModalBtn) {
+            closeDownloadModalBtn.addEventListener('click', closeDownloadModal);
+        }
+        
+        if (cancelDownloadBtn) {
+            cancelDownloadBtn.addEventListener('click', closeDownloadModal);
+        }
+        
+        if (confirmDownloadBtn) {
+            confirmDownloadBtn.addEventListener('click', function() {
+                if (materialDownloadPath) {
+                    // Create a temporary anchor element to trigger the download
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = materialDownloadPath;
+                    downloadLink.download = materialDownloadFilename || 'download';
+                    document.body.appendChild(downloadLink);
+                    downloadLink.click();
+                    document.body.removeChild(downloadLink);
+                    
+                    // Close the modal
+                    closeDownloadModal();
+                    
+                    // Show success notification
+                    showNotification('Success', 'Download started!', 'success');
+                }
+            });
         }
         
         // Handle file selection
@@ -261,42 +466,21 @@
             deleteMaterialBtns.forEach(btn => {
                 btn.addEventListener('click', function() {
                     const materialId = this.getAttribute('data-material-id');
-                    
-                    if (confirm('Are you sure you want to delete this material? This action cannot be undone.')) {
-                        fetch('../../Controllers/materialController.php?action=delete', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/x-www-form-urlencoded',
-                            },
-                            body: `material_id=${materialId}&class_id=<?php echo $class_id; ?>`
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                showNotification('Success', 'Material deleted successfully!', 'success');
-                                
-                                // Remove the material element from DOM
-                                const materialElement = btn.closest('.border');
-                                if (materialElement) {
-                                    materialElement.remove();
-                                }
-                                
-                                // Reload if no more materials
-                                const remainingMaterials = document.querySelectorAll('#materials-tab .grid > div');
-                                if (remainingMaterials.length === 0) {
-                                    setTimeout(() => {
-                                        window.location.reload();
-                                    }, 1000);
-                                }
-                            } else {
-                                showNotification('Error', data.message || 'Failed to delete material', 'error');
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            showNotification('Error', 'An unexpected error occurred', 'error');
-                        });
-                    }
+                    const materialTitle = this.getAttribute('data-material-title');
+                    openDeleteModal(materialId, materialTitle);
+                });
+            });
+        }
+        
+        // Handle download material buttons
+        const downloadMaterialBtns = document.querySelectorAll('.download-material-btn');
+        if (downloadMaterialBtns) {
+            downloadMaterialBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const materialTitle = this.getAttribute('data-material-title');
+                    const materialPath = this.getAttribute('data-material-path');
+                    const materialFilename = this.getAttribute('data-material-filename');
+                    openDownloadModal(materialTitle, materialPath, materialFilename);
                 });
             });
         }
