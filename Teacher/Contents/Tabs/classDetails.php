@@ -43,6 +43,10 @@ $stats = $data['stats'];
 $activeStudentCount = $stats['activeStudentCount'];
 $pendingStudentCount = $stats['pendingStudentCount'];
 $activeQuizCount = $stats['activeQuizCount'];
+
+// --- Notification Logic ---
+$notification_status = $_GET['status'] ?? '';
+$notification_message = $_GET['message'] ?? '';
 ?>
 
 <!DOCTYPE html>
@@ -206,7 +210,7 @@ $activeQuizCount = $stats['activeQuizCount'];
 
     <!-- Include modals -->
     <?php 
-    // Create the Modals directory if it doesn't exist
+    // Create the Modals directory if it's not already handled by your project structure
     $modalsDir = __DIR__ . '/../Modals';
     if (!file_exists($modalsDir)) {
         mkdir($modalsDir, 0755, true);
@@ -280,7 +284,7 @@ $activeQuizCount = $stats['activeQuizCount'];
             <div class="flex items-center justify-center min-h-screen p-4">
                 <div class="bg-white rounded-lg shadow-xl max-w-lg w-full p-6">
                     <h3 class="text-lg font-medium text-gray-900 mb-4">Create Questions</h3>
-                    <p class="text-gray-600 mb-4">This is a placeholder. Create the modal file at: ' . htmlspecialchars($quizQuestionsModalFile) . '</p>
+                    <p class="text-600 mb-4">This is a placeholder. Create the modal file at: ' . htmlspecialchars($quizQuestionsModalFile) . '</p>
                     <div class="flex justify-end">
                         <button onclick="document.getElementById(\'quizQuestionsModal\').classList.add(\'hidden\')" class="px-4 py-2 bg-gray-200 text-gray-700 rounded">Close</button>
                     </div>
@@ -321,13 +325,40 @@ $activeQuizCount = $stats['activeQuizCount'];
                     const code = this.getAttribute('data-code');
                     navigator.clipboard.writeText(code)
                         .then(() => {
-                            alert('Class code copied to clipboard!');
+                            // Use the existing showNotification function
+                            window.showNotification("Class code copied to clipboard!", "success");
+
+                            // Change button icon temporarily
+                            const originalHTML = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i>';
+                            setTimeout(() => {
+                                this.innerHTML = originalHTML;
+                            }, 1500);
                         })
                         .catch(err => {
+                            // Use the existing showNotification function
+                            window.showNotification("Failed to copy class code", "error");
                             console.error('Could not copy text: ', err);
                         });
                 });
             });
+
+            // --- Notification Display Logic for URL Parameters ---
+            const notificationStatus = "<?php echo $notification_status; ?>";
+            const notificationMessage = "<?php echo htmlspecialchars($notification_message); ?>";
+            
+            if (notificationStatus && notificationMessage) {
+                // Use the existing showNotification function
+                window.showNotification(notificationMessage, notificationStatus);
+
+                // Clean URL parameters after displaying notification
+                if (history.replaceState) {
+                    const url = new URL(window.location.href);
+                    url.searchParams.delete('status');
+                    url.searchParams.delete('message');
+                    history.replaceState(null, '', url.toString());
+                }
+            }
         });
     </script>
 
