@@ -1,3 +1,7 @@
+<?php
+include_once "fetch-announcements.php";
+?>
+
 <!-- Class Content Tabs -->
 <div class="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
     <!-- Tab Navigation -->
@@ -111,62 +115,13 @@
         </div>
 
         <!-- Materials Tab -->
-       <?php include "Materials/materialsTab.php" ?>
+        <?php include "Materials/materialsTab.php" ?>
 
         <!-- Announcements Tab -->
-        <div id="announcements-tab" class="tab-content p-6 hidden">
-            <?php if (empty($announcements)): ?>
-                <div class="text-center py-8">
-                    <i class="fas fa-bullhorn text-gray-300 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-900 mb-2">No Announcements Yet</h3>
-                    <p class="text-gray-500 mb-4">Create announcements to keep your students informed and engaged.</p>
-                    <button id="addFirstAnnouncementBtn" class="px-4 py-2 bg-purple-primary text-white rounded-lg hover:bg-purple-dark transition-colors duration-200">
-                        <i class="fas fa-plus mr-2"></i>Create Announcement
-                    </button>
-                </div>
-            <?php else: ?>
-                <div class="mb-4 flex justify-between items-center">
-                    <h3 class="font-medium text-gray-900">Class Announcements (<?php echo count($announcements); ?>)</h3>
-                    <button id="addAnnouncementBtn" class="px-3 py-1.5 bg-purple-primary text-white rounded-md hover:bg-purple-dark text-sm">
-                        <i class="fas fa-plus mr-1"></i> New Announcement
-                    </button>
-                </div>
-
-                <div class="space-y-4">
-                    <?php foreach ($announcements as $announcement): ?>
-                        <div class="border border-gray-200 rounded-lg p-4 hover:border-purple-200 transition-colors">
-                            <div class="flex justify-between items-start mb-2">
-                                <h4 class="font-medium text-gray-900"><?php echo htmlspecialchars($announcement['title']); ?></h4>
-                                <div class="flex items-center space-x-2">
-                                    <button class="edit-announcement-btn text-blue-600 hover:text-blue-900 text-sm" 
-                                            data-announcement-id="<?php echo $announcement['announcement_id']; ?>">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="delete-announcement-btn text-red-600 hover:text-red-900 text-sm" 
-                                            data-announcement-id="<?php echo $announcement['announcement_id']; ?>">
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            
-                            <p class="text-gray-700 mb-3"><?php echo nl2br(htmlspecialchars($announcement['content'])); ?></p>
-                            
-                            <div class="flex justify-between items-center text-sm text-gray-500">
-                                <span>
-                                    <i class="fas fa-calendar-alt mr-1"></i> 
-                                    <?php echo date('M d, Y', strtotime($announcement['created_at'])); ?>
-                                </span>
-                                <?php if ($announcement['is_pinned']): ?>
-                                    <span class="text-yellow-600">
-                                        <i class="fas fa-thumbtack mr-1"></i> Pinned
-                                    </span>
-                                <?php endif; ?>
-                            </div>
-                        </div>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-        </div>
+        <?php include "Announcements/announcementsTabs.php" ?>
+        <?php include "Announcements/view-announcement-modal.php"; ?>
+        <?php include "Announcements/announcement-edit-modal.php"; ?>
+        <?php include "Announcements/announcement-delete-modal.php"; ?>
 
         <!-- Class Info Tab -->
         <div id="info-tab" class="tab-content p-6 hidden">
@@ -305,7 +260,6 @@ document.addEventListener('DOMContentLoaded', function() {
             if (typeof window.openEditClassModal === 'function') {
                 window.openEditClassModal();
             } else {
-                // Fallback if the function isn't available
                 document.getElementById('editClassModal').classList.remove('hidden');
             }
         });
@@ -335,31 +289,118 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
     
+    // Get references to the new modals and their elements
+    const editAnnouncementModal = document.getElementById('editAnnouncementModal');
+    const editAnnouncementForm = document.getElementById('editAnnouncementForm');
+    const editAnnouncementIdInput = document.getElementById('editAnnouncementId');
+    const editAnnouncementTitleInput = document.getElementById('editAnnouncementTitle');
+    const editAnnouncementContentTextarea = document.getElementById('editAnnouncementContent');
+    const editPinAnnouncementCheckbox = document.getElementById('editPinAnnouncement');
+    const closeEditAnnouncementModalBtn = editAnnouncementModal.querySelector('.fa-times').closest('button');
+
+    const deleteAnnouncementModal = document.getElementById('deleteAnnouncementModal');
+    const announcementTitleToDelete = document.getElementById('announcementTitleToDelete');
+    const deleteAnnouncementIdInput = document.getElementById('deleteAnnouncementIdInput'); // NEW: Get the hidden input for ID
+    const deleteAnnouncementForm = document.getElementById('deleteAnnouncementForm'); // NEW: Get the delete form
+    const cancelDeleteAnnouncementBtn = document.getElementById('cancelDeleteAnnouncementBtn');
+    const closeDeleteAnnouncementModalBtn = document.getElementById('closeDeleteAnnouncementModalBtn');
+
     // Add event listeners for edit and delete announcement buttons
     const editAnnouncementBtns = document.querySelectorAll('.edit-announcement-btn');
     const deleteAnnouncementBtns = document.querySelectorAll('.delete-announcement-btn');
     
     editAnnouncementBtns.forEach(button => {
-        button.addEventListener('click', function() {
-            const announcementId = this.getAttribute('data-announcement-id');
-            if (typeof window.editAnnouncement === 'function') {
-                window.editAnnouncement(announcementId);
-            }
+        button.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent the parent card's click event from firing
+            const card = this.closest('.announcement-card-clickable');
+            const announcementId = card.getAttribute('data-announcement-id');
+            const title = card.getAttribute('data-announcement-title');
+            const content = card.getAttribute('data-announcement-content');
+            const isPinned = card.getAttribute('data-announcement-pinned') === 'true';
+
+            editAnnouncementIdInput.value = announcementId;
+            editAnnouncementTitleInput.value = title;
+            editAnnouncementContentTextarea.value = content;
+            editPinAnnouncementCheckbox.checked = isPinned;
+            
+            editAnnouncementModal.classList.remove('hidden');
         });
     });
     
     deleteAnnouncementBtns.forEach(button => {
-        button.addEventListener('click', function() {
-            const announcementId = this.getAttribute('data-announcement-id');
-            if (typeof window.deleteAnnouncement === 'function') {
-                window.deleteAnnouncement(announcementId);
-            } else {
-                if (confirm('Are you sure you want to delete this announcement?')) {
-                    // Basic deletion functionality if no global function exists
-                    console.log('Delete announcement:', announcementId);
-                }
-            }
+        button.addEventListener('click', function(event) {
+            event.stopPropagation(); // Prevent the parent card's click event from firing
+            const card = this.closest('.announcement-card-clickable');
+            const announcementId = card.getAttribute('data-announcement-id');
+            const title = card.getAttribute('data-announcement-title');
+
+            deleteAnnouncementIdInput.value = announcementId; // Set the ID in the hidden input
+            announcementTitleToDelete.textContent = title;
+            
+            deleteAnnouncementModal.classList.remove('hidden');
         });
+    });
+
+    // No need for a click listener on confirmDeleteAnnouncementBtn anymore,
+    // as the form submission handles it directly.
+
+    // Close delete modal buttons
+    cancelDeleteAnnouncementBtn.addEventListener('click', () => deleteAnnouncementModal.classList.add('hidden'));
+    closeDeleteAnnouncementModalBtn.addEventListener('click', () => deleteAnnouncementModal.classList.add('hidden'));
+    deleteAnnouncementModal.addEventListener('click', function(event) {
+        if (event.target === deleteAnnouncementModal) {
+            deleteAnnouncementModal.classList.add('hidden');
+        }
+    });
+
+    // Close edit modal button
+    closeEditAnnouncementModalBtn.addEventListener('click', () => editAnnouncementModal.classList.add('hidden'));
+    editAnnouncementModal.addEventListener('click', function(event) {
+        if (event.target === editAnnouncementModal) {
+            editAnnouncementModal.classList.add('hidden');
+        }
+    });
+
+    // Handle clicking on announcement cards to view full content (existing logic)
+    const announcementCards = document.querySelectorAll('.announcement-card-clickable');
+    const viewAnnouncementModal = document.getElementById('viewAnnouncementModal');
+    const viewAnnouncementTitle = document.getElementById('viewAnnouncementTitle');
+    const viewAnnouncementContent = document.getElementById('viewAnnouncementContent');
+    const viewAnnouncementDate = document.getElementById('viewAnnouncementDate');
+    const viewAnnouncementPinned = document.getElementById('viewAnnouncementPinned');
+
+    announcementCards.forEach(card => {
+        card.addEventListener('click', function(event) {
+            // Prevent opening modal if edit/delete buttons or their icons are clicked
+            if (event.target.closest('.edit-announcement-btn') || event.target.closest('.delete-announcement-btn')) {
+                return;
+            }
+
+            const title = this.getAttribute('data-announcement-title');
+            const content = this.getAttribute('data-announcement-content');
+            const date = this.getAttribute('data-announcement-date');
+            const isPinned = this.getAttribute('data-announcement-pinned') === 'true';
+
+            viewAnnouncementTitle.textContent = title;
+            // Replace newlines with <br> tags for proper display in HTML
+            viewAnnouncementContent.innerHTML = content.replace(/\n/g, '<br>'); 
+            viewAnnouncementDate.textContent = date;
+
+            if (isPinned) {
+                viewAnnouncementPinned.classList.remove('hidden');
+            } else {
+                viewAnnouncementPinned.classList.add('hidden');
+            }
+
+            viewAnnouncementModal.classList.remove('hidden');
+        });
+    });
+
+    // Close view announcement modal when clicking outside
+    viewAnnouncementModal.addEventListener('click', function(event) {
+        if (event.target === viewAnnouncementModal) {
+            viewAnnouncementModal.classList.add('hidden');
+        }
     });
 });
 </script>
