@@ -16,7 +16,7 @@
             </span>
         </div>
 
-        <div id="viewAnnouncementContent" class="prose max-w-none text-gray-700 overflow-y-auto max-h-[70vh] pb-4">
+        <div id="viewAnnouncementContent" class="prose max-w-none text-gray-700 overflow-y-auto max-h-[70vh] pb-4" style="word-break: break-word; white-space: pre-line;">
             <!-- Announcement content will be loaded here -->
         </div>
     </div>
