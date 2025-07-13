@@ -38,22 +38,23 @@ function loadQuizData($conn, $quiz_id, $teacher_id) {
     $questions = [];
 
     while ($question = $questionsResult->fetch_assoc()) {
-        // Fetch options for each question if it's multiple choice or checkboxes
-        if ($question['question_type'] === 'multiple_choice' || $question['question_type'] === 'checkbox') {
+        // Normalize question type for compatibility
+        $type = strtolower(str_replace(['_', '-'], ['-', '-'], $question['question_type']));
+        if ($type === 'multiple-choice' || $type === 'checkbox') {
             $optionsSql = "SELECT * FROM question_options_tb WHERE question_id = ? ORDER BY option_order";
             $optionsStmt = $conn->prepare($optionsSql);
             $optionsStmt->bind_param("i", $question['question_id']);
             $optionsStmt->execute();
             $optionsResult = $optionsStmt->get_result();
             $options = [];
-            
             while ($option = $optionsResult->fetch_assoc()) {
                 $options[] = $option;
             }
-            
             $question['options'] = $options;
+        } else {
+            // Always set options key to avoid undefined index
+            $question['options'] = [];
         }
-        
         $questions[] = $question;
     }
 
