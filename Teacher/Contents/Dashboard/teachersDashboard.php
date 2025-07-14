@@ -31,6 +31,27 @@ $classes = getTeacherClasses($conn, $teacher_id);
     <script src="../../Assets/Js/teacherDashboard.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../../Assets/Css/teacherDashboard.css">
+    <!-- Add this to your CSS file for the modal animations -->
+    <style>
+        /* General modal overlay transition */
+        #searchClassModal {
+            transition: opacity 0.3s ease-out;
+            /* Initially hidden with utility class, will fade in */
+        }
+        #searchClassModal.show {
+            opacity: 1;
+        }
+
+        /* Modal content animation (scale and fade) */
+        #searchClassModal .modal-content {
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            /* Initial state defined in HTML with opacity-0 and scale-95 */
+        }
+        #searchClassModal .modal-content.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
 </head>
 
 <body class="bg-gray-100 min-h-screen">
@@ -55,20 +76,26 @@ $classes = getTeacherClasses($conn, $teacher_id);
             <!-- Stats Cards -->
             <?php include "../Includes/teacherStatusCards.php"; ?>
 
+            <!-- Class Cards -->
+            <?php include "../Includes/teacherClassCards.php"; ?>
+            
             <!-- Content Sections -->
             <?php include "../Includes/teacherContents.php"; ?>
 
-            <!-- Class Cards -->
-            <?php include "../Includes/teacherClassCards.php"; ?>
         </main>
     </div>
 
     <!-- Include Add Class Modal -->
     <?php include "../Modals/addClassModal.php"; ?>
+    <!-- New: Include Search Class Modal -->
+    <?php include "../Modals/searchClassModal.php"; ?>
 
 </body>
 <script src="../../Assets/Js/teacherDashAnimation.js"></script>
 <script src="../../Assets/Js/generateRandomClassCode.js"></script>
 <script src="../../Assets/Js/addClassModal.js"></script>
+<!-- New: Include Search Modal Animation and Logic -->
+<script src="../../Assets/Js/searchDashAnimation.js"></script>
+<script src="../../Assets/Js/searchModal.js"></script>
 
 </html>
