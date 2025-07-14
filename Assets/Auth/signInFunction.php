@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Determine redirect URL based on role
     $redirect_url = '';
     if ($user['userPosition'] === 'student') {
-        $redirect_url = './content/dashboards/studentsDashboard.php';
+        $redirect_url = './Students/Contents/Dashboard/studentDashboard.php';
     } else if ($user['userPosition'] === 'teacher') {
         $redirect_url = './Teacher/Contents/Dashboard/teachersDashboard.php';
     } else {
