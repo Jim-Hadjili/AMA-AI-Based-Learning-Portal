@@ -46,6 +46,7 @@
     <?php include "DashboardsIncludes/dashboardClassSearchModal.php" ?>
     <!-- Toggle Classe sView -->
     <script src="../../Assets/Scripts/toggleClassesView.js"> </script>
+    
 </body>
 
 </html>
