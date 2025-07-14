@@ -13,7 +13,7 @@
     <nav class="mt-8 px-2">
         <ul class="space-y-2">
             <li>
-                <a href="#" class="flex items-center px-3 py-3 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors duration-200">
+                <a href="../Dashboard/teachersDashboard.php" class="flex items-center px-3 py-3 rounded-lg bg-white/10 text-white hover:bg-white/20 transition-colors duration-200">
                     <i class="fas fa-home w-5 h-5 text-center flex-shrink-0"></i>
                     <span class="ml-4 sidebar-text">Dashboard</span>
                 </a>
@@ -32,9 +32,9 @@
                 </a>
             </li>
             <li>
-                <a href="#" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
+                <a href="../Tabs/teacherAllClasses.php" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
                     <i class="fas fa-book w-5 h-5 text-center flex-shrink-0"></i>
-                    <span class="ml-4 sidebar-text">Courses</span>
+                    <span class="ml-4 sidebar-text">Classes</span>
                 </a>
             </li>
             <li>
@@ -60,7 +60,8 @@
 
     <!-- Bottom Section -->
     <div class="absolute bottom-4 left-0 right-0 px-2">
-        <a href="../../functions/auth/logout.php" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
+        <!-- Modified: href changed to "#", onclick removed. Event listener will be added in JS. -->
+        <a href="#" id="logoutSidebarBtn" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
             <i class="fas fa-sign-out-alt w-5 h-5 text-center flex-shrink-0"></i>
             <span class="ml-4 sidebar-text">Logout</span>
         </a>

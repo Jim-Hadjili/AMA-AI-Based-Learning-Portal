@@ -34,20 +34,20 @@ $classes = getTeacherClasses($conn, $teacher_id);
     <!-- Add this to your CSS file for the modal animations -->
     <style>
         /* General modal overlay transition */
-        #searchClassModal {
+        #searchClassModal, #logoutConfirmationModal {
             transition: opacity 0.3s ease-out;
             /* Initially hidden with utility class, will fade in */
         }
-        #searchClassModal.show {
+        #searchClassModal.show, #logoutConfirmationModal.show {
             opacity: 1;
         }
 
         /* Modal content animation (scale and fade) */
-        #searchClassModal .modal-content {
+        #searchClassModal .modal-content, #logoutConfirmationModal .modal-content {
             transition: transform 0.3s ease-out, opacity 0.3s ease-out;
             /* Initial state defined in HTML with opacity-0 and scale-95 */
         }
-        #searchClassModal .modal-content.show {
+        #searchClassModal .modal-content.show, #logoutConfirmationModal .modal-content.show {
             opacity: 1;
             transform: scale(1);
         }
@@ -87,15 +87,19 @@ $classes = getTeacherClasses($conn, $teacher_id);
 
     <!-- Include Add Class Modal -->
     <?php include "../Modals/addClassModal.php"; ?>
-    <!-- New: Include Search Class Modal -->
+    <!-- Include Search Class Modal -->
     <?php include "../Modals/searchClassModal.php"; ?>
+    <!-- New: Include Logout Confirmation Modal -->
+    <?php include "../Modals/logoutConfirmationModal.php"; ?>
 
 </body>
 <script src="../../Assets/Js/teacherDashAnimation.js"></script>
 <script src="../../Assets/Js/generateRandomClassCode.js"></script>
 <script src="../../Assets/Js/addClassModal.js"></script>
-<!-- New: Include Search Modal Animation and Logic -->
+<!-- Include Search Modal Animation and Logic -->
 <script src="../../Assets/Js/searchDashAnimation.js"></script>
 <script src="../../Assets/Js/searchModal.js"></script>
+<!-- New: Include Logout Modal Logic -->
+<script src="../../Assets/Js/logoutModal.js"></script>
 
 </html>
