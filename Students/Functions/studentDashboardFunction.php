@@ -15,7 +15,7 @@ $user_name = $_SESSION['user_name'];
 $user_email = $_SESSION['user_email'];
 $session_token = $_SESSION['session_token']; // Get the session token
 
-// Get student ID from database
+// Get student ID from database and store it in session
 $studentId = null;
 $query = "SELECT st_id FROM students_profiles_tb WHERE st_email = ?";
 $stmt = $conn->prepare($query);
@@ -26,6 +26,7 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $studentId = $row['st_id'];
+    $_SESSION['st_id'] = $studentId; // Store st_id in session
 }
 
 // Get enrolled classes
@@ -34,8 +35,8 @@ $enrolledCount = 0;
 
 if ($studentId) {
     // Get classes the student is enrolled in
-    $classQuery = "SELECT tc.* FROM teacher_classes_tb tc 
-                   INNER JOIN class_enrollments_tb ce ON tc.class_id = ce.class_id 
+    $classQuery = "SELECT tc.* FROM teacher_classes_tb tc
+                   INNER JOIN class_enrollments_tb ce ON tc.class_id = ce.class_id
                    WHERE ce.st_id = ? AND tc.status = 'active'
                    ORDER BY tc.created_at DESC";
     $classStmt = $conn->prepare($classQuery);
@@ -48,3 +49,4 @@ if ($studentId) {
     }
     $enrolledCount = count($enrolledClasses);
 }
+?>

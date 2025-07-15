@@ -75,86 +75,6 @@ function handleSidebarMouseLeave() {
   }
 }
 
-// Function to open the class search modal
-function openClassSearchModal() {
-  document.getElementById("classSearchModal").classList.remove("hidden");
-  document.body.classList.add("overflow-hidden");
-  setTimeout(() => {
-    document.getElementById("classCode").focus();
-  }, 100);
-}
-
-// Function to close the class search modal
-function closeClassSearchModal() {
-  document.getElementById("classSearchModal").classList.add("hidden");
-  document.body.classList.remove("overflow-hidden");
-  document.getElementById("classCode").value = "";
-  document.getElementById("searchError").textContent = "";
-  document.getElementById("searchError").classList.add("hidden");
-}
-
-// Function to search for and enroll in a class
-function searchAndEnrollClass() {
-  const classCode = document.getElementById("classCode").value.trim();
-  const errorElement = document.getElementById("searchError");
-  const submitButton = document.getElementById("searchButton");
-  const loadingIcon = document.getElementById("loadingIcon");
-
-  // Clear previous errors
-  errorElement.textContent = "";
-  errorElement.classList.add("hidden");
-
-  // Validate input
-  if (!classCode) {
-    errorElement.textContent = "Please enter a class code";
-    errorElement.classList.remove("hidden");
-    return;
-  }
-
-  // Show loading state
-  submitButton.disabled = true;
-  loadingIcon.classList.remove("hidden");
-
-  // Create form data
-  const formData = new FormData();
-  formData.append("class_code", classCode);
-
-  // Send AJAX request
-  fetch("../../api/classes/enrollClass.php", {
-    method: "POST",
-    body: formData,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      if (data.success) {
-        // Show success message
-        showNotification(data.message, "success");
-
-        // Close modal
-        closeClassSearchModal();
-
-        // Reload page after brief delay
-        setTimeout(() => {
-          window.location.reload();
-        }, 1500);
-      } else {
-        // Show error
-        errorElement.textContent = data.message;
-        errorElement.classList.remove("hidden");
-      }
-    })
-    .catch((error) => {
-      console.error("Error:", error);
-      errorElement.textContent = "An error occurred. Please try again.";
-      errorElement.classList.remove("hidden");
-    })
-    .finally(() => {
-      // Reset button state
-      submitButton.disabled = false;
-      loadingIcon.classList.add("hidden");
-    });
-}
-
 // Notification function
 function showNotification(message, type = "info") {
   const notification = document.createElement("div");
@@ -184,20 +104,3 @@ function showNotification(message, type = "info") {
     }, 300);
   }, 3000);
 }
-
-// Initialize event listeners when DOM is loaded
-document.addEventListener("DOMContentLoaded", function () {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.addEventListener("mouseenter", handleSidebarMouseEnter);
-  sidebar.addEventListener("mouseleave", handleSidebarMouseLeave);
-
-  // Add Enter key support for class code input
-  document
-    .getElementById("classCode")
-    .addEventListener("keypress", function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
-        searchAndEnrollClass();
-      }
-    });
-});
