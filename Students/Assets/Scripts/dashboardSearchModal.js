@@ -9,6 +9,86 @@ const statusColors = {
   pending: "bg-yellow-100 text-yellow-800",
 };
 
+// Define subject-specific styles (JavaScript equivalent)
+const subjectStyles = {
+  English: {
+    strip: "from-blue-500 to-blue-700",
+    icon_bg: "bg-blue-100",
+    icon_color: "text-blue-600",
+    icon_class: "fas fa-book-reader",
+  },
+  Math: {
+    strip: "from-green-500 to-green-700",
+    icon_bg: "bg-green-100",
+    icon_color: "text-green-600",
+    icon_class: "fas fa-calculator",
+  },
+  Science: {
+    strip: "from-purple-500 to-purple-700",
+    icon_bg: "bg-purple-100",
+    icon_color: "text-purple-600",
+    icon_class: "fas fa-flask",
+  },
+  History: {
+    strip: "from-yellow-500 to-yellow-700",
+    icon_bg: "bg-yellow-100",
+    icon_color: "text-yellow-600",
+    icon_class: "fas fa-landmark",
+  },
+  Arts: {
+    strip: "from-pink-500 to-pink-700",
+    icon_bg: "bg-pink-100",
+    icon_color: "text-pink-600",
+    icon_class: "fas fa-paint-brush",
+  },
+  PE: {
+    strip: "from-red-500 to-red-700",
+    icon_bg: "bg-red-100",
+    icon_color: "text-red-600",
+    icon_class: "fas fa-running",
+  },
+  ICT: {
+    strip: "from-indigo-500 to-indigo-700",
+    icon_bg: "bg-indigo-100",
+    icon_color: "text-indigo-600",
+    icon_class: "fas fa-laptop-code",
+  },
+  "Home Economics": {
+    strip: "from-orange-500 to-orange-700",
+    icon_bg: "bg-orange-100",
+    icon_color: "text-orange-600",
+    icon_class: "fas fa-utensils",
+  },
+  Default: {
+    strip: "from-gray-500 to-gray-700",
+    icon_bg: "bg-gray-100",
+    icon_color: "text-gray-600",
+    icon_class: "fas fa-graduation-cap",
+  },
+};
+
+// Helper function to determine subject from class name
+function getSubjectFromClassName(className) {
+  const classNameLower = className.toLowerCase();
+  const subjectKeywords = {
+    english: "English",
+    math: "Math",
+    science: "Science",
+    history: "History",
+    arts: "Arts",
+    pe: "PE",
+    ict: "ICT",
+    "home economics": "Home Economics",
+  };
+
+  for (const keyword in subjectKeywords) {
+    if (classNameLower.includes(keyword)) {
+      return subjectKeywords[keyword];
+    }
+  }
+  return "Default";
+}
+
 // IMPORTANT: The showNotification function is now expected to be defined globally
 // by Assets/Scripts/notif.js. Do NOT redefine it here.
 
@@ -91,13 +171,17 @@ document
         const statusClass =
           statusColors[classData.status] || statusColors.inactive;
 
+        // Determine subject-specific styles using the derived class_subject
+        const subject = getSubjectFromClassName(classData.class_name);
+        const style = subjectStyles[subject] || subjectStyles.Default;
+
         // Dynamically create and display the class card
         const classCardHtml = `
           <a href="#" class="group relative overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 class-card"
               data-class-id="${classData.class_id}"
               data-class-name="${classData.class_name}">
               <!-- Class Card Header with Color Strip -->
-              <div class="h-2 bg-purple-primary"></div>
+              <div class="h-2 bg-gradient-to-r ${style.strip}"></div>
               <div class="p-5">
                   <div class="flex justify-between items-start mb-4">
                       <h3 class="font-semibold text-lg text-gray-900">${
@@ -125,11 +209,11 @@ document
                   </div>
                   <div class="flex justify-between text-sm">
                       <div class="flex items-center text-gray-600">
-                          <i class="fas fa-users mr-2 text-purple-primary"></i>
+                          <i class="fas fa-users mr-2 ${style.icon_color}"></i>
                           <span>${studentCount} Students</span>
                       </div>
                       <div class="flex items-center text-gray-600">
-                          <i class="fas fa-book mr-2 text-purple-primary"></i>
+                          <i class="fas fa-book mr-2 ${style.icon_color}"></i>
                           <span>${quizCount} Quizzes</span>
                       </div>
                   </div>

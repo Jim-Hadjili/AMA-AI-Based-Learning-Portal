@@ -29,6 +29,28 @@ if ($result->num_rows > 0) {
     $_SESSION['st_id'] = $studentId; // Store st_id in session
 }
 
+// Helper function to determine subject from class name
+function getSubjectFromClassName($className) {
+    $classNameLower = strtolower($className);
+    $subjectKeywords = [
+        'english' => 'English',
+        'math' => 'Math',
+        'science' => 'Science',
+        'history' => 'History',
+        'arts' => 'Arts',
+        'pe' => 'PE',
+        'ict' => 'ICT',
+        'home economics' => 'Home Economics',
+    ];
+
+    foreach ($subjectKeywords as $keyword => $subject) {
+        if (strpos($classNameLower, $keyword) !== false) {
+            return $subject;
+        }
+    }
+    return 'Default';
+}
+
 // Get enrolled classes with student and quiz counts
 $enrolledClasses = [];
 $enrolledCount = 0;
@@ -49,6 +71,8 @@ if ($studentId) {
     $classResult = $classStmt->get_result();
 
     while ($class = $classResult->fetch_assoc()) {
+        // Add the derived class_subject to the class array
+        $class['class_subject'] = getSubjectFromClassName($class['class_name']);
         $enrolledClasses[] = $class;
     }
     $enrolledCount = count($enrolledClasses);

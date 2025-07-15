@@ -13,6 +13,28 @@ if (!$student_id || !$class_code) {
     exit;
 }
 
+// Helper function to determine subject from class name
+function getSubjectFromClassName($className) {
+    $classNameLower = strtolower($className);
+    $subjectKeywords = [
+        'english' => 'English',
+        'math' => 'Math',
+        'science' => 'Science',
+        'history' => 'History',
+        'arts' => 'Arts',
+        'pe' => 'PE',
+        'ict' => 'ICT',
+        'home economics' => 'Home Economics',
+    ];
+
+    foreach ($subjectKeywords as $keyword => $subject) {
+        if (strpos($classNameLower, $keyword) !== false) {
+            return $subject;
+        }
+    }
+    return 'Default';
+}
+
 // Find class by code, including status, student count, and quiz count
 $stmt = $conn->prepare("SELECT
                             tc.class_id,
@@ -48,6 +70,9 @@ if ($check_result->num_rows > 0) {
     echo json_encode(['status' => 'error', 'message' => 'You are already enrolled in this class.']);
     exit;
 }
+
+// Add the derived class_subject to the class array before returning
+$class['class_subject'] = getSubjectFromClassName($class['class_name']);
 
 // If class found and not enrolled, return class details
 echo json_encode(['status' => 'success', 'class' => $class]);
