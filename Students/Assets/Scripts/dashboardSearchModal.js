@@ -1,6 +1,17 @@
 // Global variable to store class data for confirmation
 let classToEnroll = null;
 
+// Define status colors for the badges (JavaScript equivalent)
+const statusColors = {
+  active: "bg-green-100 text-green-800",
+  inactive: "bg-red-100 text-red-800",
+  archived: "bg-gray-100 text-gray-800",
+  pending: "bg-yellow-100 text-yellow-800",
+};
+
+// IMPORTANT: The showNotification function is now expected to be defined globally
+// by Assets/Scripts/notif.js. Do NOT redefine it here.
+
 // Show search modal
 function showJoinClassModal() {
   document.getElementById("joinClassModal").classList.remove("hidden");
@@ -8,7 +19,7 @@ function showJoinClassModal() {
   document.getElementById("classCode").value = ""; // Clear input
 }
 // Hide search modal
-document.getElementById("closeJoinClassModal").onclick = function () {
+document.getElementById("closeJoinClassModal").onclick = () => {
   document.getElementById("joinClassModal").classList.add("hidden");
   document.getElementById("classPreviewContainer").innerHTML = ""; // Clear preview on close
 };
@@ -27,7 +38,7 @@ function showConfirmJoinModal(className, classId) {
   classToEnroll = { id: classId, name: className }; // Store class data
 }
 // Hide confirmation modal
-document.getElementById("closeConfirmJoinModal").onclick = function () {
+document.getElementById("closeConfirmJoinModal").onclick = () => {
   document.getElementById("confirmJoinModal").classList.add("hidden");
   classToEnroll = null; // Clear stored data
 };
@@ -39,7 +50,7 @@ document.getElementById("confirmJoinModal").onclick = function (e) {
   }
 };
 // Cancel button in confirmation modal
-document.getElementById("cancelJoinBtn").onclick = function () {
+document.getElementById("cancelJoinBtn").onclick = () => {
   document.getElementById("confirmJoinModal").classList.add("hidden");
   classToEnroll = null; // Clear stored data
 };
@@ -47,7 +58,7 @@ document.getElementById("cancelJoinBtn").onclick = function () {
 // Handle Join Class Form Submission (AJAX to searchClassFunction.php)
 document
   .getElementById("joinClassForm")
-  .addEventListener("submit", async function (event) {
+  .addEventListener("submit", async (event) => {
     event.preventDefault(); // Prevent default form submission
 
     const classCodeInput = document.getElementById("classCode");
@@ -72,58 +83,70 @@ document
 
       if (result.status === "success") {
         const classData = result.class;
+        const description =
+          classData.class_description || "No description provided.";
+        const strand = classData.strand || "N/A";
+        const studentCount = classData.student_count || 0;
+        const quizCount = classData.quiz_count || 0;
+        const statusClass =
+          statusColors[classData.status] || statusColors.inactive;
+
         // Dynamically create and display the class card
         const classCardHtml = `
-                        <a href="#" class="group relative overflow-hidden bg-white rounded-xl border border-gray-200 transition-all duration-200 hover:-translate-y-1 hover:shadow-lg class-card"
-                            data-class-id="${classData.class_id}"
-                            data-class-name="${classData.class_name}">
-                            <div class="h-1.5 bg-gradient-to-r from-blue-400 to-indigo-500"></div>
-                            <div class="p-5">
-                                <div class="flex items-start space-x-4">
-                                    <div class="w-12 h-12 flex-shrink-0 bg-blue-100 rounded-full flex items-center justify-center mt-1">
-                                        <i class="fas fa-graduation-cap text-blue-600 text-lg"></i>
-                                    </div>
-                                    <div class="flex-grow">
-                                        <div class="flex justify-between items-start">
-                                            <h3 class="font-semibold text-gray-900 mb-1 pr-8 line-clamp-2">${
-                                              classData.class_name
-                                            }</h3>
-                                            <span class="text-xs font-medium px-2 py-1 bg-blue-50 text-blue-700 rounded-full flex-shrink-0">
-                                                Grade ${classData.grade_level}
-                                            </span>
-                                        </div>
-                                        <p class="text-xs font-medium text-gray-500 mb-3">
-                                            <span class="inline-flex items-center space-x-1">
-                                                <i class="fas fa-layer-group"></i>
-                                                <span>${classData.strand}</span>
-                                            </span>
-                                        </p>
-                                        ${
-                                          classData.class_description
-                                            ? `<p class="text-sm text-gray-600 mb-3 line-clamp-2">${classData.class_description}</p>`
-                                            : ""
-                                        }
-                                        <div class="flex items-center justify-between mt-2 pt-2 border-t border-gray-100">
-                                            <span class="text-xs text-gray-500 flex items-center">
-                                                <i class="fas fa-calendar-alt mr-1"></i>
-                                                ${new Date(
-                                                  classData.created_at
-                                                ).toLocaleDateString("en-US", {
-                                                  month: "short",
-                                                  day: "numeric",
-                                                  year: "numeric",
-                                                })}
-                                            </span>
-                                            <div class="text-xs bg-gray-100 text-gray-700 px-2 py-0.5 rounded group-hover:bg-blue-100 group-hover:text-blue-700 transition-colors">
-                                                Click to Join
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
-                        </a>
-                    `;
+          <a href="#" class="group relative overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 class-card"
+              data-class-id="${classData.class_id}"
+              data-class-name="${classData.class_name}">
+              <!-- Class Card Header with Color Strip -->
+              <div class="h-2 bg-purple-primary"></div>
+              <div class="p-5">
+                  <div class="flex justify-between items-start mb-4">
+                      <h3 class="font-semibold text-lg text-gray-900">${
+                        classData.class_name
+                      }</h3>
+                      <span class="px-2 py-1 text-xs rounded-full ${statusClass}">
+                          ${
+                            classData.status.charAt(0).toUpperCase() +
+                            classData.status.slice(1)
+                          }
+                      </span>
+                  </div>
+                  <p class="text-sm text-gray-600 mb-4 line-clamp-2">${description}</p>
+                  <div class="grid grid-cols-2 gap-2 mb-4">
+                      <div class="bg-gray-50 p-2 rounded">
+                          <p class="text-xs text-gray-500">Grade</p>
+                          <p class="font-medium text-sm text-gray-800">Grade ${
+                            classData.grade_level
+                          }</p>
+                      </div>
+                      <div class="bg-gray-50 p-2 rounded">
+                          <p class="text-xs text-gray-500">Strand</p>
+                          <p class="font-medium text-sm text-gray-800">${strand}</p>
+                      </div>
+                  </div>
+                  <div class="flex justify-between text-sm">
+                      <div class="flex items-center text-gray-600">
+                          <i class="fas fa-users mr-2 text-purple-primary"></i>
+                          <span>${studentCount} Students</span>
+                      </div>
+                      <div class="flex items-center text-gray-600">
+                          <i class="fas fa-book mr-2 text-purple-primary"></i>
+                          <span>${quizCount} Quizzes</span>
+                      </div>
+                  </div>
+                  <div class="mt-4 pt-4 border-t border-gray-100 flex justify-between">
+                      <div class="text-xs text-gray-500">
+                          <i class="fas fa-key mr-1"></i>
+                          Code: <span class="font-mono font-medium">${
+                            classData.class_code
+                          }</span>
+                      </div>
+                      <div class="text-purple-primary hover:text-purple-dark text-sm font-medium">
+                          Click to Join <i class="fas fa-arrow-right ml-1"></i>
+                      </div>
+                  </div>
+              </div>
+          </a>
+        `;
         classPreviewContainer.innerHTML = classCardHtml;
 
         // Add event listener to the dynamically created card
@@ -137,11 +160,13 @@ document
           });
         }
       } else {
-        showNotification(result.message, "error");
+        // Use the global showNotification function
+        window.showNotification(result.message, "error");
       }
     } catch (error) {
       console.error("Error searching for class:", error);
-      showNotification(
+      // Use the global showNotification function
+      window.showNotification(
         "An unexpected error occurred while searching for the class.",
         "error"
       );
@@ -151,9 +176,10 @@ document
 // Handle Confirmation Modal "Yes, Join Class" button click (AJAX to enrollClassFunction.php)
 document
   .getElementById("confirmJoinBtn")
-  .addEventListener("click", async function () {
+  .addEventListener("click", async () => {
     if (!classToEnroll) {
-      showNotification("No class selected for enrollment.", "error");
+      // Use the global showNotification function
+      window.showNotification("No class selected for enrollment.", "error");
       return;
     }
 
@@ -171,7 +197,8 @@ document
       const result = await response.json();
 
       if (result.status === "success") {
-        showNotification(result.message, "success");
+        // Use the global showNotification function
+        window.showNotification(result.message, "success");
         // Clear the URL parameters after showing the notification
         history.replaceState({}, document.title, window.location.pathname);
         // Optionally, refresh the class list on the dashboard
@@ -179,11 +206,13 @@ document
           window.location.reload(); // Reload to show new class in "My Classes"
         }, 1000); // Give time for notification to be seen
       } else {
-        showNotification(result.message, "error");
+        // Use the global showNotification function
+        window.showNotification(result.message, "error");
       }
     } catch (error) {
       console.error("Error enrolling in class:", error);
-      showNotification(
+      // Use the global showNotification function
+      window.showNotification(
         "An unexpected error occurred during enrollment.",
         "error"
       );

@@ -13,8 +13,19 @@ if (!$student_id || !$class_code) {
     exit;
 }
 
-// Find class by code
-$stmt = $conn->prepare("SELECT class_id, class_name, class_description, grade_level, strand, created_at FROM teacher_classes_tb WHERE class_code = ?");
+// Find class by code, including status, student count, and quiz count
+$stmt = $conn->prepare("SELECT
+                            tc.class_id,
+                            tc.class_name,
+                            tc.class_description,
+                            tc.grade_level,
+                            tc.strand,
+                            tc.created_at,
+                            tc.status,
+                            (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
+                            (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS quiz_count
+                        FROM teacher_classes_tb tc
+                        WHERE tc.class_code = ?");
 $stmt->bind_param("s", $class_code);
 $stmt->execute();
 $result = $stmt->get_result();

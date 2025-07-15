@@ -13,7 +13,7 @@
     <script src="../../Assets/Scripts/tailwindConfig.js"></script>
     <script src="../../Assets/Scripts/studentsDashboard.js"></script>
 
-    <!--  Notification Container  -->
+    <!-- Notification Container -->
     <link rel="stylesheet" href="../../Assets/Css/dashboardNotificationContainer.css">
     
 </head>
@@ -54,10 +54,12 @@
     <!-- Confirmation Modal -->
     <?php include "../Modals/dashboardJoinClassConfirmationModal.php" ?>
 
-    <script src="../../Assets/Scripts/notif.js"></script>
+    <!-- Load the main notification function first -->
+    <script src="../../Assets/Scripts/notif.js"></script> 
+    <!-- Then load the modal script that uses the notification function -->
+    <script src="../../Assets/Scripts/dashboardSearchModal.js"></script> 
 
-    <script src="../../Assets/Scripts/dashboardSearchModal.js"></script>
-
+    <!-- Finally, include the PHP script that triggers notifications on page load -->
     <?php include "../../Functions/showNotificationParameters.php" ?>
 
 </body>

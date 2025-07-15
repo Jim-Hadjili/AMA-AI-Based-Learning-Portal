@@ -29,15 +29,19 @@ if ($result->num_rows > 0) {
     $_SESSION['st_id'] = $studentId; // Store st_id in session
 }
 
-// Get enrolled classes
+// Get enrolled classes with student and quiz counts
 $enrolledClasses = [];
 $enrolledCount = 0;
 
 if ($studentId) {
-    // Get classes the student is enrolled in
-    $classQuery = "SELECT tc.* FROM teacher_classes_tb tc
-                   INNER JOIN class_enrollments_tb ce ON tc.class_id = ce.class_id
-                   WHERE ce.st_id = ? AND tc.status = 'active'
+    // Get classes the student is enrolled in, along with student and quiz counts
+    $classQuery = "SELECT
+                       tc.*,
+                       (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
+                       (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS quiz_count
+                   FROM teacher_classes_tb tc
+                   INNER JOIN class_enrollments_tb ce_main ON tc.class_id = ce_main.class_id
+                   WHERE ce_main.st_id = ? AND tc.status = 'active'
                    ORDER BY tc.created_at DESC";
     $classStmt = $conn->prepare($classQuery);
     $classStmt->bind_param("s", $studentId);
