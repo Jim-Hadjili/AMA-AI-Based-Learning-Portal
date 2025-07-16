@@ -97,17 +97,33 @@ if (!$hasAccess) {
 $recentQuizzes = [];
 if ($user_position === 'teacher') {
     // Teachers can see all quizzes including drafts
-    $quizQuery = "SELECT quiz_id, quiz_title, quiz_description, status, created_at, time_limit 
-                  FROM quizzes_tb 
-                  WHERE class_id = ? 
-                  ORDER BY created_at DESC 
+    $quizQuery = "SELECT 
+                      q.quiz_id, 
+                      q.quiz_title, 
+                      q.quiz_description, 
+                      q.status, 
+                      q.created_at, 
+                      q.time_limit,
+                      (SELECT COUNT(qq.question_id) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_questions,
+                      (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_score
+                  FROM quizzes_tb q 
+                  WHERE q.class_id = ? 
+                  ORDER BY q.created_at DESC 
                   LIMIT 5";
 } else {
     // Students can only see published quizzes
-    $quizQuery = "SELECT quiz_id, quiz_title, quiz_description, status, created_at, time_limit 
-                  FROM quizzes_tb 
-                  WHERE class_id = ? AND status = 'published'
-                  ORDER BY created_at DESC 
+    $quizQuery = "SELECT 
+                      q.quiz_id, 
+                      q.quiz_title, 
+                      q.quiz_description, 
+                      q.status, 
+                      q.created_at, 
+                      q.time_limit,
+                      (SELECT COUNT(qq.question_id) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_questions,
+                      (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_score
+                  FROM quizzes_tb q 
+                  WHERE q.class_id = ? AND q.status = 'published'
+                  ORDER BY q.created_at DESC 
                   LIMIT 5";
 }
 $quizStmt = $conn->prepare($quizQuery);
