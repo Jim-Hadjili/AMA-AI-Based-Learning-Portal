@@ -103,14 +103,18 @@
                 $subject = $class['class_subject'] ?? 'Default';
                 $style = $subjectStyles[$subject] ?? $subjectStyles['Default'];
             ?>
-                <a href="../classroom/studentClassRoom.php?class_id=<?php echo $class['class_id']; ?>"
+                <a href="classDetails.php?class_id=<?php echo $class['class_id']; ?>"
                     class="group relative overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 class-card <?php echo $isHidden; ?>"
                     data-index="<?php echo $index; ?>">
                     <!-- Class Card Header with Color Strip -->
                     <div class="h-2 bg-gradient-to-r <?php echo $style['strip']; ?>"></div>
                     <div class="p-5">
                         <div class="flex justify-between items-start mb-4">
-                            <h3 class="font-semibold text-lg text-gray-900"><?php echo htmlspecialchars($class['class_name']); ?></h3>
+                            <!-- Subject Icon -->
+                            <div class="inline-block p-3 rounded-full <?php echo $style['icon_bg']; ?> mr-3">
+                                <i class="<?php echo $style['icon_class']; ?> text-xl <?php echo $style['icon_color']; ?>"></i>
+                            </div>
+                            <h3 class="font-semibold text-lg text-gray-900 flex-grow"><?php echo htmlspecialchars($class['class_name']); ?></h3>
                             <span class="px-2 py-1 text-xs rounded-full <?php echo isset($statusColors[$class['status']]) ? $statusColors[$class['status']] : $statusColors['inactive']; ?>">
                                 <?php echo ucfirst($class['status']); ?>
                             </span>
