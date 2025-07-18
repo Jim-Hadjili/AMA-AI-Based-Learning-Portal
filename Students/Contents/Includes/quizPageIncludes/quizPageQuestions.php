@@ -1,4 +1,4 @@
-<form id="quizForm" action="submitQuiz.php" method="POST">
+<form id="quizForm" action="../../Functions/submitQuiz.php" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quizDetails['quiz_id']); ?>">
     <div class="space-y-6">
         <?php if (empty($quizQuestions)): ?>
