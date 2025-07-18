@@ -1,0 +1,44 @@
+<?php include "../../Functions/fetchQuizQuestionsFunction.php" ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo htmlspecialchars($quizDetails['quiz_title']); ?> - Take Quiz</title>
+    <link rel="stylesheet" href="../../Assets/Css/studentsDashboard.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="../../Assets/Scripts/tailwindConfig.js"></script>
+    <script src="../../Assets/Scripts/studentsDashboard.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+    <!-- Main Content -->
+    <div id="main-content" class="min-h-screen">
+
+        <!-- Main Content Area -->
+        <main class="p-4 lg:p-6 pt-6">
+
+            <!-- Breadcrumb -->
+            <?php include "../Includes/quizPageIncludes/quizPageBreadcrumb.php" ?>
+
+            <!-- Quiz Header -->
+            <?php include "../Includes/quizPageIncludes/quizPageHeader.php" ?>
+
+            <!-- Quiz Questions -->
+            <?php include "../Includes/quizPageIncludes/quizPageQuestions.php" ?>
+
+        </main>
+    </div>
+
+    <!-- Exit Quiz Confirmation Modal -->
+    <?php include "../Modals/quizPageExitModal.php" ?>
+
+    <?php include "../Includes/quizPageIncludes/quizPageScript.php" ?>
+
+</body>
+
+</html>

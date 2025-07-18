@@ -103,7 +103,7 @@
                 $subject = $class['class_subject'] ?? 'Default';
                 $style = $subjectStyles[$subject] ?? $subjectStyles['Default'];
             ?>
-                <a href="classDetails.php?class_id=<?php echo $class['class_id']; ?>"
+                <a href="../Pages/classDetails.php?class_id=<?php echo $class['class_id']; ?>"
                     class="group relative overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 hover:shadow-md transition-shadow duration-200 class-card <?php echo $isHidden; ?>"
                     data-index="<?php echo $index; ?>">
                     <!-- Class Card Header with Color Strip -->
