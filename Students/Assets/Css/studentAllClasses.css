@@ -1,0 +1,13 @@
+.class-card {
+  transition: all 0.3s ease;
+}
+.class-card:hover {
+  transform: translateY(-2px);
+}
+.filter-btn.active {
+  background-color: #3b82f6;
+  color: white;
+}
+.search-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}

@@ -157,7 +157,7 @@
         <?php if ($hasMoreClasses): ?>
             <div class="text-center mt-6">
                 <div class="flex justify-center space-x-4">
-                    <a href="studentAllClasses.php" class="bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 inline-flex items-center">
+                    <a href="../Pages/studentAllClasses.php" class="bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 inline-flex items-center">
                         <i class="fas fa-th-large mr-2"></i>View All Classes
                     </a>
                 </div>
