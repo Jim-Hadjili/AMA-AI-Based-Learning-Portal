@@ -155,12 +155,16 @@
         </div>
 
         <?php if ($hasMoreClasses): ?>
-            <div class="text-center mt-6">
-                <div class="flex justify-center space-x-4">
-                    <a href="../Pages/studentAllClasses.php" class="bg-blue-50 border border-blue-200 text-blue-600 hover:bg-blue-100 px-6 py-2 rounded-lg text-sm font-medium transition-all duration-200 inline-flex items-center">
-                        <i class="fas fa-th-large mr-2"></i>View All Classes
-                    </a>
-                </div>
+                        <div class="text-center mt-8">
+                <a href="../Pages/studentAllClasses.php" class="inline-flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-300 rounded-xl font-semibold transition-all duration-200 hover:shadow-md hover:scale-105">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+                    </svg>
+                    View All Classes
+                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs font-bold">
+                        <?php echo $totalClasses; ?>
+                    </span>
+                </a>
             </div>
         <?php endif; ?>
     <?php endif; ?>

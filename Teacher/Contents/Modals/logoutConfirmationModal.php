@@ -1,20 +1,19 @@
 <!-- Logout Confirmation Modal -->
-<div id="logoutConfirmationModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md transition-all duration-300 scale-100 opacity-100 modal-content">
-        <div class="flex justify-between items-center mb-6">
-            <h3 class="text-2xl font-semibold text-gray-900">Sign Out?</h3>
-            <button onclick="closeLogoutConfirmationModal()" class="text-gray-400 hover:text-gray-700 transition-colors duration-150">
-                <i class="fas fa-times text-2xl"></i>
-            </button>
+<div id="logoutConfirmationModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm hidden p-4">
+    <div class="bg-white rounded-xl shadow-2xl w-full max-w-sm p-6 sm:p-8 border border-gray-100 modal-content" id="logoutModalContent">
+        <div class="flex items-center justify-between mb-5">
+            <h2 class="text-xl font-bold text-gray-900 flex items-center gap-2">
+                <i class="fas fa-sign-out-alt text-red-500"></i> Confirm Logout
+            </h2>
         </div>
-        <p class="text-gray-600 mb-8 text-base">Are you sure you want to log out of your account?</p>
-        <div class="flex justify-end gap-4">
-            <button onclick="closeLogoutConfirmationModal()" class="px-5 py-2 rounded-lg border border-gray-300 bg-white text-gray-700 hover:bg-gray-100 transition-colors duration-150 font-medium">
-                Cancel
-            </button>
-            <a href="../../../Assets/Auth/logout.php" class="px-5 py-2 rounded-lg bg-gradient-to-r from-red-500 to-red-600 text-white hover:from-red-600 hover:to-red-700 transition-all duration-150 font-medium flex items-center gap-2 shadow-sm">
-                <i class="fas fa-sign-out-alt"></i> Log Out
+        <p class="mb-6 text-gray-700 leading-relaxed">Are you sure you want to log out of your account?</p>
+        <div class="flex flex-col sm:flex-row-reverse gap-3">
+            <a href="../../../Assets/Auth/logout.php" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg bg-red-600 text-white font-semibold hover:bg-red-700 transition-colors shadow-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2">
+                <i class="fas fa-sign-out-alt mr-2"></i> Yes, Log Out
             </a>
+            <button onclick="closeLogoutConfirmationModal()" class="w-full sm:w-auto inline-flex items-center justify-center px-5 py-2.5 rounded-lg border border-gray-300 bg-white text-gray-700 font-medium hover:bg-gray-50 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-200 focus:ring-offset-2">
+                <i class="fas fa-times mr-2"></i> Cancel
+            </button>
         </div>
     </div>
 </div>

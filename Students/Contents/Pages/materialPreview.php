@@ -29,9 +29,6 @@
     <!-- Main Content -->
     <div id="main-content" class="min-h-screen">
 
-        <!-- Header -->
-        <?php include "../Dashboard/DashboardsIncludes/studentsHeader.php" ?>
-
         <!-- Main Content Area -->
         <main class="p-4 lg:p-6 pt-6">
             
@@ -47,12 +44,16 @@
             <!-- Material Info Cards -->
             <?php include "../Includes/materialPreviewIncludes/materialCardInfo.php" ?>
 
-            <!-- File Preview Section -->
-            <?php include "../Includes/materialPreviewIncludes/materialPreviewSection.php" ?>
-
-            <!-- Material Details -->
-            <?php include "../Includes/materialPreviewIncludes/materialDetailsSection.php" ?>
-
+            <!-- Side by side: Material Details & File Preview -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <div>
+                    <?php include "../Includes/materialPreviewIncludes/materialDetailsSection.php" ?>
+                </div>
+                <div>
+                    <?php include "../Includes/materialPreviewIncludes/materialPreviewSection.php" ?>
+                </div>
+            </div>
+            
         </main>
     </div>
 

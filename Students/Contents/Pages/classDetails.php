@@ -19,9 +19,6 @@
     <!-- Main Content -->
     <div id="main-content" class="min-h-screen">
 
-        <!-- Header -->
-        <?php include "../Dashboard/DashboardsIncludes/studentsHeader.php" ?>
-
         <!-- Main Content Area -->
         <main class="p-4 lg:p-6 pt-6">
             <!-- // Define subject-specific styles -->

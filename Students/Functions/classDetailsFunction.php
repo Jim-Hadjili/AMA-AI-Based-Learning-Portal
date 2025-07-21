@@ -124,7 +124,7 @@ if ($user_position === 'teacher') {
                   FROM quizzes_tb q 
                   WHERE q.class_id = ? AND q.status = 'published'
                   ORDER BY q.created_at DESC 
-                  LIMIT 5";
+                  LIMIT 4";
 }
 $quizStmt = $conn->prepare($quizQuery);
 $quizStmt->bind_param("i", $class_id);
@@ -140,7 +140,7 @@ $announcementQuery = "SELECT announcement_id, title, content, created_at, is_pin
                       FROM announcements_tb 
                       WHERE class_id = ? 
                       ORDER BY is_pinned DESC, created_at DESC 
-                      LIMIT 5";
+                      LIMIT 4";
 $announcementStmt = $conn->prepare($announcementQuery);
 $announcementStmt->bind_param("i", $class_id);
 $announcementStmt->execute();
@@ -155,7 +155,7 @@ $materialQuery = "SELECT material_id, material_title, material_description, file
                   FROM learning_materials_tb 
                   WHERE class_id = ? 
                   ORDER BY upload_date DESC 
-                  LIMIT 5";
+                  LIMIT 6";
 $materialStmt = $conn->prepare($materialQuery);
 $materialStmt->bind_param("i", $class_id);
 $materialStmt->execute();
