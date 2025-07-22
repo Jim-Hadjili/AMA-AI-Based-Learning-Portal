@@ -14,7 +14,7 @@
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">Assignments</p>
+                <p class="text-sm font-medium text-gray-600">Quizzes</p>
                 <p class="text-2xl font-bold text-gray-900">0</p>
             </div>
             <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
@@ -23,26 +23,28 @@
         </div>
     </div>
 
+    <!-- Materials -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">Completion</p>
-                <p class="text-2xl font-bold text-gray-900">0%</p>
+                <p class="text-sm font-medium text-gray-600">Materials</p>
+                <p class="text-2xl font-bold text-gray-900">0</p>
             </div>
             <div class="w-12 h-12 bg-yellow-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-chart-pie text-yellow-600 text-xl"></i>
+                <i class="fas fa-file-alt text-yellow-600 text-xl"></i>
             </div>
         </div>
     </div>
 
+    <!-- Announcements -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">Achievement Points</p>
+                <p class="text-sm font-medium text-gray-600">Announcements</p>
                 <p class="text-2xl font-bold text-gray-900">0</p>
             </div>
-            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-medal text-blue-600 text-xl"></i>
+            <div class="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-bullhorn text-red-600 text-xl"></i>
             </div>
         </div>
     </div>

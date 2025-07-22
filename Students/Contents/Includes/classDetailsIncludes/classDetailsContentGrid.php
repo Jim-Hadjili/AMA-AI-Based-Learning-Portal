@@ -10,7 +10,7 @@
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Recent Quizzes</h2>
             </div>
-            <a href="#" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors px-3 py-2 rounded-lg hover:bg-emerald-100">
+            <a href="" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors px-3 py-2 rounded-lg hover:bg-emerald-100">
                 View All →
             </a>
         </div>
@@ -70,7 +70,7 @@
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Recent Announcements</h2>
             </div>
-            <a href="#" class="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors px-3 py-2 rounded-lg hover:bg-amber-100">
+            <a href="" class="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors px-3 py-2 rounded-lg hover:bg-amber-100">
                 View All →
             </a>
         </div>
@@ -135,7 +135,7 @@
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Learning Materials</h2>
             </div>
-            <a href="#" class="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors px-3 py-2 rounded-lg hover:bg-violet-100">
+            <a href="" class="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors px-3 py-2 rounded-lg hover:bg-violet-100">
                 View All →
             </a>
         </div>

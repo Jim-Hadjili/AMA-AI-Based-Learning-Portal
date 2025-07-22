@@ -91,6 +91,8 @@ $classes = getTeacherClasses($conn, $teacher_id);
     <?php include "../Modals/searchClassModal.php"; ?>
     <!-- New: Include Logout Confirmation Modal -->
     <?php include "../Modals/logoutConfirmationModal.php"; ?>
+    <!-- New: Include Teacher Edit Profile Modal -->
+    <?php include "../Modals/teacherEditProfileModal.php"; ?>
 
 </body>
 <script src="../../Assets/Js/teacherDashAnimation.js"></script>
@@ -101,5 +103,66 @@ $classes = getTeacherClasses($conn, $teacher_id);
 <script src="../../Assets/Js/searchModal.js"></script>
 <!-- New: Include Logout Modal Logic -->
 <script src="../../Assets/Js/logoutModal.js"></script>
+
+<!-- Notification for profile update -->
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    function showNotification(message, type) {
+        const notification = document.createElement("div");
+        notification.className = `px-4 py-2 rounded-lg shadow-lg text-white ${
+            type === "success" ? "bg-green-500" : "bg-red-500"
+        } flex items-center animate-fadeIn`;
+
+        const icon = document.createElement("i");
+        icon.className = `fas ${
+            type === "success" ? "fa-check-circle" : "fa-exclamation-circle"
+        } mr-2`;
+
+        notification.appendChild(icon);
+        notification.appendChild(document.createTextNode(message));
+
+        const container = document.getElementById("notification-container");
+        if (container) {
+            container.appendChild(notification);
+
+            notification.style.opacity = "0";
+            notification.style.transform = "translateY(20px)";
+
+            setTimeout(() => {
+                notification.style.transition =
+                    "opacity 0.3s ease, transform 0.3s ease";
+                notification.style.opacity = "1";
+                notification.style.transform = "translateY(0)";
+            }, 10);
+
+            setTimeout(() => {
+                notification.style.opacity = "0";
+                notification.style.transform = "translateY(-20px)";
+                setTimeout(() => {
+                    if (container.contains(notification)) {
+                        container.removeChild(notification);
+                    }
+                }, 300);
+            }, 3000);
+        }
+    }
+
+    // Check for query params
+    const params = new URLSearchParams(window.location.search);
+    if (params.has("success") && params.get("success") === "profile_updated") {
+        showNotification("Profile updated successfully!", "success");
+        // Remove query param from URL
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+    if (params.has("error")) {
+        let msg = "Profile update failed.";
+        if (params.get("error") === "invalid_current_password") {
+            msg = "Invalid current password.";
+        }
+        showNotification(msg, "error");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    }
+});
+</script>
 
 </html>

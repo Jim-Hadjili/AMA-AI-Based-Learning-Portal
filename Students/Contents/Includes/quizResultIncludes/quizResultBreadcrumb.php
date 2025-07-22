@@ -4,10 +4,10 @@
             
             <li>
                 <div class="flex items-center space-x-3">
-                    <a href="../Dashboard/studentDashboard.php" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50 quiz-navigation-link">
-                <i class="fas fa-home mr-2"></i>
-                Dashboard
-            </a>
+                    <a href="../Pages/classDetails.php?class_id=<?php echo htmlspecialchars($class_id); ?>" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50 quiz-navigation-link">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Class
+                    </a>
                 </div>
             </li>
             <li>

@@ -52,16 +52,16 @@ extract($teacherStats);
         </div>
     </div>
 
-    <!-- Unread Messages Card -->
+    <!-- Total Announcements Card -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
         <div class="flex items-center justify-between">
             <div>
-                <p class="text-sm font-medium text-gray-600">New Messages</p>
-                <p class="text-2xl font-bold text-gray-900"><?php echo $pendingMessages; ?></p>
-                <p class="text-xs text-gray-500 mt-1">Unread messages</p>
+                <p class="text-sm font-medium text-gray-600">Total Announcements</p>
+                <p class="text-2xl font-bold text-gray-900"><?php echo $totalAnnouncements; ?></p>
+                <p class="text-xs text-gray-500 mt-1">Made in your classes</p>
             </div>
-            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                <i class="fas fa-envelope text-purple-600 text-xl"></i>
+            <div class="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                <i class="fas fa-bell text-pink-600 text-xl"></i>
             </div>
         </div>
     </div>

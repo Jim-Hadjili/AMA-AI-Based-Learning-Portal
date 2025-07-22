@@ -25,34 +25,16 @@
                     <span class="ml-4 sidebar-text">Search</span>
                 </a>
             </li>
-            <li>
+            <!-- <li>
                 <a href="#" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
                     <i class="fas fa-users w-5 h-5 text-center flex-shrink-0"></i>
                     <span class="ml-4 sidebar-text">Students</span>
                 </a>
-            </li>
+            </li> -->
             <li>
                 <a href="../Tabs/teacherAllClasses.php" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
                     <i class="fas fa-book w-5 h-5 text-center flex-shrink-0"></i>
                     <span class="ml-4 sidebar-text">Classes</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-envelope w-5 h-5 text-center flex-shrink-0"></i>
-                    <span class="ml-4 sidebar-text">Messages</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-chart-bar w-5 h-5 text-center flex-shrink-0"></i>
-                    <span class="ml-4 sidebar-text">Statistics</span>
-                </a>
-            </li>
-            <li>
-                <a href="#" class="flex items-center px-3 py-3 rounded-lg text-white/80 hover:bg-white/10 hover:text-white transition-colors duration-200">
-                    <i class="fas fa-newspaper w-5 h-5 text-center flex-shrink-0"></i>
-                    <span class="ml-4 sidebar-text">News</span>
                 </a>
             </li>
         </ul>

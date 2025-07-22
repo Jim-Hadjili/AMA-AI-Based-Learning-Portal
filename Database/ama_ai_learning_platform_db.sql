@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 08, 2025 at 02:05 PM
+-- Generation Time: Jul 22, 2025 at 03:47 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -24,18 +24,17 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `classes_tb`
+-- Table structure for table `announcements_tb`
 --
 
-CREATE TABLE `classes_tb` (
-  `class_id` varchar(50) NOT NULL,
-  `class_name` varchar(255) NOT NULL,
-  `class_subject` varchar(255) NOT NULL,
-  `class_description` text DEFAULT NULL,
-  `class_code` varchar(10) NOT NULL,
-  `class_color` varchar(100) DEFAULT 'bg-gradient-to-br from-blue-500 to-indigo-700',
+CREATE TABLE `announcements_tb` (
+  `announcement_id` int(11) NOT NULL,
+  `class_id` int(11) NOT NULL,
   `teacher_id` varchar(50) NOT NULL,
-  `date_created` datetime DEFAULT current_timestamp()
+  `title` varchar(255) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `is_pinned` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -63,6 +62,43 @@ CREATE TABLE `generated_quizzes_tb` (
   `quiz_id` int(11) NOT NULL,
   `original_quiz_id` int(11) NOT NULL,
   `generation_date` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `learning_materials_tb`
+--
+
+CREATE TABLE `learning_materials_tb` (
+  `material_id` int(11) NOT NULL,
+  `class_id` int(11) NOT NULL,
+  `teacher_id` varchar(50) NOT NULL,
+  `material_title` varchar(255) NOT NULL,
+  `material_description` text DEFAULT NULL,
+  `file_path` varchar(255) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_size` bigint(20) NOT NULL,
+  `file_type` varchar(20) NOT NULL,
+  `upload_date` datetime NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `notifications_tb`
+--
+
+CREATE TABLE `notifications_tb` (
+  `notification_id` int(11) NOT NULL,
+  `user_id` varchar(50) NOT NULL,
+  `user_type` enum('student','teacher') NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `related_id` int(11) DEFAULT NULL,
+  `is_read` tinyint(1) DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -198,7 +234,7 @@ CREATE TABLE `teachers_profiles_tb` (
   `th_userName` varchar(255) NOT NULL,
   `th_Email` varchar(255) NOT NULL,
   `th_position` varchar(255) NOT NULL,
-  `th_teacherPasswor` varchar(255) NOT NULL,
+  `th_teacherPassword` varchar(255) NOT NULL,
   `employee_id` varchar(50) DEFAULT NULL,
   `department` varchar(50) NOT NULL,
   `subject_expertise` varchar(255) NOT NULL,
@@ -262,11 +298,10 @@ CREATE TABLE `user_sessions` (
 --
 
 --
--- Indexes for table `classes_tb`
+-- Indexes for table `announcements_tb`
 --
-ALTER TABLE `classes_tb`
-  ADD PRIMARY KEY (`class_id`),
-  ADD KEY `teacher_id` (`teacher_id`);
+ALTER TABLE `announcements_tb`
+  ADD PRIMARY KEY (`announcement_id`);
 
 --
 -- Indexes for table `class_enrollments_tb`
@@ -282,6 +317,22 @@ ALTER TABLE `generated_quizzes_tb`
   ADD PRIMARY KEY (`id`),
   ADD KEY `quiz_id` (`quiz_id`),
   ADD KEY `original_quiz_id` (`original_quiz_id`);
+
+--
+-- Indexes for table `learning_materials_tb`
+--
+ALTER TABLE `learning_materials_tb`
+  ADD PRIMARY KEY (`material_id`);
+
+--
+-- Indexes for table `notifications_tb`
+--
+ALTER TABLE `notifications_tb`
+  ADD PRIMARY KEY (`notification_id`),
+  ADD KEY `idx_user` (`user_id`,`user_type`),
+  ADD KEY `idx_type` (`type`),
+  ADD KEY `idx_read` (`is_read`),
+  ADD KEY `idx_created_at` (`created_at`);
 
 --
 -- Indexes for table `question_options_tb`
@@ -373,6 +424,12 @@ ALTER TABLE `user_sessions`
 --
 
 --
+-- AUTO_INCREMENT for table `announcements_tb`
+--
+ALTER TABLE `announcements_tb`
+  MODIFY `announcement_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `class_enrollments_tb`
 --
 ALTER TABLE `class_enrollments_tb`
@@ -385,6 +442,18 @@ ALTER TABLE `generated_quizzes_tb`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
+-- AUTO_INCREMENT for table `learning_materials_tb`
+--
+ALTER TABLE `learning_materials_tb`
+  MODIFY `material_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `notifications_tb`
+--
+ALTER TABLE `notifications_tb`
+  MODIFY `notification_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `question_options_tb`
 --
 ALTER TABLE `question_options_tb`
@@ -394,65 +463,59 @@ ALTER TABLE `question_options_tb`
 -- AUTO_INCREMENT for table `quizzes_tb`
 --
 ALTER TABLE `quizzes_tb`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=61;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
 
 --
 -- AUTO_INCREMENT for table `quiz_attempts_tb`
 --
 ALTER TABLE `quiz_attempts_tb`
-  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
 
 --
 -- AUTO_INCREMENT for table `quiz_questions_tb`
 --
 ALTER TABLE `quiz_questions_tb`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=122;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT for table `short_answer_tb`
 --
 ALTER TABLE `short_answer_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `students_profiles_tb`
 --
 ALTER TABLE `students_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `student_answers_tb`
 --
 ALTER TABLE `student_answers_tb`
-  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=209;
+  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
 
 --
 -- AUTO_INCREMENT for table `teachers_profiles_tb`
 --
 ALTER TABLE `teachers_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `teacher_classes_tb`
 --
 ALTER TABLE `teacher_classes_tb`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `users_tb`
 --
 ALTER TABLE `users_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `classes_tb`
---
-ALTER TABLE `classes_tb`
-  ADD CONSTRAINT `classes_tb_ibfk_1` FOREIGN KEY (`teacher_id`) REFERENCES `users_tb` (`user_id`);
 
 --
 -- Constraints for table `class_enrollments_tb`

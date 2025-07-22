@@ -89,7 +89,7 @@
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php
             $totalClasses = count($enrolledClasses);
-            $initialDisplayCount = 3;
+            $initialDisplayCount = 6;
             $hasMoreClasses = ($totalClasses > $initialDisplayCount);
 
             foreach ($enrolledClasses as $index => $class):

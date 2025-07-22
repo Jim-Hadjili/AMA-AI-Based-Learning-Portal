@@ -12,7 +12,8 @@ function getTeacherDashboardStats($conn, $classes, $teacher_id) {
         'totalStudents' => 0,
         'activeClassesCount' => 0,
         'totalQuizzes' => 0,
-        'pendingMessages' => 0
+        'pendingMessages' => 0,
+        'totalAnnouncements' => 0 // <-- Add this line
     ];
     
     // Check if classes array is available and not empty
@@ -77,6 +78,23 @@ function getTeacherDashboardStats($conn, $classes, $teacher_id) {
     } catch (Exception $e) {
         // Log error silently
         error_log("Error counting messages: " . $e->getMessage());
+    }
+
+    // Count total announcements for all teacher's classes
+    try {
+        if (!empty($classes)) {
+            $classIds = array_column($classes, 'class_id');
+            $placeholders = implode(',', array_fill(0, count($classIds), '?'));
+            $types = str_repeat('i', count($classIds));
+            $query = "SELECT COUNT(*) as announcement_count FROM announcements_tb WHERE class_id IN ($placeholders)";
+            $stmt = $conn->prepare($query);
+            $stmt->bind_param($types, ...$classIds);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stats['totalAnnouncements'] = $result->fetch_assoc()['announcement_count'];
+        }
+    } catch (Exception $e) {
+        error_log("Error counting announcements: " . $e->getMessage());
     }
 
     // If no active classes are counted but there are classes, set to count of all classes

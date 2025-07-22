@@ -6,7 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo htmlspecialchars($quizDetails['quiz_title']); ?> - Quiz Results</title>
+    <title><?php echo htmlspecialchars($quizDetails['quiz_title']); ?> - Answer Sheet</title>
     <link rel="stylesheet" href="../../Assets/Css/studentsDashboard.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
@@ -22,14 +22,14 @@
         <!-- Main Content Area -->
         <main class="p-4 lg:p-6 pt-6">
 
-            <!-- Breadcrumb -->
-            <?php include "../Includes/quizResultIncludes/quizResultBreadcrumb.php" ?>
+            <!-- Breadcrumb for Answer Sheet -->
+            <?php include "../Includes/quizResultIncludes/answerSheetBreadcrumb.php" ?>
 
-            <!-- Quiz Results Header -->
-            <?php include "../Includes/quizResultIncludes/quizResultHeader.php" ?>
+            <!-- Answer Sheet Header -->
+            <?php include "../Includes/quizResultIncludes/answerSheetHeader.php" ?>
 
-            <!-- Quiz Review -->
-           <?php include "../Includes/quizResultIncludes/quizResultSummary.php" ?>
+            <!-- Detailed Answer Review -->
+            <?php include "../Includes/quizResultIncludes/quizResultReviewSection.php" ?>
 
         </main>
     </div>

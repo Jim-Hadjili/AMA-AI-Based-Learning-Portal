@@ -18,12 +18,19 @@ if (isset($_GET['error']) || isset($_GET['success'])) {
             case 'already':
                 $message = 'You are already enrolled in this class.';
                 break;
+            case 'invalid_current_password':
+                $message = 'Current password is incorrect. Please try again.';
+                break;
             default:
                 $message = 'An unknown error occurred.';
         }
-    } elseif (isset($_GET['success']) && $_GET['success'] === 'joined') {
+    } elseif (isset($_GET['success'])) {
         $type = 'success';
-        $message = 'You have successfully joined the class.';
+        if ($_GET['success'] === 'joined') {
+            $message = 'You have successfully joined the class.';
+        } elseif ($_GET['success'] === 'profile_updated') {
+            $message = 'Profile updated successfully!';
+        }
     }
 
     // Only echo the JavaScript call if a message was determined

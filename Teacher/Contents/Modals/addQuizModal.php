@@ -56,6 +56,15 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                <!-- Allow Retake Option -->
+                                <div>
+                                    <label for="allow_retakes" class="block text-sm font-medium text-gray-700 mb-1">Allow Retake</label>
+                                    <select name="allow_retakes" id="allow_retakes" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
+                                        <option value="1" selected>Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
                                 
                                 <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
                                     <div class="flex">

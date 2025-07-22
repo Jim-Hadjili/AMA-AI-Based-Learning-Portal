@@ -84,15 +84,4 @@
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
-
-    <div class="text-center mt-10 flex flex-col sm:flex-row justify-center gap-4">
-        <?php if (!$has_passed && $quizAttempt['allow_retakes']): ?>
-            <a href="quizPage.php?quiz_id=<?php echo htmlspecialchars($quiz_id); ?>" class="inline-flex items-center justify-center px-8 py-3 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors text-lg font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-orange-500 focus:ring-offset-2">
-                <i class="fas fa-redo-alt mr-2"></i> Retake Quiz
-            </a>
-        <?php endif; ?>
-        <a href="../Dashboard/studentDashboard.php" class="inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors text-lg font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
-            <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
-        </a>
-    </div>
 </div>

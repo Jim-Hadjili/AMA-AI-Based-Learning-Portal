@@ -10,7 +10,7 @@
             
             <!-- View Results Button -->
             <?php if ($quiz['status'] === 'published' && $quiz['attempt_count'] > 0): ?>
-                <a href="../Quiz/quizResults.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
+                <a href="" 
                    class="inline-flex items-center px-3 py-1.5 text-sm font-medium text-green-700 bg-green-50 border border-green-200 rounded-md hover:bg-green-100 focus:ring-2 focus:ring-green-500 transition-colors">
                     <i class="fas fa-chart-bar mr-1"></i>
                     Results
@@ -44,12 +44,6 @@
                             Unpublish
                         </button>
                     <?php endif; ?>
-                    
-                    <button class="duplicate-quiz-btn w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center" 
-                            data-quiz-id="<?php echo $quiz['quiz_id']; ?>">
-                        <i class="fas fa-copy mr-2 text-blue-500"></i>
-                        Duplicate
-                    </button>
                     
                     <a href="../Quiz/previewQuiz.php?quiz_id=<?php echo $quiz['quiz_id']; ?>" 
                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 flex items-center">

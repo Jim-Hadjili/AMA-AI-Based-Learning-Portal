@@ -90,7 +90,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $user_stmt->execute();
         
         // Insert into teachers_profiles_tb with employee_id as th_id
-        $profile_query = "INSERT INTO teachers_profiles_tb (th_id, th_userName, th_Email, th_position, th_teacherPasswor, department, subject_expertise) 
+        $profile_query = "INSERT INTO teachers_profiles_tb (th_id, th_userName, th_Email, th_position, th_teacherPassword, department, subject_expertise) 
                           VALUES (?, ?, ?, 'teacher', ?, ?, ?)";
         $profile_stmt = $conn->prepare($profile_query);
         $profile_stmt->bind_param("ssssss", $employee_id, $fullname, $email, $hashed_password, $department, $subject_expertise);

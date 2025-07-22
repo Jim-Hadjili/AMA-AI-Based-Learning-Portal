@@ -85,6 +85,7 @@ function createQuiz($conn) {
         
         // Points per question (default to 1)
         $points_per_question = 1;
+        $allow_retakes = isset($_POST['allow_retakes']) ? intval($_POST['allow_retakes']) : 1;
 
         // Check if the class exists and belongs to the current teacher
         $checkQuery = "SELECT class_id FROM teacher_classes_tb WHERE class_id = ? AND th_id = ?";
@@ -118,8 +119,9 @@ function createQuiz($conn) {
 
         // Prepare the INSERT statement based on the table structure
         if ($hasPassingScore) {
-            $insertQuery = "INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, time_limit, passing_score, status) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Add allow_retakes to the insert and bind
+            $insertQuery = "INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, time_limit, passing_score, status, allow_retakes) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $conn->prepare($insertQuery);
             
@@ -127,19 +129,20 @@ function createQuiz($conn) {
                 return ['success' => false, 'message' => 'Database prepare error: ' . $conn->error];
             }
             
-            $stmt->bind_param("isssiss", 
+            $stmt->bind_param("isssissi", 
                 $class_id, 
                 $teacher_id,
                 $quiz_title, 
                 $quiz_description, 
                 $time_limit, 
                 $passing_score, 
-                $status
+                $status,
+                $allow_retakes
             );
         } else {
             // Use points_per_question instead of passing_score
-            $insertQuery = "INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, time_limit, points_per_question, status) 
-                           VALUES (?, ?, ?, ?, ?, ?, ?)";
+            $insertQuery = "INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, time_limit, points_per_question, status, allow_retakes) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             
             $stmt = $conn->prepare($insertQuery);
             
@@ -147,14 +150,15 @@ function createQuiz($conn) {
                 return ['success' => false, 'message' => 'Database prepare error: ' . $conn->error];
             }
             
-            $stmt->bind_param("isssiss", 
+            $stmt->bind_param("isssissi", 
                 $class_id, 
                 $teacher_id,
                 $quiz_title, 
                 $quiz_description, 
                 $time_limit, 
                 $points_per_question, 
-                $status
+                $status,
+                $allow_retakes
             );
         }
         

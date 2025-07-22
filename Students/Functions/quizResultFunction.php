@@ -38,6 +38,17 @@ $result_attempt = $stmt_attempt->get_result();
 if ($result_attempt->num_rows > 0) {
     $quizAttempt = $result_attempt->fetch_assoc();
     $quiz_id = $quizAttempt['quiz_id'];
+    // Add this to fetch class_id from the quiz
+    $classIdQuery = "SELECT class_id FROM quizzes_tb WHERE quiz_id = ?";
+    $stmt_class_id = $conn->prepare($classIdQuery);
+    $stmt_class_id->bind_param("i", $quiz_id);
+    $stmt_class_id->execute();
+    $result_class_id = $stmt_class_id->get_result();
+    if ($row = $result_class_id->fetch_assoc()) {
+        $class_id = $row['class_id'];
+    } else {
+        $class_id = null;
+    }
     $quizDetails = [
         'quiz_title' => $quizAttempt['quiz_title'],
         'quiz_description' => $quizAttempt['quiz_description'],

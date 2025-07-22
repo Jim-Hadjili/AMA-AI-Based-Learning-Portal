@@ -20,11 +20,8 @@
 
 <body class="bg-gray-100 min-h-screen">
 
-    <!-- Sidebar -->
-    <?php include "DashboardsIncludes/studentsSidebar.php" ?>
-
     <!-- Main Content -->
-    <div id="main-content" class="lg:ml-16 min-h-screen transition-all duration-300">
+    <div id="main-content" class="min-h-screen transition-all duration-300">
 
         <!-- Header -->
         <?php include "DashboardsIncludes/studentsHeader.php" ?>
@@ -61,6 +58,9 @@
 
     <!-- Finally, include the PHP script that triggers notifications on page load -->
     <?php include "../../Functions/showNotificationParameters.php" ?>
+
+    <!-- Edit Profile Modal -->
+    <?php include "../Modals/studentEditProfileModal.php" ?>
 
 </body>
 
