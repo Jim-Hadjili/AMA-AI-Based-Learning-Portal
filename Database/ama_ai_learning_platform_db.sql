@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 22, 2025 at 03:47 PM
+-- Generation Time: Jul 23, 2025 at 02:48 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,8 +47,13 @@ CREATE TABLE `class_enrollments_tb` (
   `enrollment_id` int(11) NOT NULL,
   `class_id` int(11) NOT NULL,
   `st_id` varchar(50) NOT NULL,
+  `student_name` varchar(255) DEFAULT NULL,
+  `student_email` varchar(255) DEFAULT NULL,
+  `grade_level` varchar(50) DEFAULT NULL,
   `enrollment_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `status` enum('active','inactive','pending') DEFAULT 'active'
+  `status` enum('active','inactive','pending') DEFAULT 'active',
+  `strand` varchar(50) DEFAULT NULL,
+  `student_id` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -439,7 +444,7 @@ ALTER TABLE `class_enrollments_tb`
 -- AUTO_INCREMENT for table `generated_quizzes_tb`
 --
 ALTER TABLE `generated_quizzes_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `learning_materials_tb`
@@ -463,7 +468,7 @@ ALTER TABLE `question_options_tb`
 -- AUTO_INCREMENT for table `quizzes_tb`
 --
 ALTER TABLE `quizzes_tb`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=88;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
 
 --
 -- AUTO_INCREMENT for table `quiz_attempts_tb`
@@ -475,43 +480,43 @@ ALTER TABLE `quiz_attempts_tb`
 -- AUTO_INCREMENT for table `quiz_questions_tb`
 --
 ALTER TABLE `quiz_questions_tb`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
 
 --
 -- AUTO_INCREMENT for table `short_answer_tb`
 --
 ALTER TABLE `short_answer_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `students_profiles_tb`
 --
 ALTER TABLE `students_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `student_answers_tb`
 --
 ALTER TABLE `student_answers_tb`
-  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+  MODIFY `answer_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `teachers_profiles_tb`
 --
 ALTER TABLE `teachers_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT for table `teacher_classes_tb`
 --
 ALTER TABLE `teacher_classes_tb`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `users_tb`
 --
 ALTER TABLE `users_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- Constraints for dumped tables
