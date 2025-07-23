@@ -28,22 +28,34 @@
 
     <!-- Stats Summary -->
     <div class="mt-6 pt-6 border-t border-gray-200">
-        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 justify-center">
-            <div class="text-center">
-                <div class="text-2xl font-bold text-blue-600" id="totalClasses"><?php echo count($enrolledClasses); ?></div>
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 justify-center">
+            <div class="text-center flex flex-col justify-center items-center">
+                <div class="text-2xl font-bold text-blue-600" id="totalClasses">
+                    <?php echo count($enrolledClasses); ?>
+                </div>
                 <div class="text-sm text-gray-500">Total Classes</div>
             </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-green-600" id="activeClasses"><?php echo count(array_filter($enrolledClasses, function ($class) {
-                                                                                        return $class['status'] === 'active';
-                                                                                    })); ?></div>
+            <div class="text-center flex flex-col justify-center items-center">
+                <div class="text-2xl font-bold text-green-600" id="activeClasses">
+                    <?php echo count(array_filter($enrolledClasses, function ($class) {
+                        return $class['status'] === 'active';
+                    })); ?>
+                </div>
                 <div class="text-sm text-gray-500">Active</div>
             </div>
-            <div class="text-center">
-                <div class="text-2xl font-bold text-yellow-600" id="pendingClasses"><?php echo count(array_filter($enrolledClasses, function ($class) {
-                                                                                        return $class['status'] === 'pending';
-                                                                                    })); ?></div>
+            <div class="text-center flex flex-col justify-center items-center">
+                <div class="text-2xl font-bold text-yellow-600" id="pendingClasses">
+                    <?php echo count(array_filter($enrolledClasses, function ($class) {
+                        return $class['status'] === 'pending';
+                    })); ?>
+                </div>
                 <div class="text-sm text-gray-500">Pending</div>
+            </div>
+            <div class="flex flex-col justify-center items-center">
+                <button onclick="showJoinClassModal()" class="w-xl bg-blue-primary hover:bg-blue-dark text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center justify-center mb-1">
+                    <i class="fas fa-plus mr-2"></i> Join New Class
+                </button>
+                <div class="text-sm text-gray-500">Action</div>
             </div>
         </div>
     </div>

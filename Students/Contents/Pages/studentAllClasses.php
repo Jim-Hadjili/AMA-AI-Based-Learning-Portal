@@ -25,7 +25,7 @@
         <!-- Main Content Area, now full width -->
         <main class="p-4 lg:p-8 pt-6 w-full max-w-full">
 
-            <div class="mb-8">
+            <div class="mb-4">
                 <!-- Page Header -->
                 <?php include "../Includes/studentAllClassesIncludes/studentAllClassesHeader.php" ?>
 
