@@ -49,32 +49,30 @@ function getClassDetails($conn, $class_id) {
  */
 function getClassStudents($conn, $class_id) {
     $students = [];
-    
     try {
-        // Check if the table exists
-        $tableCheckQuery = "SHOW TABLES LIKE 'class_enrollments_tb'";
-        $tableCheckResult = $conn->query($tableCheckQuery);
-        
-        if ($tableCheckResult && $tableCheckResult->num_rows > 0) {
-            $query = "SELECT e.*, s.st_name, s.st_email, s.st_profile_img 
-                     FROM class_enrollments_tb e 
-                     JOIN students_profiles_tb s ON e.st_id = s.st_id 
-                     WHERE e.class_id = ? 
-                     ORDER BY e.enrollment_date DESC";
-            
-            $stmt = $conn->prepare($query);
-            $stmt->bind_param("i", $class_id);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            
-            while ($row = $result->fetch_assoc()) {
-                $students[] = $row;
-            }
+        $query = "SELECT 
+                    st_id,
+                    
+                    student_name,
+                    student_email,
+                    grade_level,
+                    strand,
+                    student_id,
+                    status,
+                    enrollment_date
+                  FROM class_enrollments_tb
+                  WHERE class_id = ?
+                  ORDER BY enrollment_date DESC";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("i", $class_id);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        while ($row = $result->fetch_assoc()) {
+            $students[] = $row;
         }
     } catch (Exception $e) {
         error_log("Error fetching class students: " . $e->getMessage());
     }
-    
     return $students;
 }
 
