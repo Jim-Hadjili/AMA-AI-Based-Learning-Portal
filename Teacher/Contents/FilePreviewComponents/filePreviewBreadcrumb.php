@@ -3,9 +3,8 @@
         <ol class="inline-flex items-center space-x-1 md:space-x-2">
             <li>
                 <div class="flex items-center space-x-3">
-                    <a href="../Tabs/classDetails.php?class_id=<?php echo $quiz['class_id']; ?>" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                    <span><?php echo htmlspecialchars($quiz['class_name']); ?></span>
+                    <a href="javascript:history.back()" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
+                        <i class="fas fa-arrow-left mr-2"></i> Back to Class
                     </a>
                 </div>
             </li>
@@ -15,7 +14,7 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                     <span class="px-3 py-2 text-gray-900 font-medium bg-gray-50 rounded-xl">
-                        <?php echo htmlspecialchars($quiz['quiz_title']); ?>
+                        <?php echo htmlspecialchars($material['material_title']); ?>
                     </span>
                 </div>
             </li>

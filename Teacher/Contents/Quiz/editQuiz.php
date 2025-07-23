@@ -29,6 +29,7 @@ $processedQuestions = processQuestionsForJavaScript($questions);
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <?php include 'includes/quiz-header.php'; ?>
 </head>
@@ -37,12 +38,17 @@ $processedQuestions = processQuestionsForJavaScript($questions);
     <!-- Notification Container -->
     <div id="notification-container"></div>
 
-    <?php include 'includes/quiz-nav.php'; ?>
+
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <?php include 'includes/editQuizBreadcrumb.php'; ?>
+
+        <?php include 'includes/quiz-nav.php'; ?>
+
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
-            
+
             <!-- Left Sidebar - Quiz Settings & Question List -->
             <div class="lg:col-span-1 space-y-6">
                 <?php include 'includes/quiz-settings-form.php'; ?>
@@ -75,4 +81,5 @@ $processedQuestions = processQuestionsForJavaScript($questions);
         });
     </script>
 </body>
+
 </html>

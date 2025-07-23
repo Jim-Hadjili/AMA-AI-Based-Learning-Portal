@@ -3,10 +3,12 @@
         <ol class="inline-flex items-center space-x-1 md:space-x-2">
             <li>
                 <div class="flex items-center space-x-3">
-                    <a href="../Tabs/classDetails.php?class_id=<?php echo $quiz['class_id']; ?>" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                    <span><?php echo htmlspecialchars($quiz['class_name']); ?></span>
-                    </a>
+                    <button 
+                        onclick="window.location.href='../Dashboard/teachersDashboard.php'"
+                        class="bg-white/80 hover:bg-white text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200/50"
+                    >
+                        <i class="fas fa-arrow-left mr-2"></i> Dashboard
+                    </button>
                 </div>
             </li>
             <li>
@@ -15,10 +17,11 @@
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
                     <span class="px-3 py-2 text-gray-900 font-medium bg-gray-50 rounded-xl">
-                        <?php echo htmlspecialchars($quiz['quiz_title']); ?>
+                        All Your Classes
                     </span>
                 </div>
             </li>
         </ol>
     </div>
 </nav>
+

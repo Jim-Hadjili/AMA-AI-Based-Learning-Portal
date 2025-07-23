@@ -58,7 +58,7 @@
 </header>
 
 <!-- Welcome Section -->
-<div class="my-8 px-4 sm:px-6 lg:px-8">
+<div class="my-6 px-4 sm:px-6 lg:px-8">
     <h1 class="text-2xl lg:text-3xl font-bold text-gray-900 mb-2">Welcome back, <?php echo htmlspecialchars($user_name); ?>!</h1>
     <p class="text-gray-600">Here's what's happening with your classes today.</p>
 </div>

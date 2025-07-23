@@ -120,12 +120,13 @@
             <?php endforeach; ?>
         </div>
         <?php if (isset($classes) && count($classes) > 6): ?>
-            <div class="flex justify-center mt-6">
-                <button
-                    onclick="window.location.href='../Tabs/teacherAllClasses.php'"
-                    class="bg-white/80 hover:bg-white text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-200/50">
-                    <i class="fas fa-arrow-right mr-2"></i> View All Classes
-                </button>
+            <div class="text-center py-6 border-t border-gray-200">
+                <a href="../Tabs/teacherAllClasses.php"
+                   class="inline-flex items-center px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md">
+                    <i class="fas fa-th-large mr-2"></i>
+                    View All <?php echo count($classes); ?> Classes
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </a>
             </div>
         <?php endif; ?>
     <?php else: ?>

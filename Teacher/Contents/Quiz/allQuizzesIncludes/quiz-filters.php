@@ -1,4 +1,6 @@
-<form method="GET" action="allQuizzes.php" class="bg-white p-6 rounded-lg border border-gray-400 shadow-sm mb-6">
+<form method="GET" action="allQuizzes.php" class="max-w-8xl mx-auto bg-white p-8 rounded-2xl border border-gray-100 shadow-sm mb-6 overflow-hidden">
+    <!-- Top accent strip for consistency -->
+    <div class="h-1 bg-gradient-to-r from-blue-400 to-blue-600 mb-6"></div>
     <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
     
     <div class="flex flex-col lg:flex-row lg:items-end gap-4">

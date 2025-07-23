@@ -62,11 +62,13 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
 </head>
 
 <body class="bg-gray-50 min-h-screen">
-    <!-- Header Navigation -->
-    <?php include 'allQuizzesIncludes/quiz-nav.php'; ?>
+    
 
     <!-- Main Content -->
-    <div class="max-w-7xl mx-auto px-4 py-6">
+    <div class="max-w-8xl mx-auto px-4 py-6">
+<!-- Header Navigation -->
+    <?php include 'allQuizzesIncludes/quiz-nav.php'; ?>
+
         <?php if ($totalQuizzes === 0 && empty($searchTerm) && $statusFilter === 'all'): ?>
             <!-- Empty State - No quizzes at all -->
             <?php include 'allQuizzesIncludes/quiz-empty-state.php'; ?>
