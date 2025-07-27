@@ -62,7 +62,7 @@ while ($row = $result->fetch_assoc()) {
             <div class="space-y-4">
                 <?php foreach ($attempts as $i => $attempt): ?>
                     <div class="bg-white rounded-xl shadow p-5 flex items-center justify-between hover:bg-blue-50 cursor-pointer transition"
-                        onclick="window.location.href='quizResult.php?attempt_id=<?php echo $attempt['attempt_id']; ?>&class_id=<?php echo $class_id; ?>'">
+                        onclick="window.location.href='attemptsQuizResult.php?attempt_id=<?php echo $attempt['attempt_id']; ?>&class_id=<?php echo $class_id; ?>'">
                         <div>
                             <div class="font-semibold text-gray-800">Attempt #<?php echo count($attempts) - $i; ?></div>
                             <div class="text-sm text-gray-500">
