@@ -69,7 +69,8 @@ function showQuizDetailsModal(quiz) {
     document.getElementById("quizPassedScore").textContent =
       quiz.student_attempt.score || "0";
     document.getElementById("quizPassedViewResultBtn").onclick = function () {
-      window.location.href = `quizResult.php?attempt_id=${quiz.student_attempt.attempt_id}`;
+      // Redirect to attempts list for this quiz
+      window.location.href = `quizAttempts.php?quiz_id=${quiz.quiz_id}&class_id=${quiz.class_id}`;
     };
     return;
   }
