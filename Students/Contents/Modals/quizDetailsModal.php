@@ -81,7 +81,7 @@
                     <button id="cancelQuizBtn" class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium border border-gray-200">
                         <i class="fas fa-times mr-2"></i>Cancel
                     </button>
-                    <button id="takeQuizBtn" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
+                    <button id="takeQuizBtn" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl" data-class-id="<?php echo $class_id; ?>">
                         <i class="fas fa-play mr-2"></i>Start Quiz
                     </button>
                 </div>
@@ -90,7 +90,7 @@
     </div>
 </div>
 
-<!-- Add this modal somewhere in your HTML -->
+<!-- Quiz Already Passed Modal -->
 <div id="quizPassedModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
   <div class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center">
     <div class="mb-4">
@@ -104,6 +104,7 @@
     </div>
   </div>
 </div>
+
 <script>
 function closeQuizPassedModal() {
   document.getElementById("quizPassedModal").classList.add("hidden");

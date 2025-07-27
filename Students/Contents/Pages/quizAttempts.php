@@ -9,11 +9,23 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_position'] !== 'student') {
 }
 
 $quiz_id = $_GET['quiz_id'] ?? null;
+$class_id = $_GET['class_id'] ?? null;
 $student_id = $_SESSION['st_id'] ?? null;
 
 if (!$quiz_id || !$student_id) {
     echo "Invalid request.";
     exit;
+}
+
+// If class_id is not provided in URL, fetch it from the quiz
+if (!$class_id) {
+    $classStmt = $conn->prepare("SELECT class_id FROM quizzes_tb WHERE quiz_id = ?");
+    $classStmt->bind_param("i", $quiz_id);
+    $classStmt->execute();
+    $classRes = $classStmt->get_result();
+    if ($classRow = $classRes->fetch_assoc()) {
+        $class_id = $classRow['class_id'];
+    }
 }
 
 // Fetch quiz info
@@ -50,7 +62,7 @@ while ($row = $result->fetch_assoc()) {
             <div class="space-y-4">
                 <?php foreach ($attempts as $i => $attempt): ?>
                     <div class="bg-white rounded-xl shadow p-5 flex items-center justify-between hover:bg-blue-50 cursor-pointer transition"
-                        onclick="window.location.href='quizResult.php?attempt_id=<?php echo $attempt['attempt_id']; ?>'">
+                        onclick="window.location.href='quizResult.php?attempt_id=<?php echo $attempt['attempt_id']; ?>&class_id=<?php echo $class_id; ?>'">
                         <div>
                             <div class="font-semibold text-gray-800">Attempt #<?php echo count($attempts) - $i; ?></div>
                             <div class="text-sm text-gray-500">
@@ -67,7 +79,8 @@ while ($row = $result->fetch_assoc()) {
                 <?php endforeach; ?>
             </div>
         <?php endif; ?>
-        <a href="classDetails.php?class_id=<?php echo $_GET['class_id'] ?? ''; ?>" class="inline-block mt-8 text-blue-600 hover:underline">&larr; Back to Class</a>
+        
+        <a href="classDetails.php?class_id=<?php echo $class_id; ?>" class="inline-block mt-8 text-blue-600 hover:underline">&larr; Back to Class</a>
     </div>
 </body>
 </html>
