@@ -1,0 +1,39 @@
+.attempt-row {
+  transition: all 0.15s ease-in-out;
+}
+
+.attempt-row:hover {
+  background-color: #f8fafc;
+  border-left: 4px solid #0ea5e9;
+  padding-left: 1.75rem;
+}
+
+.score-badge {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 100%);
+  border: 2px solid #cbd5e1;
+}
+
+.score-excellent {
+  border-color: #10b981;
+  color: #065f46;
+}
+.score-good {
+  border-color: #3b82f6;
+  color: #1e40af;
+}
+.score-average {
+  border-color: #f59e0b;
+  color: #92400e;
+}
+.score-poor {
+  border-color: #ef4444;
+  color: #991b1b;
+}
+
+.table-header {
+  background: linear-gradient(90deg, #1e293b 0%, #334155 100%);
+}
+
+.chart-container {
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}

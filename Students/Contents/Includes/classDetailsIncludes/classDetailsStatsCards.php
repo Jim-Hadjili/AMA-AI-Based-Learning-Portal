@@ -33,8 +33,8 @@
                 </svg>
             </div>
             <div class="min-w-0 flex-1">
-                <p class="text-sm font-semibold text-gray-500 mb-1 uppercase tracking-wide">Total Quizzes</p>
-                <p class="text-2xl font-bold text-gray-900"><?php echo number_format($classDetails['total_quiz_count']); ?></p>
+                <p class="text-sm font-semibold text-gray-500 mb-1 uppercase tracking-wide">Published Quizzes</p>
+                <p class="text-2xl font-bold text-gray-900"><?php echo number_format($classDetails['published_quiz_count']); ?></p>
                 <div class="flex items-center gap-1 mt-1">
                     <div class="w-2 h-2 bg-emerald-400 rounded-full"></div>
                     <span class="text-xs text-gray-500">Assessments available</span>
