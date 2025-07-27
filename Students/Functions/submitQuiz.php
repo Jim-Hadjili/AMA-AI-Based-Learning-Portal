@@ -223,10 +223,20 @@ try {
         $stmt_save_answer->execute();
     }
 
-    // 4. Update the total score in quiz_attempts_tb
-    $update_total_score_sql = "UPDATE quiz_attempts_tb SET score = ? WHERE attempt_id = ?";
+    // 4. Update the total score in quiz_attempts_tb and set pass/fail result
+    // Fetch total possible score for the quiz
+    $total_possible_score = 0;
+    foreach ($questions_data as $q) {
+        $total_possible_score += $q['points'];
+    }
+
+    // Set passing threshold (e.g., 60%)
+    $passing_percentage = 0.6;
+    $passed = ($total_possible_score > 0 && ($total_score_awarded / $total_possible_score) >= $passing_percentage) ? 'passed' : 'failed';
+
+    $update_total_score_sql = "UPDATE quiz_attempts_tb SET score = ?, result = ? WHERE attempt_id = ?";
     $stmt_update_total_score = $conn->prepare($update_total_score_sql);
-    $stmt_update_total_score->bind_param("di", $total_score_awarded, $attempt_id);
+    $stmt_update_total_score->bind_param("dsi", $total_score_awarded, $passed, $attempt_id);
     $stmt_update_total_score->execute();
 
     $conn->commit();
