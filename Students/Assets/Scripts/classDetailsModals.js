@@ -60,6 +60,20 @@ document.addEventListener("keydown", function (e) {
 
 // JavaScript for Quiz Details Modal
 function showQuizDetailsModal(quiz) {
+  // Check if student_attempt exists and is passed
+  if (quiz.student_attempt && quiz.student_attempt.result === "passed") {
+    // Show the "already passed" modal
+    document.getElementById("quizPassedModal").classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+    // Optionally, show score/result info
+    document.getElementById("quizPassedScore").textContent =
+      quiz.student_attempt.score || "0";
+    document.getElementById("quizPassedViewResultBtn").onclick = function () {
+      window.location.href = `quizResult.php?attempt_id=${quiz.student_attempt.attempt_id}`;
+    };
+    return;
+  }
+
   document.getElementById("modalQuizTitle").textContent = quiz.quiz_title;
   document.getElementById("modalQuizDescription").textContent =
     quiz.quiz_description || "No description provided.";

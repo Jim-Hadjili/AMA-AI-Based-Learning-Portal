@@ -131,6 +131,17 @@ $quizStmt->bind_param("i", $class_id);
 $quizStmt->execute();
 $quizResult = $quizStmt->get_result();
 while ($quiz = $quizResult->fetch_assoc()) {
+    // For students, fetch their latest attempt for this quiz
+    if ($user_position === 'student') {
+        $attemptStmt = $conn->prepare(
+            "SELECT attempt_id, result, score FROM quiz_attempts_tb WHERE quiz_id = ? AND st_id = ? AND status = 'completed' ORDER BY attempt_id DESC LIMIT 1"
+        );
+        $attemptStmt->bind_param("is", $quiz['quiz_id'], $student_id);
+        $attemptStmt->execute();
+        $attemptRes = $attemptStmt->get_result();
+        $attempt = $attemptRes->fetch_assoc();
+        $quiz['student_attempt'] = $attempt ?: null;
+    }
     $recentQuizzes[] = $quiz;
 }
 

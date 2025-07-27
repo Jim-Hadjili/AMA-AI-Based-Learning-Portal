@@ -29,7 +29,8 @@
                 <div class="space-y-4">
                     <?php foreach ($recentQuizzes as $quiz): ?>
                         <div class="group p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-gray-100 hover:border-blue-200 hover:shadow-md"
-                            onclick="showQuizDetailsModal(<?php echo htmlspecialchars(json_encode($quiz)); ?>)">
+                            onclick="showQuizDetailsModal(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
+                            data-student-attempt='<?php echo htmlspecialchars(json_encode($quiz['student_attempt'] ?? null)); ?>'>
                             <div class="flex items-start justify-between">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-blue-900"><?php echo htmlspecialchars($quiz['quiz_title']); ?></h3>
