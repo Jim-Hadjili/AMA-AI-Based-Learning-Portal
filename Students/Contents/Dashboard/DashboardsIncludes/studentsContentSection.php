@@ -155,3 +155,37 @@ $today = date('Y-m-d');
         <?php endif; ?>
     </div>
 </div>
+
+<!-- Confirmation Modal -->
+<?php include '../Modals/openContentModal.php'  ?>
+
+<script>
+    document.querySelectorAll(".flex.items-center.gap-3").forEach(function (card) {
+  card.addEventListener("click", function (e) {
+    // Only trigger for anchor tags
+    if (e.currentTarget.tagName.toLowerCase() !== "a") return;
+    e.preventDefault();
+
+    // Get class name from card
+    var className = card
+      .querySelector(".text-xs")
+      .textContent.split("·")[0]
+      .trim();
+    var message = "You are about to view content from " + className + " Class" + ".";
+
+    // Show modal
+    document.getElementById("confirmMessage").textContent = message;
+    document.getElementById("confirmModal").classList.remove("hidden");
+
+    // Store link
+    var href = card.getAttribute("href");
+    document.getElementById("confirmBtn").onclick = function () {
+      window.location.href = href;
+    };
+    document.getElementById("cancelBtn").onclick = function () {
+      document.getElementById("confirmModal").classList.add("hidden");
+    };
+  });
+});
+
+</script>
