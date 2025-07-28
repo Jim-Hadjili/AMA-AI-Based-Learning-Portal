@@ -77,4 +77,77 @@ if ($studentId) {
     }
     $enrolledCount = count($enrolledClasses);
 }
+
+$totalPublishedQuizzes = 0;
+$totalMaterials = 0;
+$totalAnnouncements = 0;
+
+if ($studentId) {
+    // Get all enrolled class IDs
+    $classIds = [];
+    foreach ($enrolledClasses as $class) {
+        $classIds[] = $class['class_id'];
+    }
+
+    if (!empty($classIds)) {
+        $classIdsStr = implode(',', array_map('intval', $classIds));
+
+        // Total Published Quizzes
+        $quizQuery = "SELECT COUNT(*) AS total FROM quizzes_tb WHERE class_id IN ($classIdsStr) AND status = 'published'";
+        $quizResult = $conn->query($quizQuery);
+        $totalPublishedQuizzes = $quizResult->fetch_assoc()['total'] ?? 0;
+
+        // Total Materials
+        $materialQuery = "SELECT COUNT(*) AS total FROM learning_materials_tb WHERE class_id IN ($classIdsStr)";
+        $materialResult = $conn->query($materialQuery);
+        $totalMaterials = $materialResult->fetch_assoc()['total'] ?? 0;
+
+        // Total Announcements
+        $announcementQuery = "SELECT COUNT(*) AS total FROM announcements_tb WHERE class_id IN ($classIdsStr)";
+        $announcementResult = $conn->query($announcementQuery);
+        $totalAnnouncements = $announcementResult->fetch_assoc()['total'] ?? 0;
+    }
+}
+
+$recentQuizzes = [];
+$recentMaterials = [];
+$recentAnnouncements = [];
+
+if (!empty($classIds)) {
+    // Recent Quizzes (limit 5)
+    $quizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name
+                  FROM quizzes_tb q
+                  JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                  WHERE q.class_id IN ($classIdsStr) AND q.status = 'published'
+                  ORDER BY q.created_at DESC
+                  LIMIT 5";
+    $quizResult = $conn->query($quizQuery);
+    while ($quiz = $quizResult->fetch_assoc()) {
+        $recentQuizzes[] = $quiz;
+    }
+
+    // Recent Materials (limit 5)
+    $materialQuery = "SELECT lm.material_id, lm.material_title, lm.class_id, lm.upload_date, tc.class_name
+                      FROM learning_materials_tb lm
+                      JOIN teacher_classes_tb tc ON lm.class_id = tc.class_id
+                      WHERE lm.class_id IN ($classIdsStr)
+                      ORDER BY lm.upload_date DESC
+                      LIMIT 5";
+    $materialResult = $conn->query($materialQuery);
+    while ($material = $materialResult->fetch_assoc()) {
+        $recentMaterials[] = $material;
+    }
+
+    // Latest Announcements (limit 5)
+    $announcementQuery = "SELECT a.announcement_id, a.title, a.class_id, a.created_at, tc.class_name
+                          FROM announcements_tb a
+                          JOIN teacher_classes_tb tc ON a.class_id = tc.class_id
+                          WHERE a.class_id IN ($classIdsStr)
+                          ORDER BY a.created_at DESC
+                          LIMIT 5";
+    $announcementResult = $conn->query($announcementQuery);
+    while ($announcement = $announcementResult->fetch_assoc()) {
+        $recentAnnouncements[] = $announcement;
+    }
+}
 ?>
