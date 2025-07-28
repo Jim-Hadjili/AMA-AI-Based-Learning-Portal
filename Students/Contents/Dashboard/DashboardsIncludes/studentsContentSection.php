@@ -25,13 +25,34 @@
         <?php endif; ?>
     </div>
 
-    <!-- Quiz Results (keep as is or enhance later) -->
+    <!-- Quiz Results: Only Passed Attempts -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
         <h3 class="text-lg font-semibold text-gray-900 mb-4">Quiz Results</h3>
-        <div class="text-center py-12">
-            <i class="fas fa-poll text-green-400 text-4xl mb-4"></i>
-            <p class="text-gray-500">No quiz results to display</p>
-        </div>
+        <?php if (!empty($passedQuizAttempts)): ?>
+            <ul>
+                <?php foreach ($passedQuizAttempts as $attempt): ?>
+                    <li class="mb-4">
+                        <a href="../Pages/quizAttempts.php?quiz_id=<?php echo $attempt['quiz_id']; ?>&class_id=<?php echo $attempt['class_id']; ?>"
+                           class="flex items-center gap-3 hover:bg-green-50 rounded-lg p-2 transition">
+                            <i class="fas fa-poll text-green-400 text-2xl"></i>
+                            <div>
+                                <div class="font-medium text-gray-900"><?php echo htmlspecialchars($attempt['quiz_title']); ?></div>
+                                <div class="text-xs text-gray-500">
+                                    <?php echo htmlspecialchars($attempt['class_name']); ?> &middot;
+                                    <?php echo date('M d, Y', strtotime($attempt['end_time'])); ?> &middot;
+                                    Score: <?php echo $attempt['score']; ?>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                <?php endforeach; ?>
+            </ul>
+        <?php else: ?>
+            <div class="text-center py-12">
+                <i class="fas fa-poll text-green-400 text-4xl mb-4"></i>
+                <p class="text-gray-500">No passed quiz results to display</p>
+            </div>
+        <?php endif; ?>
     </div>
 </div>
 

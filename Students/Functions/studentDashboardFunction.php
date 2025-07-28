@@ -150,4 +150,34 @@ if (!empty($classIds)) {
         $recentAnnouncements[] = $announcement;
     }
 }
+
+$passedQuizAttempts = [];
+if (!empty($classIds)) {
+    $studentId = $_SESSION['st_id'] ?? null;
+    $quizAttemptsQuery = "
+        SELECT
+            qa.quiz_id,
+            q.class_id,
+            MAX(qa.score) AS score,
+            qa.result,
+            MAX(qa.end_time) AS end_time,
+            MAX(qa.attempt_id) AS attempt_id,
+            q.quiz_title,
+            tc.class_name
+        FROM quiz_attempts_tb qa
+        JOIN quizzes_tb q ON qa.quiz_id = q.quiz_id
+        JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+        WHERE qa.st_id = ? AND q.class_id IN ($classIdsStr) AND qa.result = 'passed'
+        GROUP BY qa.quiz_id, q.class_id, qa.result, q.quiz_title, tc.class_name
+        ORDER BY attempt_id DESC
+        LIMIT 5
+    ";
+    $stmt = $conn->prepare($quizAttemptsQuery);
+    $stmt->bind_param("s", $studentId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $passedQuizAttempts[] = $row;
+    }
+}
 ?>
