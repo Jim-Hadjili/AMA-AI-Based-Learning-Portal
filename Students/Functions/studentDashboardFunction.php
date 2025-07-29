@@ -163,7 +163,8 @@ if (!empty($classIds)) {
             MAX(qa.end_time) AS end_time,
             MAX(qa.attempt_id) AS attempt_id,
             q.quiz_title,
-            tc.class_name
+            tc.class_name,
+            (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_points
         FROM quiz_attempts_tb qa
         JOIN quizzes_tb q ON qa.quiz_id = q.quiz_id
         JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
