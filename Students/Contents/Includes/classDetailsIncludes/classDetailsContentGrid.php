@@ -5,12 +5,12 @@
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-emerald-500 rounded-lg flex items-center justify-center">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Recent Quizzes</h2>
             </div>
-            <a href="" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors px-3 py-2 rounded-lg hover:bg-emerald-100">
+            <a href="classDetailsAllQuizzes.php?class_id=<?php echo urlencode($class_id); ?>" class="text-sm font-semibold text-emerald-600 hover:text-emerald-700 transition-colors px-3 py-2 rounded-lg hover:bg-emerald-100">
                 View All →
             </a>
         </div>
@@ -19,7 +19,7 @@
                 <div class="flex flex-col items-center justify-center py-12 text-center">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center mb-4 border border-gray-200">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </div>
                     <p class="text-gray-500 font-medium">No quizzes available yet.</p>
@@ -28,7 +28,7 @@
             <?php else: ?>
                 <div class="space-y-4">
                     <?php foreach ($recentQuizzes as $quiz): ?>
-                        <div class="group p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-gray-100 hover:border-blue-200 hover:shadow-md"
+                        <div class="group p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-emerald-400 hover:border-blue-200 hover:shadow-md"
                             onclick="showQuizDetailsModal(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
                             data-student-attempt='<?php echo htmlspecialchars(json_encode($quiz['student_attempt'] ?? null)); ?>'>
                             <div class="flex items-start justify-between">
@@ -38,7 +38,7 @@
                                     <div class="flex flex-wrap items-center gap-3 text-xs">
                                         <div class="flex items-center gap-1 text-gray-600 bg-white px-2 py-1 rounded-lg">
                                             <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                             </svg>
                                             <span><?php echo $quiz['time_limit']; ?> min</span>
                                         </div>
@@ -49,7 +49,7 @@
                                 </div>
                                 <div class="ml-4 w-10 h-10 rounded-xl bg-white flex items-center justify-center group-hover:bg-blue-100 transition-colors shadow-sm">
                                     <svg class="w-4 h-4 text-gray-400 group-hover:text-blue-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
                                 </div>
                             </div>
@@ -66,12 +66,12 @@
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-amber-500 rounded-lg flex items-center justify-center">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                     </svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Recent Announcements</h2>
             </div>
-            <a href="" class="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors px-3 py-2 rounded-lg hover:bg-amber-100">
+            <a href="classDetailsAllAnnouncements.php?class_id=<?php echo urlencode($class_id); ?>" class="text-sm font-semibold text-amber-600 hover:text-amber-700 transition-colors px-3 py-2 rounded-lg hover:bg-amber-100">
                 View All →
             </a>
         </div>
@@ -80,7 +80,7 @@
                 <div class="flex flex-col items-center justify-center py-12 text-center">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center mb-4 border border-gray-200">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
                         </svg>
                     </div>
                     <p class="text-gray-500 font-medium">No announcements yet.</p>
@@ -89,7 +89,7 @@
             <?php else: ?>
                 <div class="space-y-4">
                     <?php foreach ($recentAnnouncements as $announcement): ?>
-                        <div class="group relative p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-amber-50 hover:to-yellow-50 transition-all duration-200 border border-gray-100 hover:border-amber-200 hover:shadow-md <?php echo $announcement['is_pinned'] ? 'ring-2 ring-amber-200' : ''; ?>"
+                        <div class="group relative p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-amber-50 hover:to-yellow-50 transition-all duration-200 border border-amber-400 hover:border-amber-200 hover:shadow-md <?php echo $announcement['is_pinned'] ? 'ring-2 ring-amber-200' : ''; ?>"
                             onclick="showAnnouncementModal(<?php echo htmlspecialchars(json_encode($announcement)); ?>)">
                             <?php if ($announcement['is_pinned']): ?>
                                 <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-amber-400 to-orange-400 rounded-l-xl"></div>
@@ -101,20 +101,21 @@
                                             <?php echo htmlspecialchars($announcement['title']); ?>
                                         </h3>
                                         <?php if ($announcement['is_pinned']): ?>
-                                            <div class="w-2 h-2 bg-amber-400 rounded-full animate-pulse"></div>
-                                        <?php endif; ?>
+                                            <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-700 border border-amber-300 ml-1">
+                                                <i class="fas fa-thumbtack mr-1 text-amber-500"></i> Pinned
+                                            </span> <?php endif; ?>
                                     </div>
                                     <p class="text-sm text-gray-600 mt-1 line-clamp-3 break-words mb-3"><?php echo htmlspecialchars(substr($announcement['content'], 0, 150)) . (strlen($announcement['content']) > 150 ? '...' : ''); ?></p>
                                     <div class="flex items-center gap-2 text-xs text-gray-500 bg-white px-2 py-1 rounded-lg w-fit">
                                         <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                         </svg>
                                         <span><?php echo date('M j, Y', strtotime($announcement['created_at'])); ?></span>
                                     </div>
                                 </div>
                                 <div class="ml-4 w-10 h-10 rounded-xl bg-white flex items-center justify-center group-hover:bg-amber-100 transition-colors shadow-sm">
                                     <svg class="w-4 h-4 text-gray-400 group-hover:text-amber-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                     </svg>
                                 </div>
                             </div>
@@ -131,12 +132,12 @@
             <div class="flex items-center gap-3">
                 <div class="w-8 h-8 bg-violet-500 rounded-lg flex items-center justify-center">
                     <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
                 </div>
                 <h2 class="text-lg font-bold text-gray-900">Learning Materials</h2>
             </div>
-            <a href="" class="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors px-3 py-2 rounded-lg hover:bg-violet-100">
+            <a href="classDetailsAllMaterials.php?class_id=<?php echo urlencode($class_id); ?>" class="text-sm font-semibold text-violet-600 hover:text-violet-700 transition-colors px-3 py-2 rounded-lg hover:bg-violet-100">
                 View All →
             </a>
         </div>
@@ -145,7 +146,7 @@
                 <div class="flex flex-col items-center justify-center py-12 text-center">
                     <div class="w-16 h-16 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center mb-4 border border-gray-200">
                         <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                         </svg>
                     </div>
                     <p class="text-gray-500 font-medium">No materials uploaded yet.</p>
@@ -155,9 +156,9 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                     <?php foreach ($recentMaterials as $material): ?>
                         <a href="materialPreview.php?material_id=<?php echo $material['material_id']; ?>"
-                            class="group flex items-center p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl hover:from-violet-50 hover:to-purple-50 transition-all duration-200 border border-gray-100 hover:border-violet-200 hover:shadow-md">
+                            class="group flex items-center p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl hover:from-violet-50 hover:to-purple-50 transition-all duration-200 border border-purple-400 hover:border-violet-200 hover:shadow-md">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 shadow-sm border-2
-                                <?php 
+                                <?php
                                 $fileTypeColors = [
                                     'pdf' => 'bg-gradient-to-br from-red-50 to-red-100 text-red-600 border-red-200',
                                     'doc' => 'bg-gradient-to-br from-blue-50 to-blue-100 text-blue-600 border-blue-200',
@@ -171,7 +172,7 @@
                                 echo isset($fileTypeColors[$fileType]) ? $fileTypeColors[$fileType] : 'bg-gradient-to-br from-gray-50 to-gray-100 text-gray-600 border-gray-200';
                                 ?>">
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </div>
                             <div class="flex-1 min-w-0">
@@ -179,14 +180,14 @@
                                 <p class="text-sm text-gray-600 truncate mb-1"><?php echo htmlspecialchars($material['file_name']); ?></p>
                                 <div class="flex items-center gap-2 text-xs text-gray-500 bg-white px-2 py-1 rounded-lg w-fit">
                                     <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                     </svg>
                                     <span><?php echo date('M j, Y', strtotime($material['upload_date'])); ?></span>
                                 </div>
                             </div>
                             <div class="ml-3 w-8 h-8 rounded-full bg-white flex items-center justify-center group-hover:bg-violet-100 transition-colors shadow-sm">
                                 <svg class="w-3 h-3 text-gray-400 group-hover:text-violet-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
                                 </svg>
                             </div>
                         </a>

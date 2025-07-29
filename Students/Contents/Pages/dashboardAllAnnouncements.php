@@ -1,17 +1,46 @@
 <?php
 include '../../Functions/studentDashboardFunction.php';
 
+// Get filter/sort from GET (default values)
+$classFilter = isset($_GET['class_id_filter']) ? $_GET['class_id_filter'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+// Fetch all classes for dropdown
+$classList = [];
+if (!empty($classIds)) {
+    $classQuery = "SELECT class_id, class_name FROM teacher_classes_tb WHERE class_id IN ($classIdsStr)";
+    $classResult = $conn->query($classQuery);
+    while ($row = $classResult->fetch_assoc()) {
+        $classList[] = $row;
+    }
+}
+
+// Fetch announcements
 $allAnnouncements = [];
 if (!empty($classIds)) {
     $announcementQuery = "SELECT a.announcement_id, a.title, a.class_id, a.created_at, tc.class_name
                           FROM announcements_tb a
                           JOIN teacher_classes_tb tc ON a.class_id = tc.class_id
-                          WHERE a.class_id IN ($classIdsStr)
-                          ORDER BY a.created_at DESC";
+                          WHERE a.class_id IN ($classIdsStr)";
+    if ($classFilter && $classFilter !== 'all') {
+        $announcementQuery .= " AND a.class_id = " . intval($classFilter);
+    }
+    $announcementQuery .= " ORDER BY a.created_at DESC";
     $announcementResult = $conn->query($announcementQuery);
     while ($announcement = $announcementResult->fetch_assoc()) {
         $allAnnouncements[] = $announcement;
     }
+}
+
+// Sort
+if ($sort && $sort !== 'all') {
+    usort($allAnnouncements, function($a, $b) use ($sort) {
+        if ($sort === 'oldest') return strtotime($a['created_at']) - strtotime($b['created_at']);
+        if ($sort === 'newest') return strtotime($b['created_at']) - strtotime($a['created_at']);
+        if ($sort === 'az') return strcmp(strtolower($a['title']), strtolower($b['title']));
+        if ($sort === 'za') return strcmp(strtolower($b['title']), strtolower($a['title']));
+        return 0;
+    });
 }
 
 // Pagination logic
@@ -56,6 +85,27 @@ $paginatedAnnouncements = array_slice($allAnnouncements, $startIndex, $itemsPerP
                 class="inline-flex items-center text-red-600 hover:text-red-800 transition-colors duration-200 font-medium bg-white hover:bg-red-50 px-4 py-2 rounded-lg shadow-sm border border-red-100">
                 <i class="fas fa-arrow-left mr-2"></i> Back to Dashboard
             </a>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="mb-4 flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
+            <form id="filterForm" method="get" class="flex gap-2 flex-wrap w-full">
+                <select name="class_id_filter" id="class_id_filter" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-200" onchange="document.getElementById('filterForm').submit()">
+                    <option value="all" <?php if($classFilter==''||$classFilter=='all') echo 'selected'; ?>>All Classes</option>
+                    <?php foreach ($classList as $class): ?>
+                        <option value="<?php echo $class['class_id']; ?>" <?php if($classFilter==$class['class_id']) echo 'selected'; ?>>
+                            <?php echo htmlspecialchars($class['class_name']); ?>
+                        </option>
+                    <?php endforeach; ?>
+                </select>
+                <select name="sort" id="sortAnnouncements" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-red-200" onchange="document.getElementById('filterForm').submit()">
+                    <option value="all" <?php if($sort==''||$sort=='all') echo 'selected'; ?>>All</option>
+                    <option value="newest" <?php if($sort=='newest') echo 'selected'; ?>>Newest to Oldest</option>
+                    <option value="oldest" <?php if($sort=='oldest') echo 'selected'; ?>>Oldest to Newest</option>
+                    <option value="az" <?php if($sort=='az') echo 'selected'; ?>>A - Z (Title)</option>
+                    <option value="za" <?php if($sort=='za') echo 'selected'; ?>>Z - A (Title)</option>
+                </select>
+            </form>
         </div>
 
         <!-- Header Section -->
