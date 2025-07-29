@@ -1,6 +1,16 @@
 <?php
 include '../../Functions/studentDashboardFunction.php';
 
+// Fetch all classes for dropdown
+$classList = [];
+if (!empty($classIds)) {
+    $classQuery = "SELECT class_id, class_name FROM teacher_classes_tb WHERE class_id IN ($classIdsStr)";
+    $classResult = $conn->query($classQuery);
+    while ($row = $classResult->fetch_assoc()) {
+        $classList[] = $row;
+    }
+}
+
 $allMaterials = [];
 if (!empty($classIds)) {
     $materialQuery = "SELECT lm.material_id, lm.material_title, lm.class_id, lm.upload_date, tc.class_name
@@ -14,7 +24,30 @@ if (!empty($classIds)) {
     }
 }
 
-// Pagination logic
+// Get filter/sort from GET (default values)
+$classFilter = isset($_GET['class_id_filter']) ? $_GET['class_id_filter'] : '';
+$fileType = isset($_GET['fileType']) ? $_GET['fileType'] : '';
+$sort = isset($_GET['sort']) ? $_GET['sort'] : '';
+
+// Filter by class
+if ($classFilter && $classFilter !== 'all') {
+    $allMaterials = array_filter($allMaterials, function($m) use ($classFilter) {
+        return $m['class_id'] == $classFilter;
+    });
+}
+
+// Sort
+if ($sort && $sort !== 'all') {
+    usort($allMaterials, function($a, $b) use ($sort) {
+        if ($sort === 'oldest') return strtotime($a['upload_date']) - strtotime($b['upload_date']);
+        if ($sort === 'newest') return strtotime($b['upload_date']) - strtotime($a['upload_date']);
+        if ($sort === 'az') return strcmp(strtolower($a['material_title']), strtolower($b['material_title']));
+        if ($sort === 'za') return strcmp(strtolower($b['material_title']), strtolower($a['material_title']));
+        return 0;
+    });
+}
+
+// Pagination logic (must be after filtering and sorting)
 $itemsPerPage = 15;
 $totalItems = count($allMaterials);
 $totalPages = ceil($totalItems / $itemsPerPage);
@@ -73,6 +106,27 @@ $paginatedMaterials = array_slice($allMaterials, $startIndex, $itemsPerPage);
                 </div>
             </div>
         </div>
+
+        <!-- Filter Bar -->
+<div class="mb-4 flex flex-col md:flex-row md:items-center md:gap-4 gap-2">
+    <form id="filterForm" method="get" class="flex gap-2 flex-wrap w-full">
+        <select name="class_id_filter" id="class_id_filter" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-200" onchange="document.getElementById('filterForm').submit()">
+            <option value="all" <?php if($classFilter==''||$classFilter=='all') echo 'selected'; ?>>All Classes</option>
+            <?php foreach ($classList as $class): ?>
+                <option value="<?php echo $class['class_id']; ?>" <?php if($classFilter==$class['class_id']) echo 'selected'; ?>>
+                    <?php echo htmlspecialchars($class['class_name']); ?>
+                </option>
+            <?php endforeach; ?>
+        </select>
+        <select name="sort" id="sortMaterials" class="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-yellow-200" onchange="document.getElementById('filterForm').submit()">
+            <option value="all" <?php if($sort==''||$sort=='all') echo 'selected'; ?>>All</option>
+            <option value="newest" <?php if($sort=='newest') echo 'selected'; ?>>Newest to Oldest</option>
+            <option value="oldest" <?php if($sort=='oldest') echo 'selected'; ?>>Oldest to Newest</option>
+            <option value="az" <?php if($sort=='az') echo 'selected'; ?>>A - Z (Title)</option>
+            <option value="za" <?php if($sort=='za') echo 'selected'; ?>>Z - A (Title)</option>
+        </select>
+    </form>
+</div>
 
         <!-- Search Bar -->
         <div class="mb-4">
