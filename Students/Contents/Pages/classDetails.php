@@ -4,6 +4,7 @@
 <html lang="en">
 
 <head>
+    <link rel="icon" type="image/png" href="../../../Assets/Images/Logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo htmlspecialchars($classDetails['class_name']); ?> - AMA Learning Platform</title>
@@ -36,7 +37,7 @@
             <!-- Content Grid -->
             <?php include "../Includes/classDetailsIncludes/classDetailsContentGrid.php" ?>
         </main>
-        
+
     </div>
 
 

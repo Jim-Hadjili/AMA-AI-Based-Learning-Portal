@@ -6,6 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="../../../Assets/Images/Logo.png">
     <title><?php echo htmlspecialchars($quizDetails['quiz_title']); ?> - Quiz Results</title>
     <link rel="stylesheet" href="../../Assets/Css/studentsDashboard.css">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,7 +30,7 @@
             <?php include "../Includes/quizResultIncludes/quizResultHeader.php" ?>
 
             <!-- Quiz Review -->
-           <?php include "../Includes/quizResultIncludes/quizResultSummary.php" ?>
+            <?php include "../Includes/quizResultIncludes/quizResultSummary.php" ?>
 
         </main>
     </div>
