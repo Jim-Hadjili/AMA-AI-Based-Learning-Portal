@@ -1,6 +1,6 @@
 <form id="quizForm" action="../../Functions/submitQuiz.php" method="POST">
     <input type="hidden" name="quiz_id" value="<?php echo htmlspecialchars($quizDetails['quiz_id']); ?>">
-    
+
     <?php if (empty($quizQuestions)): ?>
         <div class="bg-white rounded-lg border border-gray-200 p-8 text-center">
             <svg class="w-12 h-12 text-gray-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -60,12 +60,11 @@
                                 </div>
 
                             <?php elseif ($question['question_type'] === 'short-answer'): ?>
-                                <textarea 
+                                <textarea
                                     name="answer[<?php echo $question['question_id']; ?>]"
-                                    rows="4" 
+                                    rows="4"
                                     class="w-full p-3 border border-gray-200 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
-                                    placeholder="Type your answer here..."
-                                ></textarea>
+                                    placeholder="Type your answer here..."></textarea>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -74,16 +73,15 @@
                         <button type="button" class="prev-question-btn px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 font-medium <?php echo $index === 0 ? 'hidden' : ''; ?>">
                             Previous
                         </button>
-                        
+
                         <!-- Global Question Navigation (now inside the same row) -->
                         <div class="flex justify-center flex-1">
                             <div class="flex gap-1 question-nav-numbers" id="global-question-nav-<?php echo $index; ?>">
                                 <?php foreach ($quizQuestions as $navIdx => $q): ?>
-                                    <button 
-                                        type="button" 
+                                    <button
+                                        type="button"
                                         class="question-nav-btn w-8 h-8 rounded-full font-semibold border border-gray-300 text-gray-700 transition-colors"
-                                        data-question-nav="<?php echo $navIdx; ?>"
-                                    >
+                                        data-question-nav="<?php echo $navIdx; ?>">
                                         <?php echo $navIdx + 1; ?>
                                     </button>
                                 <?php endforeach; ?>
@@ -107,138 +105,138 @@
 </form>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const questions = document.querySelectorAll('.quiz-question-item');
-    let currentIndex = 0;
+    document.addEventListener('DOMContentLoaded', function() {
+        const questions = document.querySelectorAll('.quiz-question-item');
+        let currentIndex = 0;
 
-    function showQuestion(index) {
-        questions.forEach((q, i) => {
-            if (i === index) {
-                q.classList.remove('hidden');
-            } else {
-                q.classList.add('hidden');
-            }
-        });
-        currentIndex = index;
-        updateNavActive();
-        updateAnsweredIndicators();
-        updateSubmitButton();
-    }
-
-    function updateNavActive() {
-        document.querySelectorAll('.question-nav-numbers').forEach((nav, navIdx) => {
-            nav.querySelectorAll('.question-nav-btn').forEach((btn, idx) => {
-                if (idx === currentIndex) {
-                    btn.classList.add('ring-2', 'ring-blue-500');
+        function showQuestion(index) {
+            questions.forEach((q, i) => {
+                if (i === index) {
+                    q.classList.remove('hidden');
                 } else {
-                    btn.classList.remove('ring-2', 'ring-blue-500');
+                    q.classList.add('hidden');
                 }
             });
-        });
-    }
+            currentIndex = index;
+            updateNavActive();
+            updateAnsweredIndicators();
+            updateSubmitButton();
+        }
 
-    function isAnswered(questionIdx) {
-        const question = questions[questionIdx];
-        if (!question) return false;
-        const radios = question.querySelectorAll('input[type="radio"]');
-        const checkboxes = question.querySelectorAll('input[type="checkbox"]');
-        const textarea = question.querySelector('textarea');
-        if (radios.length > 0) {
-            return Array.from(radios).some(r => r.checked);
+        function updateNavActive() {
+            document.querySelectorAll('.question-nav-numbers').forEach((nav, navIdx) => {
+                nav.querySelectorAll('.question-nav-btn').forEach((btn, idx) => {
+                    if (idx === currentIndex) {
+                        btn.classList.add('ring-2', 'ring-blue-500');
+                    } else {
+                        btn.classList.remove('ring-2', 'ring-blue-500');
+                    }
+                });
+            });
         }
-        if (checkboxes.length > 0) {
-            return Array.from(checkboxes).some(c => c.checked);
-        }
-        if (textarea) {
-            return textarea.value.trim().length > 0;
-        }
-        return false;
-    }
 
-    function updateAnsweredIndicators() {
+        function isAnswered(questionIdx) {
+            const question = questions[questionIdx];
+            if (!question) return false;
+            const radios = question.querySelectorAll('input[type="radio"]');
+            const checkboxes = question.querySelectorAll('input[type="checkbox"]');
+            const textarea = question.querySelector('textarea');
+            if (radios.length > 0) {
+                return Array.from(radios).some(r => r.checked);
+            }
+            if (checkboxes.length > 0) {
+                return Array.from(checkboxes).some(c => c.checked);
+            }
+            if (textarea) {
+                return textarea.value.trim().length > 0;
+            }
+            return false;
+        }
+
+        function updateAnsweredIndicators() {
+            document.querySelectorAll('.question-nav-numbers').forEach(nav => {
+                nav.querySelectorAll('.question-nav-btn').forEach((btn, idx) => {
+                    if (isAnswered(idx)) {
+                        btn.classList.add('bg-green-500', 'text-white', 'border-green-600');
+                    } else {
+                        btn.classList.remove('bg-green-500', 'text-white', 'border-green-600');
+                    }
+                });
+            });
+        }
+
+        function allQuestionsAnswered() {
+            for (let i = 0; i < questions.length; i++) {
+                if (!isAnswered(i)) return false;
+            }
+            return true;
+        }
+
+        function updateSubmitButton() {
+            const submitBtn = document.querySelector('.submit-quiz-btn');
+            if (submitBtn) {
+                if (allQuestionsAnswered()) {
+                    submitBtn.disabled = false;
+                    submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                } else {
+                    submitBtn.disabled = true;
+                    submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                }
+            }
+        }
+
+        // Make all nav buttons clickable
         document.querySelectorAll('.question-nav-numbers').forEach(nav => {
-            nav.querySelectorAll('.question-nav-btn').forEach((btn, idx) => {
-                if (isAnswered(idx)) {
-                    btn.classList.add('bg-green-500', 'text-white', 'border-green-600');
-                } else {
-                    btn.classList.remove('bg-green-500', 'text-white', 'border-green-600');
-                }
+            nav.querySelectorAll('.question-nav-btn').forEach((btn) => {
+                btn.addEventListener('click', function() {
+                    const navIdx = parseInt(btn.getAttribute('data-question-nav'), 10);
+                    if (!isNaN(navIdx)) {
+                        showQuestion(navIdx);
+                    }
+                });
             });
         });
-    }
 
-    function allQuestionsAnswered() {
-        for (let i = 0; i < questions.length; i++) {
-            if (!isAnswered(i)) return false;
-        }
-        return true;
-    }
-
-    function updateSubmitButton() {
-        const submitBtn = document.querySelector('.submit-quiz-btn');
-        if (submitBtn) {
-            if (allQuestionsAnswered()) {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            }
-        }
-    }
-
-    // Make all nav buttons clickable
-    document.querySelectorAll('.question-nav-numbers').forEach(nav => {
-        nav.querySelectorAll('.question-nav-btn').forEach((btn) => {
+        document.querySelectorAll('.next-question-btn').forEach((btn) => {
             btn.addEventListener('click', function() {
-                const navIdx = parseInt(btn.getAttribute('data-question-nav'), 10);
-                if (!isNaN(navIdx)) {
-                    showQuestion(navIdx);
+                if (currentIndex < questions.length - 1) {
+                    currentIndex++;
+                    showQuestion(currentIndex);
                 }
             });
         });
-    });
 
-    document.querySelectorAll('.next-question-btn').forEach((btn) => {
-        btn.addEventListener('click', function() {
-            if (currentIndex < questions.length - 1) {
-                currentIndex++;
-                showQuestion(currentIndex);
+        document.querySelectorAll('.prev-question-btn').forEach((btn) => {
+            btn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    showQuestion(currentIndex);
+                }
+            });
+        });
+
+        // Update answered indicators and submit button on input change
+        document.querySelectorAll('.quiz-question-item input, .quiz-question-item textarea').forEach(input => {
+            input.addEventListener('change', function() {
+                updateAnsweredIndicators();
+                updateSubmitButton();
+            });
+            input.addEventListener('input', function() {
+                updateAnsweredIndicators();
+                updateSubmitButton();
+            });
+        });
+
+        // Prevent form submission if not all questions are answered
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            if (!allQuestionsAnswered()) {
+                e.preventDefault();
+                alert('Please answer all questions before submitting the quiz.');
             }
         });
-    });
 
-    document.querySelectorAll('.prev-question-btn').forEach((btn) => {
-        btn.addEventListener('click', function() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                showQuestion(currentIndex);
-            }
-        });
+        // Initial state
+        showQuestion(currentIndex);
+        updateSubmitButton();
     });
-
-    // Update answered indicators and submit button on input change
-    document.querySelectorAll('.quiz-question-item input, .quiz-question-item textarea').forEach(input => {
-        input.addEventListener('change', function() {
-            updateAnsweredIndicators();
-            updateSubmitButton();
-        });
-        input.addEventListener('input', function() {
-            updateAnsweredIndicators();
-            updateSubmitButton();
-        });
-    });
-
-    // Prevent form submission if not all questions are answered
-    document.getElementById('quizForm').addEventListener('submit', function(e) {
-        if (!allQuestionsAnswered()) {
-            e.preventDefault();
-            alert('Please answer all questions before submitting the quiz.');
-        }
-    });
-
-    // Initial state
-    showQuestion(currentIndex);
-    updateSubmitButton();
-});
 </script>
