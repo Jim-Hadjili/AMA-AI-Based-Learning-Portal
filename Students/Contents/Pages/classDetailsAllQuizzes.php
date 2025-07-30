@@ -129,7 +129,7 @@ $paginatedQuizzes = array_slice($allQuizzes, $startIndex, $itemsPerPage);
 
 <body class="bg-gray-100 min-h-screen font-sans antialiased">
 
-    <div class="max-w-8xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-8xl mx-auto py-4 px-4 sm:px-6 lg:px-8">
 
         <!-- Breadcrumb Navigation -->
         <?php include "../Includes/classDetailsIncludes/classDetailsQuizzesIncludes/quizzesBreadcrumb.php" ?>
