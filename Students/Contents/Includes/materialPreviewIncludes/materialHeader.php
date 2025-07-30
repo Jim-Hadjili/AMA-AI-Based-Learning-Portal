@@ -1,4 +1,4 @@
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-8 overflow-hidden">
+<div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-4 overflow-hidden">
     <!-- Simplified top accent -->
     <div class="h-1 <?php echo $style['strip']; ?>"></div>
     

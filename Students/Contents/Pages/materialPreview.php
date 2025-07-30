@@ -35,7 +35,7 @@
     <div id="main-content" class="min-h-screen">
 
         <!-- Main Content Area -->
-        <main class="p-4 lg:p-6 pt-6">
+        <main class="p-4 lg:p-6">
 
             <!-- subject-specific styles -->
             <?php include "../Includes/materialPreviewIncludes/materialSubjectSpecificStyles.php"; ?>

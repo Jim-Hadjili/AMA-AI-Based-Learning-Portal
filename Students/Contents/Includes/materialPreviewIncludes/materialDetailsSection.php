@@ -16,7 +16,7 @@
 
     <div class="p-8">
         <!-- Main Information Grid -->
-        <div class="grid grid-cols-1 gap-6 mb-8"><!-- Changed from grid-cols-1 lg:grid-cols-2 to stack vertically -->
+        <div class="grid grid-cols-1 gap-6 mb-4"><!-- Changed from grid-cols-1 lg:grid-cols-2 to stack vertically -->
             <!-- Class Information Card -->
             <div class="group relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-100 hover:shadow-md transition-all duration-200">
                 <div class="absolute top-4 right-4 w-3 h-3 bg-blue-400 rounded-full opacity-60"></div>
