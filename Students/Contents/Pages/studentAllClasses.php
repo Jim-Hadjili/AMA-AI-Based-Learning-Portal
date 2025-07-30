@@ -24,7 +24,7 @@
     <!-- Main Content -->
     <div id="main-content" class="min-h-screen transition-all duration-300 flex justify-center">
         <!-- Main Content Area, now full width -->
-        <main class="p-4 lg:p-8 pt-6 w-full max-w-full">
+        <main class="p-4 lg:p-8 w-full max-w-full">
 
             <div class="mb-4">
                 <!-- Page Header -->

@@ -78,6 +78,30 @@ if ($studentId) {
     $enrolledCount = count($enrolledClasses);
 }
 
+// Filter by status if set and not 'all'
+if (isset($_GET['status']) && $_GET['status'] !== 'all') {
+    $enrolledClasses = array_filter($enrolledClasses, function($class) {
+        return isset($_GET['status']) && $class['status'] === $_GET['status'];
+    });
+}
+
+// Sort classes if sort parameter is set
+if (isset($_GET['sort'])) {
+    if ($_GET['sort'] === 'az') {
+        usort($enrolledClasses, function($a, $b) {
+            return strcmp(strtolower($a['class_name']), strtolower($b['class_name']));
+        });
+    } elseif ($_GET['sort'] === 'za') {
+        usort($enrolledClasses, function($a, $b) {
+            return strcmp(strtolower($b['class_name']), strtolower($a['class_name']));
+        });
+    } else { // 'recent' or default
+        usort($enrolledClasses, function($a, $b) {
+            return strtotime($b['created_at']) - strtotime($a['created_at']);
+        });
+    }
+}
+
 // Get statistics for different class statuses
 $classStats = [
     'total' => count($enrolledClasses),
