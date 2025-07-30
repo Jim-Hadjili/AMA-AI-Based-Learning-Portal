@@ -87,11 +87,11 @@ $paginatedAnnouncements = array_slice($allAnnouncements, $startIndex, $itemsPerP
         <!-- Breadcrumb Navigation -->
         <?php include '../Dashboard/dashboardAnnouncementIncludes/dashboardAnnouncementBreadcrumb.php'; ?>
 
-        <!-- Filter Bar -->
-        <?php include '../Dashboard/dashboardAnnouncementIncludes/dashboardAnnouncementSearchFilter.php'; ?>
-
         <!-- Header Section -->
         <?php include '../Dashboard/dashboardAnnouncementIncludes/dashboardAnnouncementHeader.php'; ?>
+
+        <!-- Filter Bar -->
+        <?php include '../Dashboard/dashboardAnnouncementIncludes/dashboardAnnouncementSearchFilter.php'; ?>
 
         <!-- Announcement List -->
         <?php include '../Dashboard/dashboardAnnouncementIncludes/dashboardAnnouncementList.php'; ?>
