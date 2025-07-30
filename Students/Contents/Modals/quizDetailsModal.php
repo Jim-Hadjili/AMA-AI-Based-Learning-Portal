@@ -1,7 +1,5 @@
 <div id="quizDetailsModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-    <div 
-        class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200"
-        <!-- Adjust modal width here: change max-w-xl to your preferred size, e.g., max-w-lg, max-w-md, etc. -->
+    <div class="bg-white rounded-3xl shadow-2xl w-full max-w-lg max-h-[90vh] overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200">
         <!-- Modal Header -->
         <div class="px-8 py-6 border-b border-gray-100">
             <div class="flex items-start justify-between">
