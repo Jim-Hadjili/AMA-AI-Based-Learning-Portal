@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-8">
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-4">
     <!-- Performance Summary -->
     <div class="text-center mb-8">
         <div class="mb-6">

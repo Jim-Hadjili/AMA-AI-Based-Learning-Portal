@@ -1,6 +1,6 @@
 <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 sm:p-8 mb-8">
     <!-- Performance Summary -->
-    <div class="text-center mb-8">
+    <div class="text-center mb-4">
         <div class="mb-6">
             <?php if ($percentage_score >= 90): ?>
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full bg-yellow-100 flex items-center justify-center">

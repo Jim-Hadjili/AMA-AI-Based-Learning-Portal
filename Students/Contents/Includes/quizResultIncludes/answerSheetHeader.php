@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-8 overflow-hidden">
+<div class="bg-white rounded-xl shadow-sm border border-gray-100 mb-4 overflow-hidden">
     <!-- Subtle top accent line for a touch of modern color -->
     <div class="h-1 bg-gradient-to-r from-indigo-500 to-purple-500"></div>
 
