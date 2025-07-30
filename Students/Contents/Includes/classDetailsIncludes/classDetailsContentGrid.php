@@ -1,4 +1,4 @@
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
     <!-- Recent Quizzes -->
     <div class="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
         <div class="bg-gradient-to-r from-emerald-50 to-green-50 px-7 py-5 border-b border-gray-100 flex items-center justify-between">

@@ -21,7 +21,7 @@
     <div id="main-content" class="min-h-screen">
 
         <!-- Main Content Area -->
-        <main class="p-4 lg:p-6 pt-6">
+        <main class="lg:p-6">
             <!-- // Define subject-specific styles -->
             <?php include "../Includes/classDetailsIncludes/subjectSpecificStyles.php" ?>
 
