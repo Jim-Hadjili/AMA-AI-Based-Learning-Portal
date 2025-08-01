@@ -43,8 +43,12 @@ include_once "fetch-announcements.php";
         <div id="info-tab" class="tab-content p-6 hidden">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="font-medium text-gray-900">Class Information</h3>
-                <button id="editClassInfoBtn" class="px-3 py-1.5 bg-purple-primary text-white rounded-md hover:bg-purple-dark text-sm">
-                    <i class="fas fa-edit mr-1"></i> Edit Class
+                <button id="editClassInfoBtn" type="button"
+                    class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-purple-600 text-sm font-semibold rounded-lg text-purple-700 hover:text-white bg-purple-50 hover:bg-purple-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M17.414 2.586a2 2 0 00-2.828 0l-9.192 9.192a2 2 0 00-.516.878l-1.414 4.243a1 1 0 001.272 1.272l4.243-1.414a2 2 0 00.878-.516l9.192-9.192a2 2 0 000-2.828zm-10.607 10.607l7.778-7.778 2.121 2.121-7.778 7.778-2.121-2.121z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="font-semibold">Edit Class</span>
                 </button>
             </div>
             

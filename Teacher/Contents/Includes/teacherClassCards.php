@@ -1,13 +1,18 @@
 <!-- Class Cards Section -->
-<div class="mt-8">
+<div class="mt-6">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-gray-900">Your Classes</h2>
         <div class="flex items-center gap-4">
             <!-- Enhanced Add Class Button with Animation -->
             <button
                 id="addClassBtn"
-                class="bg-purple-primary hover:bg-purple-dark text-white px-5 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-300 shadow-sm hover:shadow-lg transform hover:translate-y-[-2px] border border-purple-600/20 gap-2">
-                <i class="fas fa-plus"></i> <span>Add New Class</span>
+                type="button"
+                onclick="window.openAddClassModal && window.openAddClassModal()"
+                class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                </svg>
+                <div class="font-semibold">Add New Class</div>
             </button>
         </div>
     </div>
@@ -122,10 +127,11 @@
         <?php if (isset($classes) && count($classes) > 6): ?>
             <div class="text-center py-6 border-t border-gray-200">
                 <a href="../Tabs/teacherAllClasses.php"
-                   class="inline-flex items-center px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 focus:ring-2 focus:ring-blue-500 transition-all duration-200 shadow-sm hover:shadow-md">
-                    <i class="fas fa-th-large mr-2"></i>
-                    View All <?php echo count($classes); ?> Classes
-                    <i class="fas fa-arrow-right ml-2"></i>
+                   class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v10H4V5zm3 2a1 1 0 011 1v2h2V8a1 1 0 112 0v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H8a1 1 0 110-2h2V8a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                    </svg>
+                    <div class="font-semibold">View All <?php echo count($classes); ?> Classes</div>
                 </a>
             </div>
         <?php endif; ?>
