@@ -156,15 +156,17 @@
 
         <?php if ($hasMoreClasses): ?>
                         <div class="text-center mt-4">
-                <a href="../Pages/studentAllClasses.php" class="inline-flex items-center gap-3 px-8 py-3 bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 text-blue-700 hover:from-blue-100 hover:to-indigo-100 hover:border-blue-300 rounded-xl font-semibold transition-all duration-200 hover:shadow-md hover:scale-105">
+                <button type="button"
+                    onclick="window.location.href='../Pages/studentAllClasses.php'"
+                    class="inline-flex items-center justify-center space-x-2 py-3 px-6 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
                     </svg>
-                    View All Classes
-                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs font-bold">
+                    <span class="font-semibold">View All Classes</span>
+                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs font-bold ml-2">
                         <?php echo $totalClasses; ?>
                     </span>
-                </a>
+                </button>
             </div>
         <?php endif; ?>
     <?php endif; ?>
