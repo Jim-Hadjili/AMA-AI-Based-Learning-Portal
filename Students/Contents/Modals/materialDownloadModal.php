@@ -33,11 +33,11 @@
             </div>
         </div>
         <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 rounded-b-xl border-t border-gray-200">
-            <button type="button" id="cancelDownloadBtn" class="px-4 py-2.5 border border-gray-300 bg-white rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
-                <i class="fas fa-times mr-1.5"></i>Cancel
+            <button type="button" id="cancelDownloadBtn" class="py-2 px-4 rounded-lg hover:bg-gray-200  font-medium transition-colors shadow-md flex items-center">
+                <i class="fas fa-times mr-2"></i>Cancel
             </button>
-            <button type="button" id="confirmDownloadBtn" class="px-4 py-2.5 bg-gradient-to-r from-blue-500 to-blue-600 rounded-lg shadow-sm text-sm font-medium text-white hover:from-blue-600 hover:to-blue-700 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                <i class="fas fa-download mr-1.5"></i>Download
+            <button type="button" id="confirmDownloadBtn" class="py-2 px-4 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-medium transition-colors shadow-md flex items-center">
+                <i class="fas fa-download mr-2"></i>Download
             </button>
         </div>
     </div>

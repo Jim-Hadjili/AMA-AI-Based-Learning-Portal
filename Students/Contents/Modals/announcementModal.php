@@ -32,7 +32,8 @@
         <!-- Modal Footer -->
         <div class="px-8 py-6 border-t border-gray-100 bg-gray-50/50">
             <div class="flex justify-end">
-                <button id="closeAnnouncementModalBtn" class="px-6 py-2.5 bg-gray-900 text-white rounded-xl hover:bg-gray-800 transition-all duration-200 font-medium">
+                <button id="closeAnnouncementModalBtn" class="py-2 px-4 rounded-lg bg-gray-700 hover:bg-gray-800 text-white font-medium transition-colors shadow-md flex items-center gap-2">
+                    <i class="fas fa-check-circle"></i>
                     Close
                 </button>
             </div>

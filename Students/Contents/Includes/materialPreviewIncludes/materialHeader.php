@@ -102,7 +102,7 @@
                 </span>
                 
                 <?php if ($fileExists): ?>
-                    <button id="downloadBtn" class="inline-flex items-center gap-2 px-6 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all duration-200 font-medium shadow-sm">
+                    <button id="downloadBtn" class="inline-flex items-center gap-2 py-2 px-4 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium transition-colors shadow-md">
                         <i class="fas fa-download"></i>
                         <span>Download</span>
                     </button>
