@@ -79,7 +79,7 @@
                     <button id="cancelQuizBtn" class="px-6 py-2.5 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-all duration-200 font-medium border border-gray-200">
                         <i class="fas fa-times mr-2"></i>Cancel
                     </button>
-                    <button id="takeQuizBtn" class="px-6 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-medium shadow-lg hover:shadow-xl" data-class-id="<?php echo $class_id; ?>">
+                    <button id="takeQuizBtn" class="px-6 py-2.5 bg-blue-500 hover:bg-blue-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl" data-class-id="<?php echo $class_id; ?>">
                         <i class="fas fa-play mr-2"></i>Start Quiz
                     </button>
                 </div>
