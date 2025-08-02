@@ -171,9 +171,101 @@ $paginatedQuizzes = array_slice($allQuizzes, $startIndex, $itemsPerPage);
 
     <?php include "../Modals/quizDetailsModal.php" ?>
 
-    <script src="../../Assets/Scripts/classDetailsModals.js"></script>
-
     <script src="../Includes/classDetailsIncludes/classDetailsQuizzesIncludes/quizzesScript.js"></script>
 
 </body>
 </html>
+
+<script>
+    // JavaScript for Quiz Details Modal
+function showQuizDetailsModal(quiz) {
+  // Get class_id from URL parameters
+  const urlParams = new URLSearchParams(window.location.search);
+  const classId = urlParams.get("class_id");
+
+  // Check if student_attempt exists and is passed
+  if (quiz.student_attempt && quiz.student_attempt.result === "passed") {
+    // Show the "already passed" modal
+    document.getElementById("quizPassedModal").classList.remove("hidden");
+    document.body.classList.add("overflow-hidden");
+    // Optionally, show score/result info
+    document.getElementById("quizPassedScore").textContent =
+      quiz.student_attempt.score || "0";
+    document.getElementById("quizPassedViewResultBtn").onclick = function () {
+      // Redirect to attempts list for this quiz with class_id
+      window.location.href = `quizAttempts.php?quiz_id=${quiz.quiz_id}&class_id=${classId}`;
+    };
+    return;
+  }
+
+  document.getElementById("modalQuizTitle").textContent = quiz.quiz_title;
+  document.getElementById("modalQuizDescription").textContent =
+    quiz.quiz_description || "No description provided.";
+  document.getElementById("modalQuizQuestions").textContent =
+    quiz.total_questions || "0";
+  document.getElementById(
+    "modalQuizTimeLimit"
+  ).textContent = `${quiz.time_limit} minutes`;
+  document.getElementById("modalQuizTotalScore").textContent =
+    quiz.total_score || "0";
+  document.getElementById("modalQuizStatus").textContent =
+    quiz.status.charAt(0).toUpperCase() + quiz.status.slice(1);
+
+  // Set the quiz ID and class ID for the "Take Quiz" button
+  document.getElementById("takeQuizBtn").dataset.quizId = quiz.quiz_id;
+  document.getElementById("takeQuizBtn").dataset.classId = classId;
+
+  document.getElementById("quizDetailsModal").classList.remove("hidden");
+  document.body.classList.add("overflow-hidden");
+}
+
+function closeQuizDetailsModal() {
+  document.getElementById("quizDetailsModal").classList.add("hidden");
+  document.body.classList.remove("overflow-hidden");
+}
+
+function closeQuizPassedModal() {
+  document.getElementById("quizPassedModal").classList.add("hidden");
+  document.body.classList.remove("overflow-hidden");
+}
+
+document
+  .getElementById("closeQuizDetailsModal")
+  .addEventListener("click", closeQuizDetailsModal);
+document
+  .getElementById("cancelQuizBtn")
+  .addEventListener("click", closeQuizDetailsModal);
+
+// Add event listener for closing quiz passed modal if it exists
+const closeQuizPassedModalBtn = document.getElementById("closeQuizPassedModal");
+if (closeQuizPassedModalBtn) {
+  closeQuizPassedModalBtn.addEventListener("click", closeQuizPassedModal);
+}
+
+document
+  .getElementById("quizDetailsModal")
+  .addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeQuizDetailsModal();
+    }
+  });
+
+// Add event listener for quiz passed modal if it exists
+const quizPassedModal = document.getElementById("quizPassedModal");
+if (quizPassedModal) {
+  quizPassedModal.addEventListener("click", function (e) {
+    if (e.target === this) {
+      closeQuizPassedModal();
+    }
+  });
+}
+
+document.getElementById("takeQuizBtn").addEventListener("click", function () {
+  const quizId = this.dataset.quizId;
+  const classId = this.dataset.classId;
+  if (quizId && classId) {
+    // Redirect to the quiz taking page with class_id
+    window.location.href = `quizPage.php?quiz_id=${quizId}&class_id=${classId}`;
+  }
+});
+</script>
