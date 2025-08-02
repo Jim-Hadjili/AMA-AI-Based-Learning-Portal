@@ -190,4 +190,52 @@
         initializeTimer();
         loadAnswers();
     });
+
+
+    //No Copy, Paste, Cut, View Source, Dev Tools
+
+    // Disable right-click context menu
+    document.addEventListener('contextmenu', function(e) {
+        e.preventDefault();
+    });
+
+    // Block keyboard shortcuts for copy, paste, cut, view source, dev tools
+    document.addEventListener('keydown', function(e) {
+        // Block F12, Ctrl+U, Ctrl+Shift+I/J, Ctrl+C/X/V
+        if (
+            e.key === 'F12' ||
+            (e.ctrlKey && (e.key === 'u' || e.key === 'U')) ||
+            (e.ctrlKey && e.shiftKey && (e.key.toLowerCase() === 'i' || e.key.toLowerCase() === 'j')) ||
+            (e.ctrlKey && (e.key.toLowerCase() === 'c' || e.key.toLowerCase() === 'v' || e.key.toLowerCase() === 'x'))
+        ) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Prevent text selection via mouse
+    document.addEventListener('selectstart', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevent copy event
+    document.addEventListener('copy', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevent cut event
+    document.addEventListener('cut', function(e) {
+        e.preventDefault();
+    });
+
+    // Prevent paste event
+    document.addEventListener('paste', function(e) {
+        e.preventDefault();
+    });
+
+    // Optional: Add CSS to prevent selection
+    document.body.style.userSelect = 'none';
+    document.body.style.webkitUserSelect = 'none';
+    document.body.style.msUserSelect = 'none';
+    document.body.style.mozUserSelect = 'none';
 </script>
