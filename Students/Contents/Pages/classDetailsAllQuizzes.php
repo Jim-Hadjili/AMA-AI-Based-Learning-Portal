@@ -23,22 +23,38 @@ if ($user_position === 'teacher') {
                     FROM quizzes_tb q 
                     WHERE q.class_id = ? 
                     ORDER BY q.created_at DESC";
+    $allQuizStmt = $conn->prepare($allQuizQuery);
+    $allQuizStmt->bind_param("i", $class_id);
 } else {
-    $allQuizQuery = "SELECT 
-                        q.quiz_id, 
-                        q.quiz_title, 
-                        q.quiz_description, 
-                        q.status, 
-                        q.created_at, 
-                        q.time_limit,
-                        (SELECT COUNT(qq.question_id) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_questions,
-                        (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = q.quiz_id) AS total_score
-                    FROM quizzes_tb q 
-                    WHERE q.class_id = ? AND q.status = 'published'
-                    ORDER BY q.created_at DESC";
+    // For students: show published quizzes, but if a latest AI-generated quiz exists for the same class and teacher, show only the newest AI-generated quiz per original quiz
+    $allQuizQuery = "
+        SELECT 
+            COALESCE(ai.quiz_id, q.quiz_id) AS quiz_id,
+            COALESCE(ai.quiz_title, q.quiz_title) AS quiz_title,
+            COALESCE(ai.quiz_description, q.quiz_description) AS quiz_description,
+            COALESCE(ai.status, q.status) AS status,
+            COALESCE(ai.created_at, q.created_at) AS created_at,
+            COALESCE(ai.time_limit, q.time_limit) AS time_limit,
+            (SELECT COUNT(qq.question_id) FROM quiz_questions_tb qq WHERE qq.quiz_id = COALESCE(ai.quiz_id, q.quiz_id)) AS total_questions,
+            (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = COALESCE(ai.quiz_id, q.quiz_id)) AS total_score
+        FROM quizzes_tb q
+        LEFT JOIN (
+            SELECT x.*
+            FROM quizzes_tb x
+            INNER JOIN (
+                SELECT th_id, class_id, MAX(created_at) AS max_created
+                FROM quizzes_tb
+                WHERE quiz_type = '1' AND class_id = ?
+                GROUP BY th_id, class_id, parent_quiz_id
+            ) latest ON latest.th_id = x.th_id AND latest.class_id = x.class_id AND latest.max_created = x.created_at
+            WHERE x.quiz_type = '1'
+        ) ai ON ai.th_id = q.th_id AND ai.class_id = q.class_id AND ai.quiz_type = '1' AND ai.parent_quiz_id = q.quiz_id
+        WHERE q.class_id = ? AND q.status = 'published' AND q.quiz_type != '1'
+        ORDER BY COALESCE(ai.created_at, q.created_at) DESC
+    ";
+    $allQuizStmt = $conn->prepare($allQuizQuery);
+    $allQuizStmt->bind_param("ii", $class_id, $class_id);
 }
-$allQuizStmt = $conn->prepare($allQuizQuery);
-$allQuizStmt->bind_param("i", $class_id);
 $allQuizStmt->execute();
 $allQuizResult = $allQuizStmt->get_result();
 $allQuizzes = [];
