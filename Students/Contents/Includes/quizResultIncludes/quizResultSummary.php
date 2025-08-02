@@ -69,7 +69,7 @@
         <!-- Retake Quiz Button (if applicable) -->
         <?php if (!$has_passed && $quizAttempt['allow_retakes']): ?>
         <div class="flex-shrink-0">
-            <a href="quizPage.php?quiz_id=<?php echo htmlspecialchars($quiz_id); ?>"
+            <a href="../../Functions/regenerateQuiz.php?quiz_id=<?php echo htmlspecialchars($quiz_id); ?>"
                class="bg-white hover:bg-orange-500 hover:text-white text-gray-700 px-5 py-2 rounded-xl flex items-center text-base font-semibold transition-all duration-200 shadow-md hover:shadow-lg border-2 border-orange-500 quiz-navigation-link focus:ring-2 focus:ring-orange-300">
                 <i class="fas fa-redo-alt mr-2"></i>
                 Retake Quiz

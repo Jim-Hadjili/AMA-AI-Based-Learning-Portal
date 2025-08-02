@@ -1,0 +1,86 @@
+ Here are 10 quiz questions on the topic 'English Quiz — Basic Grammar & Vocabulary' for high school students, presented in JSON format:
+
+```json
+[
+    {
+        "type": "multiple-choice",
+        "question": "Which of the following sentences uses a run-on sentence correctly?",
+        "options": [
+            "She was late for school, but she didn't get upset.",
+            "I'll give you cookies if you help me clean the house.",
+            "After dinner we went swimming, and then we watched TV.",
+            "I have finished my homework, I am going to play video games."
+        ],
+        "answer": "After dinner we went swimming, and then we watched TV."
+    },
+    {
+        "type": "multiple-choice",
+        "question": "Which of the following is a synonym for 'unhappy'?",
+        "options": [
+            " content ",
+            " confident ",
+            " disheartened ",
+            " excited "
+        ],
+        "answer": " disheartened "
+    },
+    {
+        "type": "multiple-choice",
+        "question": "Which of the following is a homophone of 'right'?",
+        "options": [
+            " write ",
+            " rite ",
+            " rite-of-passage ",
+            " rite-angle "
+        ],
+        "answer": " write "
+    },
+    {
+        "type": "multiple-choice",
+        "question": "Which of the following is a noun that is correctly formed in its plural?",
+        "options": [
+            " fishs ",
+            " gooses ",
+            " foots ",
+            " babies "
+        ],
+        "answer": " fishs "
+    },
+    {
+        "type": "multiple-choice",
+        "question": "Which of the following is a verb in its past tense and past participle form?",
+        "options": [
+            " flyed ",
+            " went ",
+            " swam ",
+            " been "
+        ],
+        "answer": " swam "
+    },
+    {
+        "type": "short-answer",
+        "question": "What is an antonym for 'permanent'?",
+        "answer": "temporary"
+    },
+    {
+        "type": "short-answer",
+        "question": "What does the abbreviation 'i.e.' mean?",
+        "answer": "that is"
+    },
+    {
+        "type": "short-answer",
+        "question": "Which part of speech is 'punctual'?",
+        "answer": "Adjective"
+    },
+    {
+        "type": "short-answer",
+        "question": "Which prefix means 'definitely, absolutely'?",
+        "answer": "abso"
+    },
+    {
+        "type": "short-answer",
+        "question": "What is the correct form of 'She will not be able to go' in the future progressive tense?",
+        "answer": "She will not be able to be going"
+    }
+]
+```
