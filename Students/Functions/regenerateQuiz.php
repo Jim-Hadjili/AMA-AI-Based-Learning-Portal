@@ -131,13 +131,6 @@ foreach ($questions as $i => $q) {
     }
 }
 
-// Link generated quiz
-$stmt_gen = $conn->prepare("INSERT INTO generated_quizzes_tb (quiz_id, original_quiz_id) VALUES (?, ?)");
-$stmt_gen->bind_param("ii", $new_quiz_id, $quiz_id);
-$stmt_gen->execute();
-
-$conn->close();
-
 // Redirect to new quiz
 header("Location: ../Contents/Pages/quizPage.php?quiz_id=" . $new_quiz_id);
 exit;
