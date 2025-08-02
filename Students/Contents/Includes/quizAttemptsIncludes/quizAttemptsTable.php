@@ -6,13 +6,33 @@
 
     <!-- Table Content -->
     <div class="divide-y divide-gray-100">
-        <?php foreach ($attempts as $i => $attempt):
-            // Calculate percentage for display
+        <?php
+        if (!empty($attempts)) {
+            $attempts = array_reverse($attempts);
+        }
+        $totalAttempts = count($attempts);
+        foreach ($attempts as $i => $attempt):
+            // Get quiz title for this attempt
+            $quizTitleStmt = $conn->prepare("SELECT quiz_title FROM quizzes_tb WHERE quiz_id = ?");
+            $quizTitleStmt->bind_param("i", $attempt['quiz_id']);
+            $quizTitleStmt->execute();
+            $quizTitleRes = $quizTitleStmt->get_result();
+            $quizTitleRow = $quizTitleRes->fetch_assoc();
+            $quiz_title = $quizTitleRow['quiz_title'] ?? 'Quiz';
+
+            // Get total points for this quiz version
+            $pointsStmt = $conn->prepare("SELECT SUM(question_points) AS total_points FROM quiz_questions_tb WHERE quiz_id = ?");
+            $pointsStmt->bind_param("i", $attempt['quiz_id']);
+            $pointsStmt->execute();
+            $pointsRes = $pointsStmt->get_result();
+            $pointsRow = $pointsRes->fetch_assoc();
+            $total_possible_points = $pointsRow['total_points'] ?? 1;
+            if ($total_possible_points == 0) $total_possible_points = 1;
+
             $display_percentage = round(($attempt['score'] / $total_possible_points) * 100);
             $result = $attempt['result'] ?? $attempt['status'];
-            $attemptNumber = count($attempts) - $i;
+            $attemptNumber = $totalAttempts - $i; // Most recent is #totalAttempts, oldest is #1
 
-            // Score classification for badge color
             $scoreClass = 'score-poor';
             if ($display_percentage >= 75) $scoreClass = 'score-passed';
             else $scoreClass = 'score-failed';
@@ -37,9 +57,9 @@
                         <div>
                             <div class="flex items-center space-x-3">
                                 <h3 class="text-lg font-semibold text-gray-900">
-                                    Attempt #<?php echo $attemptNumber; ?>
+                                    Attempt #<?php echo $attemptNumber; ?> <span class="ml-2 text-xs text-gray-500"><?php echo htmlspecialchars($quiz_title); ?></span>
                                 </h3>
-                                <?php if ($i === 0): ?>
+                                <?php if ($i === 0): // Show "Latest" only for the first item ?>
                                     <span class="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-full uppercase tracking-wide shadow">Latest</span>
                                 <?php endif; ?>
                             </div>
@@ -54,6 +74,15 @@
                                             <?php echo $display_percentage >= 75 ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'; ?>">
                                 <?php echo $display_percentage >= 75 ? 'Passed' : 'Failed'; ?>
                             </span>
+                            <div class="text-xs text-gray-500 mt-1">
+                                Time: 
+                                <?php 
+                                    $start = strtotime($attempt['start_time']);
+                                    $end = strtotime($attempt['end_time']);
+                                    $duration = $end && $start ? gmdate("i:s", $end - $start) : 'N/A';
+                                    echo $duration . ' min';
+                                ?>
+                            </div>
                         </div>
                         <svg class="w-6 h-6 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>

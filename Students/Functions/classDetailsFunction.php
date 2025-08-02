@@ -120,43 +120,78 @@ if ($user_position === 'teacher') {
         $recentQuizzes[] = $quiz;
     }
 } else {
-    // For students, show only published quizzes, but replace with latest AI-generated if exists
-    $quizQuery = "
-        SELECT 
-            IFNULL(ai.quiz_id, q.quiz_id) AS quiz_id,
-            IFNULL(ai.quiz_title, q.quiz_title) AS quiz_title,
-            IFNULL(ai.quiz_description, q.quiz_description) AS quiz_description,
-            IFNULL(ai.status, q.status) AS status,
-            IFNULL(ai.created_at, q.created_at) AS created_at,
-            IFNULL(ai.time_limit, q.time_limit) AS time_limit,
-            IFNULL(ai.quiz_type, q.quiz_type) AS quiz_type,
-            (SELECT COUNT(qq.question_id) FROM quiz_questions_tb qq WHERE qq.quiz_id = IFNULL(ai.quiz_id, q.quiz_id)) AS total_questions,
-            (SELECT SUM(qq.question_points) FROM quiz_questions_tb qq WHERE qq.quiz_id = IFNULL(ai.quiz_id, q.quiz_id)) AS total_score
-        FROM quizzes_tb q
-        LEFT JOIN (
-            SELECT * FROM quizzes_tb 
-            WHERE quiz_type = '1' AND class_id = ?
-            ORDER BY created_at DESC
-        ) ai ON ai.parent_quiz_id = q.quiz_id
-        WHERE q.class_id = ? AND q.status = 'published' AND q.quiz_type != '1'
-        ORDER BY IFNULL(ai.created_at, q.created_at) DESC
-        LIMIT 4
-    ";
-    $quizStmt = $conn->prepare($quizQuery);
-    $quizStmt->bind_param("ii", $class_id, $class_id);
-    $quizStmt->execute();
-    $quizResult = $quizStmt->get_result();
-    while ($quiz = $quizResult->fetch_assoc()) {
-        // Fetch student's latest attempt for this quiz
-        $attemptStmt = $conn->prepare(
-            "SELECT attempt_id, result, score FROM quiz_attempts_tb WHERE quiz_id = ? AND st_id = ? AND status = 'completed' ORDER BY attempt_id DESC LIMIT 1"
-        );
-        $attemptStmt->bind_param("is", $quiz['quiz_id'], $student_id);
-        $attemptStmt->execute();
-        $attemptRes = $attemptStmt->get_result();
-        $attempt = $attemptRes->fetch_assoc();
-        $quiz['student_attempt'] = $attempt ?: null;
-        $recentQuizzes[] = $quiz;
+    // For students, show only published quizzes, but always use the latest AI-generated version if exists
+    $recentQuizzes = [];
+    if ($user_position !== 'teacher') {
+        // Get all published, non-AI quizzes for this class
+        $quizQuery = "
+            SELECT 
+                q.quiz_id, 
+                q.quiz_title, 
+                q.quiz_description, 
+                q.status, 
+                q.created_at, 
+                q.time_limit,
+                q.quiz_type
+            FROM quizzes_tb q
+            WHERE q.class_id = ? AND q.status = 'published' AND q.quiz_type != '1'
+            ORDER BY q.created_at DESC
+            LIMIT 4
+        ";
+        $quizStmt = $conn->prepare($quizQuery);
+        $quizStmt->bind_param("i", $class_id);
+        $quizStmt->execute();
+        $quizResult = $quizStmt->get_result();
+
+        while ($quiz = $quizResult->fetch_assoc()) {
+            $latestQuiz = $quiz;
+
+            // Traverse AI-generated chain to get the latest version
+            $currentQuizId = $quiz['quiz_id'];
+            while (true) {
+                $aiQuery = "
+                    SELECT * FROM quizzes_tb 
+                    WHERE parent_quiz_id = ? AND quiz_type = '1'
+                    ORDER BY created_at DESC LIMIT 1
+                ";
+                $aiStmt = $conn->prepare($aiQuery);
+                $aiStmt->bind_param("i", $currentQuizId);
+                $aiStmt->execute();
+                $aiResult = $aiStmt->get_result();
+                $aiQuiz = $aiResult->fetch_assoc();
+
+                if ($aiQuiz) {
+                    $latestQuiz = $aiQuiz;
+                    $currentQuizId = $aiQuiz['quiz_id'];
+                } else {
+                    break;
+                }
+            }
+
+            // Add extra info (questions, score, student attempt)
+            $latestQuiz['total_questions'] = 0;
+            $latestQuiz['total_score'] = 0;
+            $questionsStmt = $conn->prepare("SELECT COUNT(question_id), SUM(question_points) FROM quiz_questions_tb WHERE quiz_id = ?");
+            $questionsStmt->bind_param("i", $latestQuiz['quiz_id']);
+            $questionsStmt->execute();
+            $questionsStmt->bind_result($questionCount, $scoreSum);
+            $questionsStmt->fetch();
+            $latestQuiz['total_questions'] = $questionCount ?: 0;
+            $latestQuiz['total_score'] = $scoreSum ?: 0;
+            $questionsStmt->close();
+
+            // Fetch student's latest attempt for this quiz
+            $attemptStmt = $conn->prepare(
+                "SELECT attempt_id, result, score FROM quiz_attempts_tb WHERE quiz_id = ? AND st_id = ? AND status = 'completed' ORDER BY attempt_id DESC LIMIT 1"
+            );
+            $attemptStmt->bind_param("is", $latestQuiz['quiz_id'], $student_id);
+            $attemptStmt->execute();
+            $attemptRes = $attemptStmt->get_result();
+            $attempt = $attemptRes->fetch_assoc();
+            $latestQuiz['student_attempt'] = $attempt ?: null;
+
+            $recentQuizzes[] = $latestQuiz;
+        }
     }
 }
 

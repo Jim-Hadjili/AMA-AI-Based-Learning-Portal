@@ -47,9 +47,53 @@ if ($total_possible_points == 0) { // Ensure it's at least 1 if sum is 0
     $total_possible_points = 1;
 }
 
-// Fetch attempts
-$stmt = $conn->prepare("SELECT attempt_id, start_time, end_time, score, result, status FROM quiz_attempts_tb WHERE quiz_id = ? AND st_id = ? ORDER BY attempt_id DESC");
-$stmt->bind_param("is", $quiz_id, $student_id);
+// Get all quiz IDs: original and all AI-generated descendants
+function getAllRelatedQuizIds($conn, $quiz_id) {
+    $ids = [$quiz_id];
+    $queue = [$quiz_id];
+    while (!empty($queue)) {
+        $current = array_shift($queue);
+        $stmt = $conn->prepare("SELECT quiz_id FROM quizzes_tb WHERE parent_quiz_id = ?");
+        $stmt->bind_param("i", $current);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $ids[] = $row['quiz_id'];
+            $queue[] = $row['quiz_id'];
+        }
+    }
+    return $ids;
+}
+
+// Find the original quiz (root of the chain)
+function getRootQuizId($conn, $quiz_id) {
+    $current = $quiz_id;
+    while (true) {
+        $stmt = $conn->prepare("SELECT parent_quiz_id FROM quizzes_tb WHERE quiz_id = ?");
+        $stmt->bind_param("i", $current);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        if ($row = $res->fetch_assoc()) {
+            if ($row['parent_quiz_id']) {
+                $current = $row['parent_quiz_id'];
+            } else {
+                break;
+            }
+        } else {
+            break;
+        }
+    }
+    return $current;
+}
+
+// Always start from the original quiz
+$root_quiz_id = getRootQuizId($conn, $quiz_id);
+$allQuizIds = getAllRelatedQuizIds($conn, $root_quiz_id);
+$quizIdsStr = implode(',', array_map('intval', $allQuizIds));
+
+// Fetch all attempts for all related quizzes, ordered chronologically
+$stmt = $conn->prepare("SELECT attempt_id, quiz_id, start_time, end_time, score, result, status FROM quiz_attempts_tb WHERE quiz_id IN ($quizIdsStr) AND st_id = ? ORDER BY start_time ASC");
+$stmt->bind_param("s", $student_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $attempts = [];
@@ -60,15 +104,19 @@ while ($row = $result->fetch_assoc()) {
 // Prepare data for Chart.js (reverse order for chronological graph)
 $chartLabels = [];
 $chartScores = [];
-$reversedAttempts = array_reverse($attempts); // Oldest attempt first
-
-foreach ($reversedAttempts as $index => $attempt) {
-    $chartLabels[] = 'Attempt ' . ($index + 1); // Label as Attempt 1, Attempt 2, etc.
-    // Calculate percentage for chart
+foreach ($attempts as $index => $attempt) {
+    $chartLabels[] = 'Attempt ' . ($index + 1);
+    // Get total points for this quiz version
+    $pointsStmt = $conn->prepare("SELECT SUM(question_points) AS total_points FROM quiz_questions_tb WHERE quiz_id = ?");
+    $pointsStmt->bind_param("i", $attempt['quiz_id']);
+    $pointsStmt->execute();
+    $pointsRes = $pointsStmt->get_result();
+    $pointsRow = $pointsRes->fetch_assoc();
+    $total_possible_points = $pointsRow['total_points'] ?? 1;
+    if ($total_possible_points == 0) $total_possible_points = 1;
     $percentage_for_chart = round(($attempt['score'] / $total_possible_points) * 100);
     $chartScores[] = $percentage_for_chart;
 }
-
 $chartLabelsJson = json_encode($chartLabels);
 $chartScoresJson = json_encode($chartScores);
 
