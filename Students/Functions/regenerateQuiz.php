@@ -10,17 +10,44 @@ if (!$quiz_id || !$student_id) {
     exit;
 }
 
-// Fetch quiz topic/objectives
-$stmt = $conn->prepare("SELECT quiz_title, quiz_topic, quiz_description FROM quizzes_tb WHERE quiz_id = ?");
+// Fetch quiz topic/objectives and time limit from the original quiz
+$stmt = $conn->prepare("SELECT quiz_title, quiz_topic, quiz_description, time_limit FROM quizzes_tb WHERE quiz_id = ?");
 $stmt->bind_param("i", $quiz_id);
 $stmt->execute();
 $quiz = $stmt->get_result()->fetch_assoc();
 
 $topic = $quiz['quiz_topic'] ?: $quiz['quiz_title'];
 $description = $quiz['quiz_description'];
+$time_limit = $quiz['time_limit']; // Get the time limit
 
-// Prepare prompt for AI
-$prompt = "Generate 10 quiz questions for high school students on the topic: '$topic'. Each question should match the difficulty and style of: $description. Use a mix of multiple-choice and short-answer formats. Do not repeat questions from previous attempts. Return questions in JSON format: [{\"type\": \"multiple-choice\", \"question\": \"...\", \"options\": [\"...\", \"...\", ...], \"answer\": \"...\"}, ...]";
+// Fetch number of questions from the most recently completed quiz attempt
+$attempt_stmt = $conn->prepare("SELECT qa.quiz_id, COUNT(qq.question_id) AS question_count
+    FROM quiz_attempts_tb qa
+    JOIN quiz_questions_tb qq ON qq.quiz_id = qa.quiz_id
+    WHERE qa.st_id = ? AND qa.quiz_id = ? AND qa.status = 'completed'
+    GROUP BY qa.quiz_id
+    ORDER BY qa.end_time DESC
+    LIMIT 1");
+$attempt_stmt->bind_param("si", $student_id, $quiz_id);
+$attempt_stmt->execute();
+$attempt_result = $attempt_stmt->get_result();
+$question_count = 2; // Default fallback
+
+if ($row = $attempt_result->fetch_assoc()) {
+    $question_count = (int)$row['question_count'];
+    // Allow slight increase, up to max 4
+    if ($question_count < 4) {
+        $question_count = min($question_count + 1, 4);
+    }
+    // But never more than 4
+    if ($question_count > 4) {
+        $question_count = 4;
+    }
+}
+$attempt_stmt->close();
+
+// Prepare prompt for AI with strict question count
+$prompt = "Generate exactly $question_count quiz questions for high school students on the topic: '$topic'. Each question should match the difficulty and style of: $description. Use a mix of multiple-choice and short-answer formats. Do not repeat questions from previous attempts. Return ONLY the questions in JSON format: [{\"type\": \"multiple-choice\", \"question\": \"...\", \"options\": [\"...\", \"...\", ...], \"answer\": \"...\"}, ...]";
 
 // Call Hugging Face API
 $api_url = "https://openrouter.ai/api/v1/chat/completions";
@@ -49,8 +76,6 @@ preg_match('/\[\s*{.*}\s*\]/s', $ai_content, $matches);
 $json_str = $matches[0] ?? '';
 $questions = json_decode($json_str, true);
 
-file_put_contents('ai_quiz_debug.txt', $ai_content); // Save raw AI output for inspection
-
 // Check if questions were generated
 if (empty($questions)) {
     error_log("AI quiz generation failed. Raw response: " . $ai_content);
@@ -58,10 +83,11 @@ if (empty($questions)) {
     exit;
 }
 
-// Save new quiz to DB (as a generated quiz)
+// Save new quiz to DB (as a generated quiz) and match time limit
 $new_quiz_title = $quiz['quiz_title'] . " (Regenerated)";
-$insert_quiz = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, quiz_topic, status, allow_retakes, parent_quiz_id) SELECT class_id, th_id, ?, ?, quiz_topic, 'published', allow_retakes, ? FROM quizzes_tb WHERE quiz_id = ?");
-$insert_quiz->bind_param("ssii", $new_quiz_title, $description, $quiz_id, $quiz_id);
+$quiz_type = '1';
+$insert_quiz = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, quiz_topic, time_limit, status, allow_retakes, parent_quiz_id, quiz_type) SELECT class_id, th_id, ?, ?, quiz_topic, ?, 'published', allow_retakes, ?, ? FROM quizzes_tb WHERE quiz_id = ?");
+$insert_quiz->bind_param("ssiiis", $new_quiz_title, $description, $time_limit, $quiz_id, $quiz_type, $quiz_id);
 $insert_quiz->execute();
 $new_quiz_id = $conn->insert_id;
 
