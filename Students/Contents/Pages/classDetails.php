@@ -50,6 +50,29 @@
     <!-- JavaScript for Announcement Modal -->
     <script src="../../Assets/Scripts/classDetailsModals.js"></script>
 
+    <?php if (isset($_GET['error']) && $_GET['error'] === 'ai_generation_failed'): ?>
+    <div id="regenerationFailedModal"
+        class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div
+            class="bg-white rounded-3xl shadow-2xl w-full max-w-md p-8 text-center flex flex-col items-center animate-in fade-in-0 zoom-in-95 duration-200">
+            <div class="mb-6 mt-2 flex justify-center">
+                <i class="fas fa-exclamation-triangle text-red-500 text-4xl"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-red-700 mb-2">Quiz Regeneration Failed</h2>
+            <p class="text-gray-700 mb-4">Sorry, we couldn't generate a new quiz at this time. Please try again.
+            </p>
+            <button
+                onclick="document.getElementById('regenerationFailedModal').style.display='none';document.body.classList.remove('overflow-hidden');"
+                class="px-6 py-2.5 bg-red-500 hover:bg-red-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
+                Close
+            </button>
+        </div>
+    </div>
+    <script>
+        document.body.classList.add('overflow-hidden');
+    </script>
+    <?php endif; ?>
+
 </body>
 
 </html>

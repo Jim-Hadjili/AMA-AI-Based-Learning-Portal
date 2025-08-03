@@ -79,7 +79,21 @@ $questions = json_decode($json_str, true);
 // Check if questions were generated
 if (empty($questions)) {
     error_log("AI quiz generation failed. Raw response: " . $ai_content);
-    header("Location: ../Pages/classDetails.php?error=ai_generation_failed");
+
+    // Fetch the correct class_id for this quiz
+    $classIdStmt = $conn->prepare("SELECT class_id FROM quizzes_tb WHERE quiz_id = ?");
+    $classIdStmt->bind_param("i", $quiz_id);
+    $classIdStmt->execute();
+    $classIdRes = $classIdStmt->get_result();
+    $classIdRow = $classIdRes->fetch_assoc();
+    $class_id = $classIdRow['class_id'] ?? null;
+    $classIdStmt->close();
+
+    if ($class_id) {
+        header("Location: ../Contents/Pages/classDetails.php?class_id=$class_id&error=ai_generation_failed");
+    } else {
+        header("Location: ../Dashboard/studentDashboard.php?error=ai_generation_failed");
+    }
     exit;
 }
 
