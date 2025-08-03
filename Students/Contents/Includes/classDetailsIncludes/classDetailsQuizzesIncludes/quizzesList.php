@@ -8,6 +8,14 @@
     <?php else: ?>
         <ul id="quizList" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             <?php foreach ($paginatedQuizzes as $quiz): ?>
+                <?php
+                    // Ensure all required fields exist
+                    $quiz['total_questions'] = $quiz['total_questions'] ?? 0;
+                    $quiz['total_score'] = $quiz['total_score'] ?? 0;
+                    $quiz['time_limit'] = $quiz['time_limit'] ?? 0;
+                    $quiz['status'] = $quiz['status'] ?? 'published';
+                    $quiz['quiz_description'] = $quiz['quiz_description'] ?? '';
+                ?>
                 <li>
                     <div class="quiz-card flex flex-col h-full bg-white hover:bg-emerald-50 rounded-xl p-5 transition-all duration-200 ease-in-out group border border-emerald-400 shadow-sm cursor-pointer"
                         onclick="handleQuizCardClick(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"

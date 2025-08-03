@@ -70,6 +70,16 @@ if ($user_position === 'teacher') {
                 break;
             }
         }
+        // --- FIX: Always fetch total_questions and total_score for the latest quiz ---
+        $questionsStmt = $conn->prepare("SELECT COUNT(question_id), SUM(question_points) FROM quiz_questions_tb WHERE quiz_id = ?");
+        $questionsStmt->bind_param("i", $latestQuiz['quiz_id']);
+        $questionsStmt->execute();
+        $questionsStmt->bind_result($questionCount, $scoreSum);
+        $questionsStmt->fetch();
+        $latestQuiz['total_questions'] = $questionCount ?: 0;
+        $latestQuiz['total_score'] = $scoreSum ?: 0;
+        $questionsStmt->close();
+
         // Fetch student's latest attempt for this quiz
         $attemptStmt = $conn->prepare(
             "SELECT attempt_id, result, score FROM quiz_attempts_tb WHERE quiz_id = ? AND st_id = ? AND status = 'completed' ORDER BY attempt_id DESC LIMIT 1"
