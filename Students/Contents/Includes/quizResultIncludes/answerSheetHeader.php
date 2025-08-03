@@ -44,14 +44,43 @@
             <div class="flex-shrink-0 lg:ml-6 mt-4 lg:mt-0">
                 <?php if (!$has_passed && $quizAttempt['allow_retakes']): ?>
                     <div class="flex items-center space-x-3">
-                        <a href="quizPage.php?quiz_id=<?php echo htmlspecialchars($quiz_id); ?>"
-                           class="bg-white hover:bg-orange-500 hover:text-white text-gray-700 px-5 py-2 rounded-xl flex items-center text-base font-semibold transition-all duration-200 shadow-md hover:shadow-lg border-2 border-orange-500 quiz-navigation-link focus:ring-2 focus:ring-orange-300">
+                        <button
+                            id="retakeQuizBtn"
+                            type="button"
+                            class="bg-white hover:bg-orange-500 hover:text-white text-gray-700 px-5 py-2 rounded-xl flex items-center text-base font-semibold transition-all duration-200 shadow-md hover:shadow-lg border-2 border-orange-500 quiz-navigation-link focus:ring-2 focus:ring-orange-300"
+                            data-quiz-id="<?php echo htmlspecialchars($quiz_id); ?>">
                             <i class="fas fa-redo-alt mr-2"></i>
                             Retake Quiz
-                        </a>
+                        </button>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
     </div>
 </div>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center flex flex-col items-center">
+        <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <h2 class="text-lg font-bold text-blue-600 mb-2">Please wait...</h2>
+        <p class="text-gray-700">The AI is generating a new quiz for you.</p>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    var retakeBtn = document.getElementById("retakeQuizBtn");
+    if (retakeBtn) {
+        retakeBtn.addEventListener("click", function() {
+            document.getElementById("loadingModal").classList.remove("hidden");
+            setTimeout(function() {
+                window.location.href = "../../Functions/regenerateQuiz.php?quiz_id=" + encodeURIComponent(retakeBtn.dataset.quizId);
+            }, 600);
+        });
+    }
+});
+</script>
