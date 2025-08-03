@@ -202,14 +202,17 @@
 </div>
 
 <!-- Retake Quiz Modal -->
-<div id="retakeQuizModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
-    <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
-        <h2 class="text-xl font-bold text-red-600 mb-2">Quiz Failed</h2>
-        <p class="text-gray-700 mb-4">You did not pass your last attempt for this quiz.<br>Would you like to retake it with new questions?</p>
-        <div class="flex justify-center gap-4 mt-6">
-            <button onclick="closeRetakeQuizModal()" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold">Cancel</button>
-            <button id="retakeQuizConfirmBtn" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold">Retake Quiz</button>
-        </div>
+<?php include "../Modals/retakeQuizModal.php" ?>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center flex flex-col items-center">
+        <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <h2 class="text-lg font-bold text-blue-600 mb-2">Please wait...</h2>
+        <p class="text-gray-700">The AI is generating a new quiz for you.</p>
     </div>
 </div>
 
@@ -222,8 +225,11 @@ function handleQuizCardClick(quiz, failed) {
         document.getElementById('retakeQuizModal').classList.remove('hidden');
         document.body.style.overflow = 'hidden';
         document.getElementById('retakeQuizConfirmBtn').onclick = function() {
-            // Redirect to regenerateQuiz.php with quiz_id
-            window.location.href = "../../Functions/regenerateQuiz.php?quiz_id=" + encodeURIComponent(selectedQuiz.quiz_id);
+            document.getElementById('loadingModal').classList.remove('hidden');
+            // Give a short delay for modal to appear before redirect
+            setTimeout(function() {
+                window.location.href = "../../Functions/regenerateQuiz.php?quiz_id=" + encodeURIComponent(selectedQuiz.quiz_id);
+            }, 600);
         };
     } else {
         // Show normal quiz details modal (existing logic)
