@@ -28,9 +28,12 @@
             <?php else: ?>
                 <div class="space-y-4">
                     <?php foreach ($recentQuizzes as $quiz): ?>
+                        <?php
+                            $attempt = $quiz['student_attempt'] ?? null;
+                            $failed = ($attempt && $attempt['result'] === 'failed');
+                        ?>
                         <div class="group p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-emerald-400 hover:border-blue-200 hover:shadow-md"
-                            onclick="showQuizDetailsModal(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
-                            data-student-attempt='<?php echo htmlspecialchars(json_encode($quiz['student_attempt'] ?? null)); ?>'>
+                            onclick="handleQuizCardClick(<?php echo htmlspecialchars(json_encode($quiz)); ?>, <?php echo $failed ? 'true' : 'false'; ?>)">
                             <div class="flex items-start justify-between">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-blue-900"><?php echo htmlspecialchars($quiz['quiz_title']); ?></h3>
@@ -197,3 +200,39 @@
         </div>
     </div>
 </div>
+
+<!-- Retake Quiz Modal -->
+<div id="retakeQuizModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center">
+        <h2 class="text-xl font-bold text-red-600 mb-2">Quiz Failed</h2>
+        <p class="text-gray-700 mb-4">You did not pass your last attempt for this quiz.<br>Would you like to retake it with new questions?</p>
+        <div class="flex justify-center gap-4 mt-6">
+            <button onclick="closeRetakeQuizModal()" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold">Cancel</button>
+            <button id="retakeQuizConfirmBtn" class="px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white font-semibold">Retake Quiz</button>
+        </div>
+    </div>
+</div>
+
+<script>
+let selectedQuiz = null;
+
+function handleQuizCardClick(quiz, failed) {
+    if (failed) {
+        selectedQuiz = quiz;
+        document.getElementById('retakeQuizModal').classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
+        document.getElementById('retakeQuizConfirmBtn').onclick = function() {
+            // Redirect to regenerateQuiz.php with quiz_id
+            window.location.href = "../../Functions/regenerateQuiz.php?quiz_id=" + encodeURIComponent(selectedQuiz.quiz_id);
+        };
+    } else {
+        // Show normal quiz details modal (existing logic)
+        showQuizDetailsModal(quiz);
+    }
+}
+
+function closeRetakeQuizModal() {
+    document.getElementById('retakeQuizModal').classList.add('hidden');
+    document.body.style.overflow = '';
+}
+</script>
