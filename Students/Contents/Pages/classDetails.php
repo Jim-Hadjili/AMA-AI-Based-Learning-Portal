@@ -62,7 +62,7 @@
             <p class="text-gray-700 mb-4">Sorry, we couldn't generate a new quiz at this time. Please try again.
             </p>
             <button
-                onclick="document.getElementById('regenerationFailedModal').style.display='none';document.body.classList.remove('overflow-hidden');"
+                onclick="document.getElementById('regenerationFailedModal').style.display='none';document.body.classList.remove('overflow-hidden');removeErrorParam();"
                 class="px-6 py-2.5 bg-red-500 hover:bg-red-700 text-white rounded-xl transition-all duration-200 font-medium shadow-lg hover:shadow-xl">
                 Close
             </button>
@@ -70,6 +70,11 @@
     </div>
     <script>
         document.body.classList.add('overflow-hidden');
+        function removeErrorParam() {
+            const url = new URL(window.location);
+            url.searchParams.delete('error');
+            window.history.replaceState({}, document.title, url);
+        }
     </script>
     <?php endif; ?>
 

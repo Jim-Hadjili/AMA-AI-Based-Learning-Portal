@@ -47,7 +47,7 @@ if ($row = $attempt_result->fetch_assoc()) {
 $attempt_stmt->close();
 
 // Prepare prompt for AI with strict question count
-$prompt = "Generate exactly $question_count quiz questions for high school students on the topic: '$topic'. Each question should match the difficulty and style of: $description. Use a mix of multiple-choice and short-answer formats. Do not repeat questions from previous attempts. Return ONLY the questions in JSON format: [{\"type\": \"multiple-choice\", \"question\": \"...\", \"options\": [\"...\", \"...\", ...], \"answer\": \"...\"}, ...]";
+$prompt = "Generate exactly $question_count easier quiz questions for high school students on the topic: '$topic'. Each question should be more easier than the previous questions and style of: $description. Use a multiple-choice questions formats. Do not repeat questions from previous attempts. Return ONLY the questions in JSON format: [{\"type\": \"multiple-choice\", \"question\": \"...\", \"options\": [\"...\", \"...\", ...], \"answer\": \"...\"}, ...]";
 
 // Call Hugging Face API
 $api_url = "https://openrouter.ai/api/v1/chat/completions";
@@ -98,7 +98,11 @@ if (empty($questions)) {
 }
 
 // Save new quiz to DB (as a generated quiz) and match time limit
-$new_quiz_title = $quiz['quiz_title'] . " (Regenerated)";
+if (strpos($quiz['quiz_title'], '(Regenerated)') !== false) {
+    $new_quiz_title = $quiz['quiz_title'];
+} else {
+    $new_quiz_title = $quiz['quiz_title'] . " (Regenerated)";
+}
 $quiz_type = '1';
 $insert_quiz = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, quiz_topic, time_limit, status, allow_retakes, parent_quiz_id, quiz_type) SELECT class_id, th_id, ?, ?, quiz_topic, ?, 'published', allow_retakes, ?, ? FROM quizzes_tb WHERE quiz_id = ?");
 $insert_quiz->bind_param("ssiiis", $new_quiz_title, $description, $time_limit, $quiz_id, $quiz_type, $quiz_id);
