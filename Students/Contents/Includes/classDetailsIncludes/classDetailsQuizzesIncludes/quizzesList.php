@@ -10,7 +10,7 @@
             <?php foreach ($paginatedQuizzes as $quiz): ?>
                 <li>
                     <div class="quiz-card flex flex-col h-full bg-white hover:bg-emerald-50 rounded-xl p-5 transition-all duration-200 ease-in-out group border border-emerald-400 shadow-sm cursor-pointer"
-                        onclick="showQuizDetailsModal(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
+                        onclick="handleQuizCardClick(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
                         data-student-attempt='<?php echo htmlspecialchars(json_encode($quiz['student_attempt'] ?? null)); ?>'>
                         <div class="flex items-center gap-3 mb-2">
                             <i class="fas fa-clipboard-list text-emerald-500 text-xl"></i>
@@ -135,3 +135,47 @@
     </div>
 <?php endif; ?>
 <?php endif; ?>
+
+<!-- Retake Quiz Modal -->
+<?php include "../Modals/retakeQuizModal.php"; ?>
+
+<!-- Loading Modal -->
+<div id="loadingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-xl shadow-lg p-8 max-w-md w-full text-center flex flex-col items-center">
+        <svg class="animate-spin h-8 w-8 text-blue-600 mb-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"></path>
+        </svg>
+        <h2 class="text-lg font-bold text-blue-600 mb-2">Please wait...</h2>
+        <p class="text-gray-700">The AI is generating a new quiz for you.</p>
+    </div>
+</div>
+
+<script>
+let selectedQuiz = null;
+
+function handleQuizCardClick(quiz) {
+    // Check if student_attempt exists and is 'failed'
+    if (quiz.student_attempt && quiz.student_attempt.result === "failed") {
+        selectedQuiz = quiz;
+        document.getElementById('retakeQuizModal').classList.remove('hidden');
+        document.body.classList.add('overflow-hidden');
+        document.getElementById('retakeQuizConfirmBtn').onclick = function() {
+            document.getElementById('retakeQuizModal').classList.add('hidden');
+            document.getElementById('loadingModal').classList.remove('hidden');
+            // Give a short delay for modal to appear before redirect
+            setTimeout(function() {
+                window.location.href = "../../Functions/regenerateQuiz.php?quiz_id=" + encodeURIComponent(selectedQuiz.quiz_id);
+            }, 600);
+        };
+    } else {
+        // Use your existing modal logic
+        showQuizDetailsModal(quiz);
+    }
+}
+
+function closeRetakeQuizModal() {
+    document.getElementById('retakeQuizModal').classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+}
+</script>
