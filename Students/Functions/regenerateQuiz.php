@@ -79,7 +79,7 @@ $questions = json_decode($json_str, true);
 // Check if questions were generated
 if (empty($questions)) {
     error_log("AI quiz generation failed. Raw response: " . $ai_content);
-    header("Location: ../Dashboard/studentDashboard.php?error=ai_generation_failed");
+    header("Location: ../Pages/classDetails.php?error=ai_generation_failed");
     exit;
 }
 
