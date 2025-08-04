@@ -1,0 +1,12 @@
+# Configuration files with sensitive data
+config/config.php
+
+# Other common files to ignore
+.env
+*.log
+temp/
+uploads/
+vendor/
+node_modules/
+.DS_Store
+Thumbs.db

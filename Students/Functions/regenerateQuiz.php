@@ -2,6 +2,14 @@
 session_start();
 include_once '../../Connection/conn.php';
 
+// Load configuration
+$config = include_once '../../config/config.php';
+if (!$config) {
+    error_log("Configuration file not found or invalid");
+    header("Location: ../Dashboard/studentDashboard.php?error=config_error");
+    exit;
+}
+
 $quiz_id = $_GET['quiz_id'] ?? null;
 $student_id = $_SESSION['st_id'] ?? null;
 
@@ -49,14 +57,14 @@ $attempt_stmt->close();
 // Prepare prompt for AI with strict question count
 $prompt = "Generate exactly $question_count easier quiz questions for high school students on the topic: '$topic'. Each question should be more easier than the previous questions and style of: $description. Use a multiple-choice questions formats. Do not repeat questions from previous attempts. Return ONLY the questions in JSON format: [{\"type\": \"multiple-choice\", \"question\": \"...\", \"options\": [\"...\", \"...\", ...], \"answer\": \"...\"}, ...]";
 
-// Call Hugging Face API
-$api_url = "https://openrouter.ai/api/v1/chat/completions";
+// Call Hugging Face API using configuration
+$api_url = $config['openrouter']['api_url'];
 $headers = [
-    "Authorization: Bearer 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",
+    "Authorization: Bearer " . $config['openrouter']['api_key'],
     "Content-Type: application/json"
 ];
 $data = [
-    "model" => "mistralai/mistral-7b-instruct",
+    "model" => $config['openrouter']['model'],
     "messages" => [
         ["role" => "user", "content" => $prompt]
     ]
