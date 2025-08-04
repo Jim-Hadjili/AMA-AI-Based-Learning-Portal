@@ -37,7 +37,7 @@
     </a>
 
     <!-- Announcements -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+    <a href="../Pages/dashboardAllAnnouncements.php" class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 card-hover focus:outline-none focus:ring-2 focus:ring-red-500">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600">Announcements</p>
@@ -47,5 +47,5 @@
                 <i class="fas fa-bullhorn text-red-600 text-xl"></i>
             </div>
         </div>
-    </div>
+    </a>
 </div>
