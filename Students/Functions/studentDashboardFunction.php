@@ -133,8 +133,8 @@ if ($studentId) {
     if (!empty($classIds)) {
         $classIdsStr = implode(',', array_map('intval', $classIds));
 
-        // Total Published Quizzes
-        $quizQuery = "SELECT COUNT(*) AS total FROM quizzes_tb WHERE class_id IN ($classIdsStr) AND status = 'published'";
+        // Total Published Quizzes - modified to exclude AI-generated quizzes
+        $quizQuery = "SELECT COUNT(*) AS total FROM quizzes_tb WHERE class_id IN ($classIdsStr) AND status = 'published' AND quiz_type != '1'";
         $quizResult = $conn->query($quizQuery);
         $totalPublishedQuizzes = $quizResult->fetch_assoc()['total'] ?? 0;
 
