@@ -57,7 +57,7 @@ $enrolledCount = 0;
 
 if ($studentId) {
     // Get classes the student is enrolled in, along with student and quiz counts
-    $classQuery = "SELECT
+    $classQuery = "SELECT DISTINCT
                        tc.*,
                        (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
                        (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published' AND q.quiz_type != '1') AS quiz_count
@@ -70,51 +70,18 @@ if ($studentId) {
     $classStmt->execute();
     $classResult = $classStmt->get_result();
 
-    while ($class = $classResult->fetch_assoc()) {
-        // Add the derived class_subject to the class array
-        $class['class_subject'] = getSubjectFromClassName($class['class_name']);
-        $enrolledClasses[] = $class;
-    }
-    $enrolledCount = count($enrolledClasses);
-}
-
-// After fetching the enrolled classes, update the quiz counts to include only the latest AI versions
-if ($studentId) {
-    // Fetch classes first
-    $classQuery = "SELECT
-                      tc.*,
-                      (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count
-                   FROM teacher_classes_tb tc
-                   INNER JOIN class_enrollments_tb ce_main ON tc.class_id = ce_main.class_id
-                   WHERE ce_main.st_id = ? AND tc.status = 'active'
-                   ORDER BY tc.created_at DESC";
-    $classStmt = $conn->prepare($classQuery);
-    $classStmt->bind_param("s", $studentId);
-    $classStmt->execute();
-    $classResult = $classStmt->get_result();
+    $processedClassIds = []; // Track processed class IDs to avoid duplicates
     
     while ($class = $classResult->fetch_assoc()) {
-        // Add the derived class_subject to the class array
-        $class['class_subject'] = getSubjectFromClassName($class['class_name']);
-        
-        // Now calculate accurate quiz count for this class
-        $class_id = $class['class_id'];
-        
-        // Get all original quizzes for this class
-        $baseQuizQuery = "SELECT quiz_id FROM quizzes_tb 
-                          WHERE class_id = ? AND status = 'published' AND quiz_type != '1'";
-        $baseQuizStmt = $conn->prepare($baseQuizQuery);
-        $baseQuizStmt->bind_param("i", $class_id);
-        $baseQuizStmt->execute();
-        $baseQuizResult = $baseQuizStmt->get_result();
-        
-        $quizCount = 0;
-        while ($baseQuiz = $baseQuizResult->fetch_assoc()) {
-            $quizCount++; // Count this original quiz
+        // Check if we've already processed this class
+        if (in_array($class['class_id'], $processedClassIds)) {
+            continue; // Skip duplicate classes
         }
         
-        $class['quiz_count'] = $quizCount;
+        // Add the derived class_subject to the class array
+        $class['class_subject'] = getSubjectFromClassName($class['class_name']);
         $enrolledClasses[] = $class;
+        $processedClassIds[] = $class['class_id']; // Mark this class as processed
     }
     $enrolledCount = count($enrolledClasses);
 }

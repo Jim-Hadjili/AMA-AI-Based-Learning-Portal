@@ -1,5 +1,5 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-    <a href="/Students/Contents/EnrolledClasses/" class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 card-hover focus:outline-none focus:ring-2 focus:ring-blue-500">
+    <a href="../Pages/studentAllClasses.php" class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 card-hover focus:outline-none focus:ring-2 focus:ring-blue-500">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600">Enrolled Classes</p>
