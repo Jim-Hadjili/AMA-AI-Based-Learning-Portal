@@ -98,10 +98,10 @@ if (empty($questions)) {
 }
 
 // Save new quiz to DB (as a generated quiz) and match time limit
-if (strpos($quiz['quiz_title'], '(Regenerated)') !== false) {
+if (strpos($quiz['quiz_title'], '(AI Regenerated)') !== false) {
     $new_quiz_title = $quiz['quiz_title'];
 } else {
-    $new_quiz_title = $quiz['quiz_title'] . " (Regenerated)";
+    $new_quiz_title = $quiz['quiz_title'] . " (AI Regenerated)";
 }
 $quiz_type = '1';
 $insert_quiz = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_description, quiz_topic, time_limit, status, allow_retakes, parent_quiz_id, quiz_type) SELECT class_id, th_id, ?, ?, quiz_topic, ?, 'published', allow_retakes, ?, ? FROM quizzes_tb WHERE quiz_id = ?");
