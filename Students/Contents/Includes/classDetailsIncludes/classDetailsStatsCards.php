@@ -22,7 +22,7 @@
     </a>
 
     <!-- Total Quizzes Card -->
-    <div class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
+    <a href="classDetailsAllQuizzes.php?class_id=<?php echo urlencode($class_id); ?>" class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
         <!-- Background decoration -->
         <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-emerald-50 to-emerald-100 opacity-30 rounded-full -mr-10 -mt-10"></div>
         
@@ -41,10 +41,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Materials Card -->
-    <div class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
+    <a href="classDetailsAllMaterials.php?class_id=<?php echo urlencode($class_id); ?>" class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
         <!-- Background decoration -->
         <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-violet-50 to-violet-100 opacity-30 rounded-full -mr-10 -mt-10"></div>
         
@@ -63,10 +63,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Announcements Card -->
-    <div class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
+    <a href="classDetailsAllAnnouncements.php?class_id=<?php echo urlencode($class_id); ?>" class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
         <!-- Background decoration -->
         <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-amber-50 to-amber-100 opacity-30 rounded-full -mr-10 -mt-10"></div>
         
@@ -85,5 +85,5 @@
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 </div>
