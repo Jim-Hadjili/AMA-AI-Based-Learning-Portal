@@ -11,3 +11,22 @@
 .search-input:focus {
   box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
+
+/* Updated grid layout styles */
+#classesGrid {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 1.5rem;
+}
+
+@media (min-width: 768px) {
+  #classesGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  #classesGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}

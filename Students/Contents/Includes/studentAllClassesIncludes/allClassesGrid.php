@@ -64,7 +64,7 @@ $subjectStyles = [
         'icon_color' => 'text-gray-600',
         'icon_class' => 'fas fa-graduation-cap'
     ]
-];
+    ];
 ?>
 
 <?php if (empty($enrolledClasses)): ?>
@@ -79,7 +79,27 @@ $subjectStyles = [
         </button>
     </div>
 <?php else: ?>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="classesGrid">
+    <style>
+        #classesGrid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            #classesGrid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            #classesGrid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+    
+    <div id="classesGrid">
         <?php foreach ($enrolledClasses as $index => $class):
             $description = !empty($class['class_description']) ? $class['class_description'] : 'No description provided.';
             $strand = !empty($class['strand']) ? $class['strand'] : 'N/A';
@@ -159,6 +179,4 @@ $subjectStyles = [
             </div>
         <?php endforeach; ?>
     </div>
-
-    
 <?php endif; ?>
