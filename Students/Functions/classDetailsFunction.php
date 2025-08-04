@@ -48,12 +48,10 @@ function getSubjectFromClassName($className) {
     return 'Default';
 }
 
-// Fetch class details
+// Fetch class details with basic counts first
 $classDetails = null;
 $classQuery = "SELECT tc.*, 
                       (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
-                      (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id) AS total_quiz_count,
-                      (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS published_quiz_count,
                       (SELECT COUNT(lm.material_id) FROM learning_materials_tb lm WHERE lm.class_id = tc.class_id) AS material_count,
                       (SELECT COUNT(a.announcement_id) FROM announcements_tb a WHERE a.class_id = tc.class_id) AS announcement_count
                FROM teacher_classes_tb tc 
@@ -71,6 +69,31 @@ if ($result->num_rows > 0) {
     header("Location: ../Dashboard/studentDashboard.php");
     exit;
 }
+
+// Now calculate the correct quiz counts
+// 1. Get all non-AI quizzes (original quizzes)
+$originalQuizQuery = "SELECT quiz_id FROM quizzes_tb WHERE class_id = ? AND quiz_type != '1'";
+$originalQuizStmt = $conn->prepare($originalQuizQuery);
+$originalQuizStmt->bind_param("i", $class_id);
+$originalQuizStmt->execute();
+$originalQuizResult = $originalQuizStmt->get_result();
+$originalQuizCount = $originalQuizResult->num_rows;
+$classDetails['total_quiz_count'] = $originalQuizCount;
+
+// 2. Count published quizzes (originals + latest AI versions)
+$publishedQuizCount = 0;
+
+// First, get all published original quizzes
+$publishedOriginalQuery = "SELECT quiz_id FROM quizzes_tb WHERE class_id = ? AND quiz_type != '1' AND status = 'published'";
+$publishedOriginalStmt = $conn->prepare($publishedOriginalQuery);
+$publishedOriginalStmt->bind_param("i", $class_id);
+$publishedOriginalStmt->execute();
+$publishedOriginalResult = $publishedOriginalStmt->get_result();
+$publishedQuizCount = $publishedOriginalResult->num_rows;
+
+// For each published quiz, check if it has AI-generated versions
+// If it does, we only count 1 for each original quiz (whether we use the original or AI version)
+$classDetails['published_quiz_count'] = $publishedQuizCount;
 
 // Check if user has access to this class
 $hasAccess = false;
