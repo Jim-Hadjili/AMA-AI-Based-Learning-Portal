@@ -57,6 +57,11 @@ if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] ===
             
             // Update session
             $_SESSION['profile_picture'] = $new_filename;
+            
+            // Also update users_tb with the profile picture for consistency
+            $userUpdateFields .= ", profile_picture=?";
+            $userParams[] = $new_filename;
+            $userTypes .= "s";
         } else {
             // Log upload error for debugging
             error_log("Failed to move uploaded file to $upload_path");

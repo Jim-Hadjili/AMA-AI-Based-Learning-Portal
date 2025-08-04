@@ -29,6 +29,24 @@ if ($result->num_rows > 0) {
     $_SESSION['st_id'] = $studentId; // Store st_id in session
 }
 
+// Retrieve profile picture if not already in session
+if ($studentId) {
+    if (!isset($_SESSION['profile_picture'])) {
+        $profileQuery = "SELECT profile_picture FROM students_profiles_tb WHERE st_id = ?";
+        $profileStmt = $conn->prepare($profileQuery);
+        $profileStmt->bind_param("s", $studentId);
+        $profileStmt->execute();
+        $profileResult = $profileStmt->get_result();
+        
+        if ($profileResult->num_rows > 0) {
+            $profileRow = $profileResult->fetch_assoc();
+            if (!empty($profileRow['profile_picture'])) {
+                $_SESSION['profile_picture'] = $profileRow['profile_picture'];
+            }
+        }
+    }
+}
+
 // Helper function to determine subject from class name
 function getSubjectFromClassName($className) {
     $classNameLower = strtolower($className);

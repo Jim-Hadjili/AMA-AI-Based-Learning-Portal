@@ -52,4 +52,34 @@ function preventBackButton() {
 function generateSessionToken() {
     return bin2hex(random_bytes(16)); // 32 character random string
 }
+
+// After setting the other session variables on login, add this code:
+function loadUserProfilePicture($userId, $conn) {
+    // For student users
+    $stmt = $conn->prepare("SELECT profile_picture FROM students_profiles_tb WHERE st_id = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (!empty($row['profile_picture'])) {
+            $_SESSION['profile_picture'] = $row['profile_picture'];
+            return;
+        }
+    }
+    
+    // If no student profile found or empty profile picture, try users_tb (for other user types)
+    $stmt = $conn->prepare("SELECT profile_picture FROM users_tb WHERE user_id = ?");
+    $stmt->bind_param("s", $userId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    
+    if ($result->num_rows > 0) {
+        $row = $result->fetch_assoc();
+        if (!empty($row['profile_picture'])) {
+            $_SESSION['profile_picture'] = $row['profile_picture'];
+        }
+    }
+}
 ?>
