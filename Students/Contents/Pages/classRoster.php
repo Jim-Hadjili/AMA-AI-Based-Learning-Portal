@@ -1,4 +1,11 @@
-<?php include "../../Functions/classRosterFunction.php" ?>
+<?php 
+// Add cache control headers at the very top of the file
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Pragma: no-cache");
+header("Expires: 0");
+
+include "../../Functions/classRosterFunction.php"; 
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -153,6 +160,7 @@
                                         <td class="px-6 py-4 whitespace-nowrap text-center">
                                             <div class="text-sm text-gray-900">
                                                 <?php
+                                                // Always use the grade_level from the students_profiles_tb table
                                                 $grade = str_replace('_', ' ', $student['grade_level'] ?? 'Not specified');
                                                 echo ucwords($grade);
                                                 ?>

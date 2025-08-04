@@ -1,48 +1,54 @@
 <div id="editProfileModal" class="fixed inset-0 z-50 bg-black/40 flex items-center justify-center hidden">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-0 relative">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-0 relative max-h-[90vh] overflow-y-auto">
         <!-- Accent Bar -->
-        <div class="h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-t-2xl"></div>
-        <button onclick="closeEditProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-blue-600 text-2xl rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300">
+        <div class="h-2 bg-gradient-to-r from-blue-400 to-blue-600 rounded-t-2xl sticky top-0 z-10"></div>
+        <button onclick="closeEditProfileModal()" class="absolute top-4 right-4 text-gray-400 hover:text-blue-600 text-2xl rounded-full focus:outline-none focus:ring-2 focus:ring-blue-300 z-10">
                 <i class="fas fa-times text-2xl"></i>
         </button>
-        <div class="p-8">
-            <h2 class="text-xl font-bold mb-6 text-blue-900 flex items-center gap-2">
+        <div class="p-5">
+            <h2 class="text-xl font-bold mb-4 text-blue-900 flex items-center gap-2">
                 <i class="fas fa-user-edit text-blue-500"></i>
                 Edit Profile
             </h2>
             <form id="editProfileForm" method="post" action="../../Functions/updateStudentProfile.php" enctype="multipart/form-data">
-                <!-- Profile Picture Upload -->
-                <div class="mb-6 flex flex-col items-center">
-                    <div class="relative w-24 h-24 mb-3 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-                        <?php if (!empty($_SESSION['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
-                            <img id="profilePreview" src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile Picture" class="w-full h-full object-cover">
-                        <?php else: ?>
-                            <div id="profilePreview" class="w-full h-full bg-blue-100 flex items-center justify-center">
-                                <span class="text-blue-600 font-bold text-2xl">
-                                    <?php 
-                                        $initials = explode(' ', $user_name);
-                                        echo strtoupper(substr($initials[0], 0, 1) . (isset($initials[1]) ? substr($initials[1], 0, 1) : ''));
-                                    ?>
-                                </span>
+                <!-- Two column layout for top section -->
+                <div class="flex flex-col sm:flex-row gap-6 mb-4">
+                    <!-- Profile Picture Upload -->
+                    <div class="flex flex-col items-center">
+                        <div class="relative w-24 h-24 mb-2 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
+                            <?php if (!empty($_SESSION['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
+                                <img id="profilePreview" src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile Picture" class="w-full h-full object-cover">
+                            <?php else: ?>
+                                <div id="profilePreview" class="w-full h-full bg-blue-100 flex items-center justify-center">
+                                    <span class="text-blue-600 font-bold text-2xl">
+                                        <?php 
+                                            $initials = explode(' ', $user_name);
+                                            echo strtoupper(substr($initials[0], 0, 1) . (isset($initials[1]) ? substr($initials[1], 0, 1) : ''));
+                                        ?>
+                                    </span>
+                                </div>
+                            <?php endif; ?>
+                            <div class="absolute bottom-0 right-0">
+                                <label for="profile_picture" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer shadow-md">
+                                    <i class="fas fa-camera"></i>
+                                </label>
+                                <input type="file" id="profile_picture" name="profile_picture" accept="image/*" class="hidden" onchange="previewImage(this)">
                             </div>
-                        <?php endif; ?>
-                        <div class="absolute bottom-0 right-0">
-                            <label for="profile_picture" class="bg-blue-500 hover:bg-blue-600 text-white rounded-full w-8 h-8 flex items-center justify-center cursor-pointer shadow-md">
-                                <i class="fas fa-camera"></i>
-                            </label>
-                            <input type="file" id="profile_picture" name="profile_picture" accept="image/*" class="hidden" onchange="previewImage(this)">
+                        </div>
+                        <p class="text-xs text-gray-500">Click to upload</p>
+                    </div>
+                    
+                    <!-- Basic Info -->
+                    <div class="flex-1 space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
+                            <input type="text" name="st_userName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" value="<?php echo htmlspecialchars($user_name); ?>" required />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <input type="email" name="st_email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" value="<?php echo htmlspecialchars($user_email); ?>" required />
                         </div>
                     </div>
-                    <p class="text-xs text-gray-500">Click the camera icon to upload a profile picture</p>
-                </div>
-
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                    <input type="text" name="st_userName" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" value="<?php echo htmlspecialchars($user_name); ?>" required />
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" name="st_email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" value="<?php echo htmlspecialchars($user_email); ?>" required />
                 </div>
 
                 <?php
@@ -69,43 +75,55 @@
                 }
                 ?>
 
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Grade Level</label>
-                    <div class="relative">
-                        <select name="grade_level" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
-                            <option value="">Select grade</option>
-                            <option value="grade_11" <?php if ($grade_level === 'grade_11') echo 'selected'; ?>>Grade 11</option>
-                            <option value="grade_12" <?php if ($grade_level === 'grade_12') echo 'selected'; ?>>Grade 12</option>
-                        </select>
-                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                <!-- Academic Info - Two column layout -->
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Grade Level</label>
+                        <div class="relative">
+                            <select name="grade_level" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                                <option value="">Select grade</option>
+                                <option value="grade_11" <?php if ($grade_level === 'grade_11') echo 'selected'; ?>>Grade 11</option>
+                                <option value="grade_12" <?php if ($grade_level === 'grade_12') echo 'selected'; ?>>Grade 12</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Strand</label>
+                        <div class="relative">
+                            <select name="strand" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
+                                <option value="">Select strand</option>
+                                <option value="stem" <?php if ($strand === 'stem') echo 'selected'; ?>>STEM</option>
+                                <option value="abm" <?php if ($strand === 'abm') echo 'selected'; ?>>ABM</option>
+                                <option value="humss" <?php if ($strand === 'humss') echo 'selected'; ?>>HUMSS</option>
+                                <option value="gas" <?php if ($strand === 'gas') echo 'selected'; ?>>GAS</option>
+                                <option value="tvl_ict" <?php if ($strand === 'tvl_ict') echo 'selected'; ?>>TVL-ICT</option>
+                                <option value="tvl_he" <?php if ($strand === 'tvl_he') echo 'selected'; ?>>TVL-HE</option>
+                            </select>
+                            <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+                        </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Strand</label>
-                    <div class="relative">
-                        <select name="strand" class="w-full pl-3 pr-8 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent appearance-none" required>
-                            <option value="">Select strand</option>
-                            <option value="stem" <?php if ($strand === 'stem') echo 'selected'; ?>>STEM</option>
-                            <option value="abm" <?php if ($strand === 'abm') echo 'selected'; ?>>ABM</option>
-                            <option value="humss" <?php if ($strand === 'humss') echo 'selected'; ?>>HUMSS</option>
-                            <option value="gas" <?php if ($strand === 'gas') echo 'selected'; ?>>GAS</option>
-                            <option value="tvl_ict" <?php if ($strand === 'tvl_ict') echo 'selected'; ?>>TVL-ICT</option>
-                            <option value="tvl_he" <?php if ($strand === 'tvl_he') echo 'selected'; ?>>TVL-HE</option>
-                        </select>
-                        <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+
+                <!-- Password Section -->
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <h4 class="text-sm font-semibold text-gray-700 mb-3">Change Password (Optional)</h4>
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
+                            <input type="password" name="new_password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" placeholder="Leave blank to keep current password" autocomplete="new-password" />
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Current Password <span class="text-xs text-gray-400">(required to change)</span></label>
+                            <input type="password" name="current_password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" placeholder="Enter current password" autocomplete="current-password" />
+                        </div>
                     </div>
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">New Password</label>
-                    <input type="password" name="new_password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" placeholder="Leave blank to keep current password" autocomplete="new-password" />
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Current Password <span class="text-xs text-gray-400">(required to change password)</span></label>
-                    <input type="password" name="current_password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent shadow-sm" placeholder="Enter current password to change" autocomplete="current-password" />
-                </div>
-                <div class="flex justify-end gap-2 mt-6">
+                
+                <!-- Action Buttons -->
+                <div class="flex justify-end gap-2 mt-5 pt-4 border-t border-gray-200">
                     <button type="button" onclick="closeEditProfileModal()" class="px-4 py-2 rounded-lg bg-gray-100 text-gray-700 hover:bg-gray-200 transition-colors duration-200">Cancel</button>
-                    <button type="submit" class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow">Save</button>
+                    <button type="submit" class="px-4 py-2 rounded-lg bg-blue-500 hover:bg-blue-600 text-white transition-colors duration-200 shadow">Save Changes</button>
                 </div>
             </form>
         </div>
@@ -138,6 +156,27 @@
             };
             
             reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Add this new function to handle form submission
+    document.getElementById('editProfileForm').addEventListener('submit', function(event) {
+        // Store the fact that we're submitting the form
+        localStorage.setItem('profileUpdated', 'true');
+    });
+    
+    // Check if we need to reload the page when the modal closes
+    function closeEditProfileModal() {
+        const modal = document.getElementById('editProfileModal');
+        if (modal) {
+            modal.classList.add('hidden');
+            
+            // If we've just updated the profile and are on the class roster page
+            if (localStorage.getItem('profileUpdated') === 'true' && window.location.href.includes('classRoster.php')) {
+                localStorage.removeItem('profileUpdated');
+                // Reload the page to see the changes
+                window.location.reload();
+            }
         }
     }
 </script>

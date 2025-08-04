@@ -67,14 +67,17 @@ if (!$hasAccess) {
 // Fetch all classmates with ALL available information from class_enrollments_tb
 $classmates = [];
 $classmatesQuery = "SELECT 
-                       ce.*,
-                       sp.st_userName,
-                       sp.st_email as profile_email,
-                       sp.profile_picture
-                    FROM class_enrollments_tb ce
-                    LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
-                    WHERE ce.class_id = ? AND ce.status = 'active'
-                    ORDER BY sp.st_userName, ce.student_name";
+                   ce.*,
+                   sp.st_userName,
+                   sp.st_email as profile_email,
+                   sp.profile_picture,
+                   sp.grade_level,
+                   sp.strand,
+                   sp.student_id as profile_student_id
+                FROM class_enrollments_tb ce
+                LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
+                WHERE ce.class_id = ? AND ce.status = 'active'
+                ORDER BY sp.st_userName, ce.student_name";
 
 $classmatesStmt = $conn->prepare($classmatesQuery);
 $classmatesStmt->bind_param("i", $class_id);
@@ -86,12 +89,19 @@ while ($student = $classmatesResult->fetch_assoc()) {
     if (!empty($student['st_userName'])) {
         $student['student_name'] = $student['st_userName'];
     }
+    
     // Use profile email if available, otherwise fall back to enrollment email
     if (!empty($student['profile_email'])) {
         $student['email'] = $student['profile_email'];
     } else {
         $student['email'] = $student['student_email'] ?? 'No email available';
     }
+    
+    // Use profile student ID if available
+    if (!empty($student['profile_student_id'])) {
+        $student['student_id'] = $student['profile_student_id'];
+    }
+    
     $classmates[] = $student;
 }
 ?>

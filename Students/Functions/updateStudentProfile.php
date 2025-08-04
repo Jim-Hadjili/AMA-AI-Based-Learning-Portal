@@ -114,8 +114,12 @@ if ($studentUpdated && $userUpdated) {
     $_SESSION['user_email'] = $email;
     $_SESSION['grade_level'] = $grade_level;
     $_SESSION['strand'] = $strand;
-
-    header('Location: ../Contents/Dashboard/studentDashboard.php?success=profile_updated');
+    
+    // Set a timestamp for the profile update to help with cache busting
+    $_SESSION['profile_updated_at'] = time();
+    
+    // Redirect with success message and a cache-busting parameter
+    header('Location: ../Contents/Dashboard/studentDashboard.php?success=profile_updated&t=' . time());
 } else {
     header('Location: ../Contents/Dashboard/studentDashboard.php?error=update_failed');
 }
