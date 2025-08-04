@@ -186,12 +186,33 @@ $today = date('Y-m-d');
     if (e.currentTarget.tagName.toLowerCase() !== "a") return;
     e.preventDefault();
 
-    // Get class name from card
-    var className = card
-      .querySelector(".text-sm") // Updated selector to .text-sm for consistency
-      .textContent.split("·")[0]
-      .trim();
-    var message = "You are about to view content from " + className + " Class" + ".";
+    // Get class name from card - add null check
+    var textElement = card.querySelector(".text-sm");
+    if (!textElement) {
+      console.error("Could not find .text-sm element in card");
+      return;
+    }
+    
+    var textContent = textElement.textContent;
+    if (!textContent) {
+      console.error("Text element has no content");
+      return;
+    }
+    
+    var parts = textContent.split("·");
+    if (parts.length < 1) {
+      console.error("Could not parse class name from text content");
+      return;
+    }
+    
+    var className = parts[0].trim();
+    
+    // Check if the class name already ends with "Class" to avoid redundancy
+    var message = "You are about to view content from " + className;
+    if (!className.endsWith("Class")) {
+      message += " Class";
+    }
+    message += ".";
 
     // Show modal
     document.getElementById("confirmMessage").textContent = message;

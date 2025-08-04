@@ -3,15 +3,53 @@ include '../../Functions/studentDashboardFunction.php';
 
 $allQuizzes = [];
 if (!empty($classIds)) {
-    $quizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name
+    // First, get all base (non-AI) quizzes
+    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type
                   FROM quizzes_tb q
                   JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
-                  WHERE q.class_id IN ($classIdsStr) AND q.status = 'published'
+                  WHERE q.class_id IN ($classIdsStr) AND q.status = 'published' AND q.quiz_type != '1'
                   ORDER BY q.created_at DESC";
-    $quizResult = $conn->query($quizQuery);
-    while ($quiz = $quizResult->fetch_assoc()) {
-        $allQuizzes[] = $quiz;
+    $baseQuizResult = $conn->query($baseQuizQuery);
+    $baseQuizzes = [];
+    while ($quiz = $baseQuizResult->fetch_assoc()) {
+        $baseQuizzes[] = $quiz;
     }
+
+    // For each base quiz, find its most recent AI-generated version if it exists
+    foreach ($baseQuizzes as $baseQuiz) {
+        $latestQuiz = $baseQuiz;
+        
+        // Traverse AI-generated chain to get the latest version
+        $currentQuizId = $baseQuiz['quiz_id'];
+        while (true) {
+            $aiQuery = "
+                SELECT q.*, tc.class_name 
+                FROM quizzes_tb q
+                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
+                ORDER BY q.created_at DESC LIMIT 1
+            ";
+            $aiStmt = $conn->prepare($aiQuery);
+            $aiStmt->bind_param("i", $currentQuizId);
+            $aiStmt->execute();
+            $aiResult = $aiStmt->get_result();
+            $aiQuiz = $aiResult->fetch_assoc();
+
+            if ($aiQuiz) {
+                $latestQuiz = $aiQuiz;
+                $currentQuizId = $aiQuiz['quiz_id'];
+            } else {
+                break;
+            }
+        }
+        
+        $allQuizzes[] = $latestQuiz;
+    }
+    
+    // Sort by default by newest first
+    usort($allQuizzes, function($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
+    });
 }
 
 // Fetch all classes for dropdown

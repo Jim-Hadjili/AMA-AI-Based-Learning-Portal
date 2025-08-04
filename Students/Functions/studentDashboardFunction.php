@@ -181,4 +181,60 @@ if (!empty($classIds)) {
         $passedQuizAttempts[] = $row;
     }
 }
+
+// Replace your current Recent Quizzes query with this:
+$recentQuizzes = [];
+if (!empty($classIds)) {
+    // Get base quizzes first
+    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type
+                  FROM quizzes_tb q
+                  JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                  WHERE q.class_id IN ($classIdsStr) AND q.status = 'published' AND q.quiz_type != '1'
+                  ORDER BY q.created_at DESC
+                  LIMIT 10"; // Fetch more than needed to account for duplicates
+    $baseQuizResult = $conn->query($baseQuizQuery);
+    $baseQuizzes = [];
+    while ($quiz = $baseQuizResult->fetch_assoc()) {
+        $baseQuizzes[] = $quiz;
+    }
+
+    // For each base quiz, find its most recent AI-generated version if it exists
+    foreach ($baseQuizzes as $baseQuiz) {
+        $latestQuiz = $baseQuiz;
+        
+        // Traverse AI-generated chain to get the latest version
+        $currentQuizId = $baseQuiz['quiz_id'];
+        while (true) {
+            $aiQuery = "
+                SELECT q.*, tc.class_name 
+                FROM quizzes_tb q
+                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
+                ORDER BY q.created_at DESC LIMIT 1
+            ";
+            $aiStmt = $conn->prepare($aiQuery);
+            $aiStmt->bind_param("i", $currentQuizId);
+            $aiStmt->execute();
+            $aiResult = $aiStmt->get_result();
+            $aiQuiz = $aiResult->fetch_assoc();
+
+            if ($aiQuiz) {
+                $latestQuiz = $aiQuiz;
+                $currentQuizId = $aiQuiz['quiz_id'];
+            } else {
+                break;
+            }
+        }
+        
+        $recentQuizzes[] = $latestQuiz;
+    }
+    
+    // Sort the final list of quizzes by created_at in descending order (newest first)
+    usort($recentQuizzes, function($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
+    });
+    
+    // Limit to 5 quizzes after sorting
+    $recentQuizzes = array_slice($recentQuizzes, 0, 5);
+}
 ?>
