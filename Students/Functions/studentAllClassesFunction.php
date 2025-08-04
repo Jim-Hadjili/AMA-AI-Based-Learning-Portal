@@ -60,7 +60,7 @@ if ($studentId) {
     $classQuery = "SELECT
                        tc.*,
                        (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
-                       (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS quiz_count
+                       (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published' AND q.quiz_type != '1') AS quiz_count
                    FROM teacher_classes_tb tc
                    INNER JOIN class_enrollments_tb ce_main ON tc.class_id = ce_main.class_id
                    WHERE ce_main.st_id = ?
