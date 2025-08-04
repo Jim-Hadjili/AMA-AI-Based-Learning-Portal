@@ -32,11 +32,19 @@
                             $attempt = $quiz['student_attempt'] ?? null;
                             $failed = ($attempt && $attempt['result'] === 'failed');
                         ?>
-                        <div class="group p-5 bg-gradient-to-r from-gray-50 to-gray-25 rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 border border-emerald-400 hover:border-blue-200 hover:shadow-md"
+                        <div class="group p-5 bg-gradient-to-r <?php echo ($quiz['is_personalized'] ?? false) ? 'from-indigo-50 to-blue-50 border-blue-400' : 'from-gray-50 to-gray-25 border-emerald-400'; ?> rounded-xl cursor-pointer hover:from-blue-50 hover:to-indigo-50 transition-all duration-200 hover:border-blue-200 hover:shadow-md border"
                             onclick="handleQuizCardClick(<?php echo htmlspecialchars(json_encode($quiz)); ?>, <?php echo $failed ? 'true' : 'false'; ?>)">
                             <div class="flex items-start justify-between">
                                 <div class="flex-1 min-w-0">
                                     <h3 class="font-semibold text-gray-900 mb-2 group-hover:text-blue-900"><?php echo htmlspecialchars($quiz['quiz_title']); ?></h3>
+                                    <?php if ($quiz['is_personalized'] ?? false): ?>
+                                        <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 mb-2">
+                                            <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                            </svg>
+                                            Personalized
+                                        </span>
+                                    <?php endif; ?>
                                     <p class="text-sm text-gray-600 break-words line-clamp-2 mb-3"><?php echo htmlspecialchars(substr($quiz['quiz_description'] ?? 'No description', 0, 100)) . (strlen($quiz['quiz_description'] ?? '') > 100 ? '...' : ''); ?></p>
                                     <div class="flex flex-wrap items-center gap-3 text-xs">
                                         <div class="flex items-center gap-1 text-gray-600 bg-white px-2 py-1 rounded-lg">

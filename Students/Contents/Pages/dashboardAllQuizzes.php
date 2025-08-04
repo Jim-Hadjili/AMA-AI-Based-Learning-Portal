@@ -3,8 +3,8 @@ include '../../Functions/studentDashboardFunction.php';
 
 $allQuizzes = [];
 if (!empty($classIds)) {
-    // First, get all base (non-AI) quizzes
-    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type
+    // Get all original published quizzes for this student's classes
+    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type, q.parent_quiz_id
                   FROM quizzes_tb q
                   JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
                   WHERE q.class_id IN ($classIdsStr) AND q.status = 'published' AND q.quiz_type != '1'
@@ -14,51 +14,93 @@ if (!empty($classIds)) {
     while ($quiz = $baseQuizResult->fetch_assoc()) {
         $baseQuizzes[] = $quiz;
     }
+    
+    // Fetch quizzes this student has attempted
+    $studentAttemptedQuizzesQuery = "
+        SELECT DISTINCT quiz_id FROM quiz_attempts_tb 
+        WHERE st_id = ? AND status = 'completed'
+    ";
+    $attemptedStmt = $conn->prepare($studentAttemptedQuizzesQuery);
+    $attemptedStmt->bind_param("s", $studentId);
+    $attemptedStmt->execute();
+    $attemptedResult = $attemptedStmt->get_result();
+    $attemptedQuizIds = [];
+    while ($row = $attemptedResult->fetch_assoc()) {
+        $attemptedQuizIds[] = $row['quiz_id'];
+    }
 
-    // For each base quiz, find its most recent AI-generated version if it exists
+    // Process each original quiz
     foreach ($baseQuizzes as $baseQuiz) {
-        $latestQuiz = $baseQuiz;
+        $originalQuizId = $baseQuiz['quiz_id'];
+        $quizToShow = $baseQuiz;
         
-        // Traverse AI-generated chain to get the latest version
-        $currentQuizId = $baseQuiz['quiz_id'];
-        while (true) {
-            $aiQuery = "
-                SELECT q.*, tc.class_name 
-                FROM quizzes_tb q
-                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
-                WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
-                ORDER BY q.created_at DESC LIMIT 1
+        // Find all AI-generated versions of this quiz (direct children only)
+        $aiVersionsQuery = "
+            SELECT q.quiz_id FROM quizzes_tb q
+            WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
+            ORDER BY q.created_at DESC
+        ";
+        $aiVersionsStmt = $conn->prepare($aiVersionsQuery);
+        $aiVersionsStmt->bind_param("i", $originalQuizId);
+        $aiVersionsStmt->execute();
+        $aiVersionsResult = $aiVersionsStmt->get_result();
+        
+        $aiVersionIds = [];
+        while ($version = $aiVersionsResult->fetch_assoc()) {
+            $aiVersionIds[] = $version['quiz_id'];
+        }
+        
+        // Check the entire generation chain for this quiz
+        $checkedIds = [$originalQuizId];
+        $quizChainIds = $aiVersionIds;
+        
+        while (!empty($quizChainIds)) {
+            $currentId = array_shift($quizChainIds);
+            $checkedIds[] = $currentId;
+            
+            // Find further children
+            $childrenQuery = "
+                SELECT quiz_id FROM quizzes_tb 
+                WHERE parent_quiz_id = ? AND quiz_type = '1' AND status = 'published'
             ";
-            $aiStmt = $conn->prepare($aiQuery);
-            $aiStmt->bind_param("i", $currentQuizId);
-            $aiStmt->execute();
-            $aiResult = $aiStmt->get_result();
-            $aiQuiz = $aiResult->fetch_assoc();
-
-            if ($aiQuiz) {
-                $latestQuiz = $aiQuiz;
-                $currentQuizId = $aiQuiz['quiz_id'];
-            } else {
-                break;
+            $childrenStmt = $conn->prepare($childrenQuery);
+            $childrenStmt->bind_param("i", $currentId);
+            $childrenStmt->execute();
+            $childrenResult = $childrenStmt->get_result();
+            
+            while ($child = $childrenResult->fetch_assoc()) {
+                if (!in_array($child['quiz_id'], $checkedIds)) {
+                    $quizChainIds[] = $child['quiz_id'];
+                    $aiVersionIds[] = $child['quiz_id'];
+                }
             }
         }
         
-        $allQuizzes[] = $latestQuiz;
-    }
-    
-    // Sort by default by newest first
-    usort($allQuizzes, function($a, $b) {
-        return strtotime($b['created_at']) - strtotime($a['created_at']);
-    });
-}
-
-// Fetch all classes for dropdown
-$classList = [];
-if (!empty($classIds)) {
-    $classQuery = "SELECT class_id, class_name FROM teacher_classes_tb WHERE class_id IN ($classIdsStr)";
-    $classResult = $conn->query($classQuery);
-    while ($row = $classResult->fetch_assoc()) {
-        $classList[] = $row;
+        // Check if the student has attempted any AI version of this quiz
+        $studentAiAttempts = array_intersect($aiVersionIds, $attemptedQuizIds);
+        
+        if (!empty($studentAiAttempts)) {
+            // Student has attempted AI versions, show their latest AI version
+            $latestAiQuery = "
+                SELECT q.*, tc.class_name FROM quizzes_tb q
+                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                JOIN quiz_attempts_tb a ON q.quiz_id = a.quiz_id
+                WHERE q.quiz_id IN (" . implode(',', array_map('intval', $studentAiAttempts)) . ")
+                AND a.st_id = ?
+                ORDER BY q.created_at DESC
+                LIMIT 1
+            ";
+            $latestAiStmt = $conn->prepare($latestAiQuery);
+            $latestAiStmt->bind_param("s", $studentId);
+            $latestAiStmt->execute();
+            $latestAiResult = $latestAiStmt->get_result();
+            
+            if ($latestAiResult->num_rows > 0) {
+                $quizToShow = $latestAiResult->fetch_assoc();
+            }
+        }
+        
+        $allQuizzes[] = $quizToShow;
     }
 }
 
@@ -83,6 +125,11 @@ if ($sort && $sort !== 'all') {
         if ($sort === 'class_az') return strcmp(strtolower($a['class_name']), strtolower($b['class_name']));
         if ($sort === 'class_za') return strcmp(strtolower($b['class_name']), strtolower($a['class_name']));
         return 0;
+    });
+} else {
+    // Default sort by newest first
+    usort($allQuizzes, function($a, $b) {
+        return strtotime($b['created_at']) - strtotime($a['created_at']);
     });
 }
 

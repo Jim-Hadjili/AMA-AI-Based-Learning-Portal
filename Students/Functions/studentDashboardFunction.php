@@ -190,51 +190,109 @@ if (!empty($classIds)) {
     }
 }
 
-// Replace your current Recent Quizzes query with this:
+// Replace the current Recent Quizzes query with this updated version
 $recentQuizzes = [];
 if (!empty($classIds)) {
-    // Get base quizzes first
-    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type
+    // Get all original published quizzes for this student's classes
+    $baseQuizQuery = "SELECT q.quiz_id, q.quiz_title, q.class_id, q.created_at, tc.class_name, q.quiz_type, q.parent_quiz_id
                   FROM quizzes_tb q
                   JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
                   WHERE q.class_id IN ($classIdsStr) AND q.status = 'published' AND q.quiz_type != '1'
                   ORDER BY q.created_at DESC
-                  LIMIT 10"; // Fetch more than needed to account for duplicates
+                  LIMIT 10"; // Fetch more than needed to account for personalized versions
     $baseQuizResult = $conn->query($baseQuizQuery);
     $baseQuizzes = [];
     while ($quiz = $baseQuizResult->fetch_assoc()) {
         $baseQuizzes[] = $quiz;
     }
+    
+    // Fetch quizzes this student has attempted
+    $studentAttemptedQuizzesQuery = "
+        SELECT DISTINCT quiz_id FROM quiz_attempts_tb 
+        WHERE st_id = ? AND status = 'completed'
+    ";
+    $attemptedStmt = $conn->prepare($studentAttemptedQuizzesQuery);
+    $attemptedStmt->bind_param("s", $studentId);
+    $attemptedStmt->execute();
+    $attemptedResult = $attemptedStmt->get_result();
+    $attemptedQuizIds = [];
+    while ($row = $attemptedResult->fetch_assoc()) {
+        $attemptedQuizIds[] = $row['quiz_id'];
+    }
 
-    // For each base quiz, find its most recent AI-generated version if it exists
+    // Process each original quiz
     foreach ($baseQuizzes as $baseQuiz) {
-        $latestQuiz = $baseQuiz;
+        $originalQuizId = $baseQuiz['quiz_id'];
+        $quizToShow = $baseQuiz;
+        $personalized = false;
         
-        // Traverse AI-generated chain to get the latest version
-        $currentQuizId = $baseQuiz['quiz_id'];
-        while (true) {
-            $aiQuery = "
-                SELECT q.*, tc.class_name 
-                FROM quizzes_tb q
-                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
-                WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
-                ORDER BY q.created_at DESC LIMIT 1
+        // Find all AI-generated versions of this quiz (direct children only)
+        $aiVersionsQuery = "
+            SELECT q.quiz_id FROM quizzes_tb q
+            WHERE q.parent_quiz_id = ? AND q.quiz_type = '1' AND q.status = 'published'
+            ORDER BY q.created_at DESC
+        ";
+        $aiVersionsStmt = $conn->prepare($aiVersionsQuery);
+        $aiVersionsStmt->bind_param("i", $originalQuizId);
+        $aiVersionsStmt->execute();
+        $aiVersionsResult = $aiVersionsStmt->get_result();
+        
+        $aiVersionIds = [];
+        while ($version = $aiVersionsResult->fetch_assoc()) {
+            $aiVersionIds[] = $version['quiz_id'];
+        }
+        
+        // Check the entire generation chain for this quiz
+        $checkedIds = [$originalQuizId];
+        $quizChainIds = $aiVersionIds;
+        
+        while (!empty($quizChainIds)) {
+            $currentId = array_shift($quizChainIds);
+            $checkedIds[] = $currentId;
+            
+            // Find further children
+            $childrenQuery = "
+                SELECT quiz_id FROM quizzes_tb 
+                WHERE parent_quiz_id = ? AND quiz_type = '1' AND status = 'published'
             ";
-            $aiStmt = $conn->prepare($aiQuery);
-            $aiStmt->bind_param("i", $currentQuizId);
-            $aiStmt->execute();
-            $aiResult = $aiStmt->get_result();
-            $aiQuiz = $aiResult->fetch_assoc();
-
-            if ($aiQuiz) {
-                $latestQuiz = $aiQuiz;
-                $currentQuizId = $aiQuiz['quiz_id'];
-            } else {
-                break;
+            $childrenStmt = $conn->prepare($childrenQuery);
+            $childrenStmt->bind_param("i", $currentId);
+            $childrenStmt->execute();
+            $childrenResult = $childrenStmt->get_result();
+            
+            while ($child = $childrenResult->fetch_assoc()) {
+                if (!in_array($child['quiz_id'], $checkedIds)) {
+                    $quizChainIds[] = $child['quiz_id'];
+                    $aiVersionIds[] = $child['quiz_id'];
+                }
             }
         }
         
-        $recentQuizzes[] = $latestQuiz;
+        // Check if the student has attempted any AI version of this quiz
+        $studentAiAttempts = array_intersect($aiVersionIds, $attemptedQuizIds);
+        
+        if (!empty($studentAiAttempts)) {
+            // Student has attempted AI versions, show their latest AI version
+            $latestAiQuery = "
+                SELECT q.*, tc.class_name FROM quizzes_tb q
+                JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+                JOIN quiz_attempts_tb a ON q.quiz_id = a.quiz_id
+                WHERE q.quiz_id IN (" . implode(',', array_map('intval', $studentAiAttempts)) . ")
+                AND a.st_id = ?
+                ORDER BY q.created_at DESC
+                LIMIT 1
+            ";
+            $latestAiStmt = $conn->prepare($latestAiQuery);
+            $latestAiStmt->bind_param("s", $studentId);
+            $latestAiStmt->execute();
+            $latestAiResult = $latestAiStmt->get_result();
+            
+            if ($latestAiResult->num_rows > 0) {
+                $quizToShow = $latestAiResult->fetch_assoc();
+            }
+        }
+        
+        $recentQuizzes[] = $quizToShow;
     }
     
     // Sort the final list of quizzes by created_at in descending order (newest first)

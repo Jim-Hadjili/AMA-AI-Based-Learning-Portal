@@ -16,25 +16,34 @@
                     $quiz['status'] = $quiz['status'] ?? 'published';
                     $quiz['quiz_description'] = $quiz['quiz_description'] ?? '';
                 ?>
+                <!-- Update the card div to display different styling for personalized quizzes -->
                 <li>
-                    <div class="quiz-card flex flex-col h-full bg-white hover:bg-emerald-50 rounded-xl p-5 transition-all duration-200 ease-in-out group border border-emerald-400 shadow-sm cursor-pointer"
+                    <div class="quiz-card flex flex-col h-full <?php echo ($quiz['is_personalized'] ?? false) ? 'bg-white hover:bg-blue-50 border-blue-400' : 'bg-white hover:bg-emerald-50 border-emerald-400'; ?> rounded-xl p-5 transition-all duration-200 ease-in-out group border shadow-sm cursor-pointer"
                         onclick="handleQuizCardClick(<?php echo htmlspecialchars(json_encode($quiz)); ?>)"
                         data-student-attempt='<?php echo htmlspecialchars(json_encode($quiz['student_attempt'] ?? null)); ?>'>
                         <div class="flex items-center gap-3 mb-2">
-                            <i class="fas fa-clipboard-list text-emerald-500 text-xl"></i>
+                            <i class="<?php echo ($quiz['is_personalized'] ?? false) ? 'fas fa-brain text-blue-500' : 'fas fa-clipboard-list text-emerald-500'; ?> text-xl"></i>
                             <span class="text-xs text-gray-400"><?php echo date('M d, Y', strtotime($quiz['created_at'])); ?></span>
                         </div>
                         <div class="flex-1 min-w-0">
-                            <div class="text-lg font-semibold text-gray-800 group-hover:text-emerald-700 transition-colors duration-200 truncate">
+                            <div class="text-lg font-semibold text-gray-800 <?php echo ($quiz['is_personalized'] ?? false) ? 'group-hover:text-blue-700' : 'group-hover:text-emerald-700'; ?> transition-colors duration-200 truncate">
                                 <?php echo htmlspecialchars($quiz['quiz_title']); ?>
                             </div>
+                            <?php if ($quiz['is_personalized'] ?? false): ?>
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800 border border-blue-200 mb-2">
+                                    <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                                    </svg>
+                                    Personalized
+                                </span>
+                            <?php endif; ?>
                             <div class="text-sm text-gray-500 mt-1 truncate">
                                 <?php echo htmlspecialchars(substr($quiz['quiz_description'] ?? 'No description', 0, 100)) . (strlen($quiz['quiz_description'] ?? '') > 100 ? '...' : ''); ?>
                             </div>
                         </div>
                         <div class="flex flex-wrap items-center gap-2 text-xs mt-3">
                             <div class="flex items-center gap-1 text-gray-600 bg-white px-2 py-1 rounded-lg">
-                                <i class="fas fa-clock text-emerald-400"></i>
+                                <i class="fas fa-clock <?php echo ($quiz['is_personalized'] ?? false) ? 'text-blue-400' : 'text-emerald-400'; ?>"></i>
                                 <span><?php echo $quiz['time_limit']; ?> min</span>
                             </div>
                             <span class="px-3 py-1 rounded-full font-medium <?php echo $quiz['status'] === 'published' ? 'bg-emerald-100 text-emerald-700 border border-emerald-200' : 'bg-amber-100 text-amber-700 border border-amber-200'; ?>">
@@ -48,7 +57,7 @@
                             </span>
                         </div>
                         <?php if ($user_position === 'student' && !empty($quiz['student_attempt'])): ?>
-                            <div class="mt-3 text-xs text-emerald-700 bg-emerald-50 px-3 py-1 rounded-lg border border-emerald-100">
+                            <div class="mt-3 text-xs <?php echo ($quiz['is_personalized'] ?? false) ? 'text-blue-700 bg-blue-50 border-blue-100' : 'text-emerald-700 bg-emerald-50 border-emerald-100'; ?> px-3 py-1 rounded-lg border">
                                 Last Attempt: <?php echo htmlspecialchars($quiz['student_attempt']['result']); ?> (<?php echo $quiz['student_attempt']['score']; ?> pts)
                             </div>
                         <?php endif; ?>
