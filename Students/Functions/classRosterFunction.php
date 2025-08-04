@@ -69,7 +69,8 @@ $classmates = [];
 $classmatesQuery = "SELECT 
                        ce.*,
                        sp.st_userName,
-                       sp.st_email as profile_email
+                       sp.st_email as profile_email,
+                       sp.profile_picture
                     FROM class_enrollments_tb ce
                     LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
                     WHERE ce.class_id = ? AND ce.status = 'active'
