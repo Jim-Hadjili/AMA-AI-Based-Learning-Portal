@@ -11,7 +11,7 @@
         </div>
     </a>
 
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+    <a href="../Pages/dashboardAllQuizzes.php" class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 card-hover focus:outline-none focus:ring-2 focus:ring-green-500">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600">Published Quizzes</p>
@@ -21,10 +21,10 @@
                 <i class="fas fa-clipboard-list text-green-600 text-xl"></i>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Materials -->
-    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
+    <a href="../Pages/dashboardAllMaterials.php" class="block bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200 card-hover focus:outline-none focus:ring-2 focus:ring-yellow-500">
         <div class="flex items-center justify-between">
             <div>
                 <p class="text-sm font-medium text-gray-600">Materials</p>
@@ -34,7 +34,7 @@
                 <i class="fas fa-file-alt text-yellow-600 text-xl"></i>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Announcements -->
     <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-200">
