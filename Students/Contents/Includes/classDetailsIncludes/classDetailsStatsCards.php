@@ -1,6 +1,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-4">
     <!-- Students Card -->
-    <div class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
+    <a href="../Pages/classRoster.php?class_id=<?php echo $class_id; ?>" class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
         <!-- Background decoration -->
         <div class="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-50 to-blue-100 opacity-30 rounded-full -mr-10 -mt-10"></div>
         
@@ -19,7 +19,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 
     <!-- Total Quizzes Card -->
     <div class="group bg-white rounded-2xl shadow-lg border border-gray-100 p-6 hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden relative">
