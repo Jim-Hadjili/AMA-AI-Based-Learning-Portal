@@ -35,11 +35,11 @@
             timerDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
 
             if (timeLeftSeconds <= 60) {
-                timerDisplay.classList.remove('bg-blue-100', 'text-blue-800');
-                timerDisplay.classList.add('bg-red-100', 'text-red-800');
+                timerDisplay.parentElement.classList.remove('bg-blue-600');
+                timerDisplay.parentElement.classList.add('bg-red-600');
             } else {
-                timerDisplay.classList.remove('bg-red-100', 'text-red-800');
-                timerDisplay.classList.add('bg-blue-100', 'text-blue-800');
+                timerDisplay.parentElement.classList.remove('bg-red-600');
+                timerDisplay.parentElement.classList.add('bg-blue-600');
             }
         }
 
@@ -128,15 +128,17 @@
             }
         });
 
-        closeExitQuizModalBtn.addEventListener('click', hideExitQuizModal);
-        stayInQuizBtn.addEventListener('click', hideExitQuizModal);
+        if (closeExitQuizModalBtn) closeExitQuizModalBtn.addEventListener('click', hideExitQuizModal);
+        if (stayInQuizBtn) stayInQuizBtn.addEventListener('click', hideExitQuizModal);
 
-        exitQuizBtn.addEventListener('click', function() {
-            quizSubmitted = true; // Mark as submitted to bypass further popstate/beforeunload
-            clearQuizData(); // Clear data as quiz is abandoned
-            // Redirect to the stored target URL or default to dashboard
-            window.location.href = targetUrlOnExit || 'studentDashboard.php?quiz_abandoned=true';
-        });
+        if (exitQuizBtn) {
+            exitQuizBtn.addEventListener('click', function() {
+                quizSubmitted = true; // Mark as submitted to bypass further popstate/beforeunload
+                clearQuizData(); // Clear data as quiz is abandoned
+                // Redirect to the stored target URL or default to dashboard
+                window.location.href = targetUrlOnExit || 'studentDashboard.php?quiz_abandoned=true';
+            });
+        }
 
         // --- Event Listeners for Answer Saving ---
         quizForm.addEventListener('change', function(event) {
@@ -190,7 +192,6 @@
         initializeTimer();
         loadAnswers();
     });
-
 
     //No Copy, Paste, Cut, View Source, Dev Tools
 
