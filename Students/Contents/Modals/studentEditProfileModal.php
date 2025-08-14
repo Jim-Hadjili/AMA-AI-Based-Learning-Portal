@@ -16,8 +16,8 @@
                     <!-- Profile Picture Upload -->
                     <div class="flex flex-col items-center">
                         <div class="relative w-24 h-24 mb-2 rounded-full overflow-hidden bg-gray-100 border border-gray-200">
-                            <?php if (!empty($_SESSION['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
-                                <img id="profilePreview" src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile Picture" class="w-full h-full object-cover">
+                            <?php if (!empty($_SESSION['profile_picture']) && file_exists('../../../Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
+                                <img id="profilePreview" src="../../../Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile Picture" class="w-full h-full object-cover">
                             <?php else: ?>
                                 <div id="profilePreview" class="w-full h-full bg-blue-100 flex items-center justify-center">
                                     <span class="text-blue-600 font-bold text-2xl">

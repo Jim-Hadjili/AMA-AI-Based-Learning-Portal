@@ -7,7 +7,8 @@
         
         <!-- Image container -->
         <div class="bg-white p-2 rounded-lg shadow-2xl overflow-hidden">
-            <img src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $student['profile_picture']; ?>" 
+            <img src="../../../Uploads/ProfilePictures/<?php echo $student['profile_picture']; ?>" 
+            
                  alt="<?php echo htmlspecialchars($student['student_name']); ?>'s Profile" 
                  class="max-h-[80vh] max-w-full object-contain">
         </div>

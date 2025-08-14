@@ -21,8 +21,12 @@
             <div class="relative">
                 <button id="userProfileTrigger" class="flex items-center gap-2 p-1.5 rounded-full hover:bg-gray-100 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2" onclick="toggleProfileDropdown(event)" aria-haspopup="true" aria-expanded="false">
                     <div class="w-8 h-8 rounded-full flex items-center justify-center shrink-0 overflow-hidden">
-                        <?php if (!empty($_SESSION['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
-                            <img src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile" class="w-full h-full object-cover">
+                        <?php
+                            $profile_picture = isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '';
+                            $profile_picture_path = '../../../Uploads/ProfilePictures/' . $profile_picture;
+                        ?>
+                        <?php if (!empty($profile_picture) && file_exists($profile_picture_path)): ?>
+                            <img src="<?php echo $profile_picture_path; ?>" alt="Profile" class="w-full h-full object-cover">
                         <?php else: ?>
                             <div class="w-full h-full bg-blue-600 flex items-center justify-center">
                                 <span class="text-white font-medium text-sm"><?php echo strtoupper(substr($user_name, 0, 1)); ?></span>
@@ -42,8 +46,12 @@
                     <div class="px-4 py-3 border-b border-gray-100">
                         <div class="flex items-center gap-3">
                             <div class="w-10 h-10 rounded-full overflow-hidden">
-                                <?php if (!empty($_SESSION['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $_SESSION['profile_picture'])): ?>
-                                    <img src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $_SESSION['profile_picture']; ?>" alt="Profile" class="w-full h-full object-cover">
+                                <?php
+                                    $profile_picture = isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '';
+                                    $profile_picture_path = '../../../Uploads/ProfilePictures/' . $profile_picture;
+                                ?>
+                                <?php if (!empty($profile_picture) && file_exists($profile_picture_path)): ?>
+                                    <img src="<?php echo $profile_picture_path; ?>" alt="Profile" class="w-full h-full object-cover">
                                 <?php else: ?>
                                     <div class="w-full h-full bg-blue-600 flex items-center justify-center">
                                         <span class="text-white font-medium text-sm"><?php echo strtoupper(substr($user_name, 0, 1)); ?></span>

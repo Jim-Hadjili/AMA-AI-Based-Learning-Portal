@@ -19,8 +19,9 @@
                     <div class="flex items-center mb-6">
                         <div class="h-20 w-20 bg-blue-100 rounded-full flex items-center justify-center overflow-hidden cursor-pointer" 
                              onclick="openProfileImagePreview('<?php echo $index; ?>')">
-                            <?php if (!empty($student['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $student['profile_picture'])): ?>
-                                <img src="/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/<?php echo $student['profile_picture']; ?>" alt="Profile" class="w-full h-full object-cover">
+                            <?php 
+                            if (!empty($student['profile_picture']) && file_exists('../../../Uploads/ProfilePictures/' . $student['profile_picture'])): ?>
+                                <img src="../../../Uploads/ProfilePictures/<?php echo $student['profile_picture']; ?>" alt="Profile" class="w-full h-full object-cover">
                             <?php else: ?>
                                 <span class="text-blue-600 font-bold text-2xl">
                                     <?php
@@ -47,12 +48,7 @@
 
                     <!-- Student Basic Info -->
                     <div class="grid grid-cols-1 gap-4">
-                        <div class="p-4 bg-gray-50 rounded-xl">
-                            <h5 class="text-xs uppercase text-gray-500 font-semibold mb-2">Student ID</h5>
-                            <p class="text-gray-900 font-medium">
-                                <?php echo htmlspecialchars($student['st_id']); ?>
-                            </p>
-                        </div>
+                        
 
                         <div class="p-4 bg-gray-50 rounded-xl">
                             <h5 class="text-xs uppercase text-gray-500 font-semibold mb-2">Student ID Number</h5>
@@ -127,6 +123,7 @@
 </div>
 
 <!-- Profile Image Preview Modal -->
-<?php if (!empty($student['profile_picture']) && file_exists($_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/' . $student['profile_picture'])): ?>
+<?php 
+if (!empty($student['profile_picture']) && file_exists('Uploads/ProfilePictures/' . $student['profile_picture'])): ?>
  <?php include 'profileImagePreviewModal.php'; ?>
 <?php endif; ?>

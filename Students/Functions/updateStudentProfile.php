@@ -25,8 +25,8 @@ $userTypes = "ss";
 
 // Handle profile picture upload
 if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === 0) {
-    // Define the upload directory with proper path
-    $upload_dir = $_SERVER['DOCUMENT_ROOT'] . '/AMA-AI-Based-Learning-Portal/Uploads/ProfilePictures/';
+    // Define the upload directory using a relative path
+    $upload_dir = '../../Uploads/ProfilePictures/';
     
     // Create directory if it doesn't exist
     if (!file_exists($upload_dir)) {
@@ -63,11 +63,9 @@ if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] ===
             $userParams[] = $new_filename;
             $userTypes .= "s";
         } else {
-            // Log upload error for debugging
             error_log("Failed to move uploaded file to $upload_path");
         }
     } else {
-        // Log invalid file type
         error_log("Invalid file type: $file_ext");
     }
 }
