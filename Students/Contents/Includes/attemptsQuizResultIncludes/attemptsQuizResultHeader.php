@@ -44,7 +44,7 @@
             <div class="flex-shrink-0 lg:ml-6 mt-4 lg:mt-0">
                 <div class="text-center lg:text-right">
                     <!-- Prominent score display with conditional coloring -->
-                    <div class="text-4xl font-extrabold leading-none mb-2 <?php echo ($percentage_score >= 70) ? 'text-green-700' : 'text-red-700'; ?>">
+                    <div class="text-4xl font-extrabold leading-none mb-2 <?php echo ($percentage_score >= 65) ? 'text-green-700' : 'text-red-700'; ?>">
                         <?php echo $quizAttempt['score']; ?> / <?php echo $total_possible_score; ?>
                     </div>
                     <div class="text-xl font-bold text-gray-800 mb-4">
@@ -57,7 +57,7 @@
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
                                 <i class="fas fa-star mr-1"></i> Excellent
                             </span>
-                        <?php elseif ($percentage_score >= 70): ?>
+                        <?php elseif ($percentage_score >= 65): ?>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                                 <i class="fas fa-thumbs-up mr-1"></i> Good
                             </span>
@@ -73,7 +73,7 @@
     <!-- Progress bar at the bottom for visual progress -->
     <div class="px-6 pb-6">
         <div class="w-full bg-gray-200 rounded-full h-2 overflow-hidden">
-            <div class="<?php echo ($percentage_score >= 70) ? 'bg-green-500' : 'bg-red-500'; ?> h-2 rounded-full transition-all duration-1000 ease-out" 
+            <div class="<?php echo ($percentage_score >= 65) ? 'bg-green-500' : 'bg-red-500'; ?> h-2 rounded-full transition-all duration-1000 ease-out" 
                  style="width: <?php echo $percentage_score; ?>%"></div>
         </div>
         <div class="flex justify-between mt-2 text-xs text-gray-500">

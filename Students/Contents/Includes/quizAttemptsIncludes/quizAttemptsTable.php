@@ -34,7 +34,7 @@
             $attemptNumber = $totalAttempts - $i; // Most recent is #totalAttempts, oldest is #1
 
             $scoreClass = 'score-poor';
-            if ($display_percentage >= 75) $scoreClass = 'score-passed';
+            if ($display_percentage >= 65) $scoreClass = 'score-passed';
             else $scoreClass = 'score-failed';
         ?>
             <div class="attempt-row attempt-row-<?php echo $result; ?> px-6 py-5 cursor-pointer"
@@ -45,7 +45,7 @@
                         <div class="score-badge <?php echo $scoreClass; ?> w-16 h-16 rounded-2xl flex items-center justify-center">
                             <?php
                             // Trophy icon for passed, sad face for failed
-                            if ($display_percentage >= 75) {
+                            if ($display_percentage >= 65) {
                                 // Trophy icon for passed
                                 echo '<svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a1 1 0 012 0v1h3a1 1 0 011 1v2a5 5 0 01-4 4.9V13h2a1 1 0 110 2H7a1 1 0 110-2h2V8.9A5 5 0 015 6V4a1 1 0 011-1h3V2zm-2 3v1a3 3 0 006 0V5H7z"/></svg>';
                             } else {
@@ -71,8 +71,8 @@
                         <div class="text-right">
                             <div class="text-3xl font-bold text-gray-900 mb-1"><?php echo $display_percentage; ?>%</div>
                             <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold
-                                            <?php echo $display_percentage >= 75 ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'; ?>">
-                                <?php echo $display_percentage >= 75 ? 'Passed' : 'Failed'; ?>
+                                            <?php echo $display_percentage >= 65 ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'; ?>">
+                                <?php echo $display_percentage >= 65 ? 'Passed' : 'Failed'; ?>
                             </span>
                             <div class="text-xs text-gray-500 mt-1">
                                 Time: 

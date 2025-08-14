@@ -128,5 +128,5 @@ while ($answer = $result_student_answers->fetch_assoc()) {
 
 $percentage_score = ($total_possible_score > 0) ? round(($quizAttempt['score'] / $total_possible_score) * 100, 2) : 0;
 
-define('PASSING_THRESHOLD', 75);
+define('PASSING_THRESHOLD', 65);
 $has_passed = ($percentage_score >= PASSING_THRESHOLD);
