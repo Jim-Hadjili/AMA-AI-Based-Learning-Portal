@@ -3,11 +3,7 @@
     <div class="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <!-- Left Section: Mobile Menu Toggle (for mobile) & Logo/Tagline -->
         <div class="flex items-center gap-6">
-            <!-- Mobile Menu Toggle -->
-            <button type="button" class="lg:hidden text-gray-500 hover:text-blue-600 focus:outline-none" onclick="toggleMobileMenu()">
-                <i class="fas fa-bars text-xl"></i>
-            </button>
-
+            
             <!-- Logo and Tagline -->
             <a href="../Dashboard/studentDashboard.php" class="flex items-center gap-2">
                 <img src="../../../Assets/Images/Logo.png" alt="AMA Logo" class="h-10 w-10 object-contain" />
