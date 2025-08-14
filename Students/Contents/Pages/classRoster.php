@@ -107,15 +107,6 @@ include "../../Functions/classRosterFunction.php";
                                     <input id="rosterSearch" type="text" placeholder="Search students..."
                                         class="w-full pl-9 pr-3 py-2 rounded-xl border border-gray-200 focus:border-blue-400 focus:ring focus:ring-blue-100 text-sm transition bg-gray-50 focus:bg-white">
                                 </div>
-                                <div>
-                                    <select id="statusFilter"
-                                        class="pl-3 pr-8 py-2 rounded-xl border border-gray-200 bg-gray-50 focus:bg-white focus:border-blue-400 focus:ring focus:ring-blue-100 text-sm transition min-w-[150px]">
-                                        <option value="">All Status</option>
-                                        <option value="active">Active</option>
-                                        <option value="inactive">Inactive</option>
-                                        <option value="pending">Pending</option>
-                                    </select>
-                                </div>
                             </div>
                         <?php endif; ?>
                     </div>
