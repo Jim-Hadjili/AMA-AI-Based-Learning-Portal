@@ -15,7 +15,7 @@
     <script src="../../Assets/Scripts/studentsDashboard.js"></script>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen m-3 lg:-mt-2">
 
     <!-- Main Content -->
     <div id="main-content" class="min-h-screen">

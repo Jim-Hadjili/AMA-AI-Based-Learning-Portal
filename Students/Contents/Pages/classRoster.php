@@ -11,7 +11,7 @@ include "../../Functions/classRosterFunction.php";
 
 <?php include "../Includes/classRosterIncludes/classRosterHead.php"; ?>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen m-3 lg:-mt-2">
 
     <!-- Main Content -->
     <div id="main-content" class="min-h-screen">

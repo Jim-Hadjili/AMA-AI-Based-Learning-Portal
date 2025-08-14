@@ -7,12 +7,8 @@
             </div>
             <div class="min-w-0 flex-1">
                 <h1 class="text-3xl font-semibold text-gray-900 mb-2 leading-tight">
-                    <?php echo htmlspecialchars($classDetails['class_name']); ?> – Student Roster
+                    <?php echo htmlspecialchars($classDetails['class_name']); ?> Class – Student List
                 </h1>
-                <p class="text-gray-600 text-base leading-relaxed">
-                    Class Code:
-                    <span class="font-semibold text-gray-800"><?php echo htmlspecialchars($classDetails['class_code']); ?></span>
-                </p>
             </div>
         </div>
     </div>
