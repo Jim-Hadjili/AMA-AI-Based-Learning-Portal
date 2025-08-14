@@ -5,9 +5,6 @@
             <h3 class="text-xl font-bold text-gray-800">
                 Student Information
             </h3>
-            <button onclick="closeStudentModal('<?php echo $index; ?>')" class="text-gray-500 hover:text-gray-700 focus:outline-none">
-                <i class="fas fa-times text-lg"></i>
-            </button>
         </div>
 
         <!-- Modal Body -->
@@ -124,6 +121,8 @@
 
 <!-- Profile Image Preview Modal -->
 <?php 
-if (!empty($student['profile_picture']) && file_exists('Uploads/ProfilePictures/' . $student['profile_picture'])): ?>
- <?php include 'profileImagePreviewModal.php'; ?>
+// FIX: use correct relative path for file_exists (was 'Uploads/ProfilePictures/...' which pointed to a non‑existent folder)
+$profilePicPath = '../../../Uploads/ProfilePictures/' . ($student['profile_picture'] ?? '');
+if (!empty($student['profile_picture']) && file_exists($profilePicPath)): ?>
+    <?php include 'profileImagePreviewModal.php'; ?>
 <?php endif; ?>
