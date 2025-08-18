@@ -72,6 +72,8 @@ function showQuizDetailsModal(quiz) {
     // Optionally, show score/result info
     document.getElementById("quizPassedScore").textContent =
       quiz.student_attempt.score || "0";
+    document.getElementById("quizPassedAttempts").textContent =
+      quiz.student_attempt.attempts || "1";
     document.getElementById("quizPassedViewResultBtn").onclick = function () {
       // Redirect to attempts list for this quiz with class_id
       window.location.href = `quizAttempts.php?quiz_id=${quiz.quiz_id}&class_id=${classId}`;

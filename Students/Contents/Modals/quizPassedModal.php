@@ -7,9 +7,22 @@
         <h2 class="text-2xl font-bold text-gray-900 mb-2 flex items-center justify-center gap-2">
             Quiz Already Passed
         </h2>
-        <p class="text-gray-700 mb-6">You have already passed this quiz.<br>Your score: <span id="quizPassedScore" class="font-bold text-emerald-600"></span></p>
-        <div class="flex justify-center gap-3">
 
+        <div class="mb-4 text-gray-700">
+            <p class="mb-2">
+                You have already passed this quiz.
+            </p>
+            <p class="mb-2">
+                <span class="font-semibold">Score:</span>
+                <span id="quizPassedScore" class="text-emerald-600 font-bold">0</span>
+            </p>
+           
+            <p>
+                You can view your quiz results, check your answers, and see your attempt history by clicking the <span class="font-semibold text-blue-600">View Result</span> button below.
+            </p>
+        </div>
+
+        <div class="flex justify-center gap-3">
             <button onclick="closeQuizPassedModal()" class="px-5 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 font-medium flex items-center gap-2 transition-colors duration-200">
                 <i class="fas fa-times"></i>
                 Close
