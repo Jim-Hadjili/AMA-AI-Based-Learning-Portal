@@ -59,7 +59,7 @@
                                 <?php echo $student['attempts']; ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm font-medium <?php echo $student['best_percent'] >= 75 ? 'text-green-600' : 'text-red-600'; ?>">
+                                <div class="text-sm font-medium <?php echo $student['best_percent'] >= 65 ? 'text-green-600' : 'text-red-600'; ?>">
                                     <?php echo $student['best_percent']; ?>%
                                 </div>
                             </td>
