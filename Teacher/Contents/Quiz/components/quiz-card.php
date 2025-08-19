@@ -4,6 +4,12 @@
 
 // Get styling for status badge
 $statusBadge = getStatusBadge($quiz['status']);
+
+// Determine if this is an AI-generated quiz
+$isAIGenerated = isset($quiz['quiz_type']) && $quiz['quiz_type'] === '1';
+
+// Get the correct question count - for AI quizzes, we should show the original quiz's question count
+$questionCount = $quiz['question_count'];
 ?>
 <div class="quiz-card bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow" data-quiz-id="<?php echo $quiz['quiz_id']; ?>">
     
@@ -49,10 +55,10 @@ $statusBadge = getStatusBadge($quiz['status']);
             <!-- Questions Count -->
             <div class="text-center p-3 bg-gray-50 rounded-lg">
                 <div class="text-2xl font-bold text-gray-900 mb-1">
-                    <?php echo $quiz['question_count']; ?>
+                    <?php echo $questionCount; ?>
                 </div>
                 <div class="text-xs text-gray-500 uppercase tracking-wide">
-                    Question<?php echo $quiz['question_count'] != 1 ? 's' : ''; ?>
+                    Question<?php echo $questionCount != 1 ? 's' : ''; ?>
                 </div>
             </div>
             
