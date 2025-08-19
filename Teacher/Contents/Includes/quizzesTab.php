@@ -6,6 +6,11 @@ require_once __DIR__ . '/../../Functions/fetchQuizzes.php';
 // Fetch quizzes for the current class
 $quizzes = fetchQuizzes($conn, $class_id, $_SESSION['user_id']);
 
+// Filter out AI-generated quizzes (quiz_type = '1')
+$quizzes = array_filter($quizzes, function($quiz) {
+    return $quiz['quiz_type'] === 'manual';
+});
+
 // Limit to 6 quizzes for initial display
 $displayQuizzes = array_slice($quizzes, 0, 6);
 $hasMoreQuizzes = count($quizzes) > 6;

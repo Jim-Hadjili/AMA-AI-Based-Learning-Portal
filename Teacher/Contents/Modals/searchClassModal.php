@@ -1,6 +1,6 @@
 <!-- Search Class Modal -->
-<div id="searchClassModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-2xl p-0 transform transition-all duration-300 scale-100 opacity-100 modal-content">
+<div id="searchClassModal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-xl p-0 transform transition-all duration-300 scale-100 opacity-100 modal-content">
         <!-- Header -->
         <div class="flex justify-between items-center px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-100 rounded-t-2xl">
             <h3 class="text-2xl font-bold text-purple-900 flex items-center gap-2">

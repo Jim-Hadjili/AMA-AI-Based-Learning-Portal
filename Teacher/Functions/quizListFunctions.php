@@ -28,6 +28,9 @@ function getQuizzesByFilters($conn, $class_id, $teacher_id, $searchTerm = '', $s
     $params = [$class_id, $teacher_id];
     $paramTypes = "is";
 
+    // Add condition to exclude AI-generated quizzes (quiz_type = '1')
+    $whereConditions[] = "(q.quiz_type = 'manual' OR q.quiz_type IS NULL)";
+
     if (!empty($searchTerm)) {
         $whereConditions[] = "(q.quiz_title LIKE ? OR q.quiz_topic LIKE ? OR q.quiz_description LIKE ?)";
         $searchParam = "%{$searchTerm}%";
@@ -145,6 +148,9 @@ function calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm = '', $st
     $params = [$class_id, $teacher_id];
     $paramTypes = "is";
     $whereConditions = ["q.class_id = ? AND q.th_id = ?"];
+    
+    // Add condition to exclude AI-generated quizzes
+    $whereConditions[] = "(q.quiz_type = 'manual' OR q.quiz_type IS NULL)";
     
     // Add search conditions if provided
     if (!empty($searchTerm)) {

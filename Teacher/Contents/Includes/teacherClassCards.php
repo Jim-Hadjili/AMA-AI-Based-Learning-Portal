@@ -18,7 +18,7 @@
     </div>
 
     <?php if (isset($classes) && count($classes) > 0): ?>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <?php
             // Define status colors for the badges
             $statusColors = [
@@ -270,7 +270,7 @@
             <?php endforeach; ?>
         </div>
         <?php if (isset($classes) && count($classes) > 6): ?>
-            <div class="text-center py-6 border-t border-gray-200 mt-6">
+            <div class="text-center py-6 border-t border-gray-200 ">
                 <a href="../Tabs/teacherAllClasses.php"
                    class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
