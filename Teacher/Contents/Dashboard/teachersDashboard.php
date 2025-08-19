@@ -61,11 +61,8 @@ $classes = getTeacherClasses($conn, $teacher_id);
     <!-- Notification Container -->
     <div id="notification-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2"></div>
 
-    <!-- Sidebar -->
-    <?php include "../Includes/teacherSideBar.php"; ?>
-
     <!-- Main Content -->
-    <div id="main-content" class="lg:ml-16 min-h-screen transition-all duration-300">
+    <div id="main-content" class="min-h-screen transition-all duration-300"><!-- Removed lg:ml-16 -->
 
         <!-- Top Navigation Bar -->
         <?php include "../Includes/teacherHeader.php"; ?>
