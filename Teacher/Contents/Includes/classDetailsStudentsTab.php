@@ -41,8 +41,10 @@
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                 <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center mx-auto">
-                                    <?php if (!empty($student['st_profile_img'])): ?>
-                                        <img class="h-10 w-10 rounded-full object-cover" src="<?php echo htmlspecialchars($student['st_profile_img']); ?>" alt="<?php echo htmlspecialchars($student['student_name'] ?? 'Student'); ?>">
+                                    <?php if (!empty($student['profile_picture'])): ?>
+                                        <img class="h-10 w-10 rounded-full object-cover" 
+                                             src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" 
+                                             alt="<?php echo htmlspecialchars($student['student_name'] ?? 'Student'); ?>">
                                     <?php else: ?>
                                         <div class="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
                                             <i class="fas fa-user text-gray-400"></i>

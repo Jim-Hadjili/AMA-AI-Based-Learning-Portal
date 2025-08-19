@@ -121,8 +121,10 @@ foreach ($attempts as $attempt) {
                        WHEN ce.grade_level = 'grade_11' THEN 'Grade 11'
                        WHEN ce.grade_level = 'grade_12' THEN 'Grade 12'
                        ELSE ce.grade_level
-                   END AS formatted_grade
+                   END AS formatted_grade,
+                   sp.profile_picture
             FROM class_enrollments_tb ce 
+            LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
             WHERE ce.st_id = ? AND ce.class_id = ?
             LIMIT 1
         ");
@@ -140,8 +142,10 @@ foreach ($attempts as $attempt) {
                            WHEN ce.grade_level = 'grade_11' THEN 'Grade 11'
                            WHEN ce.grade_level = 'grade_12' THEN 'Grade 12'
                            ELSE ce.grade_level
-                       END AS formatted_grade 
+                       END AS formatted_grade,
+                       sp.profile_picture
                 FROM class_enrollments_tb ce 
+                LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
                 WHERE ce.st_id = ? 
                 LIMIT 1
             ");
@@ -157,7 +161,8 @@ foreach ($attempts as $attempt) {
                     'student_id' => 'Unknown',
                     'grade_level' => 'Unknown',
                     'formatted_grade' => 'Unknown',
-                    'strand' => 'Unknown'
+                    'strand' => 'Unknown',
+                    'profile_picture' => null
                 ];
             }
         }
@@ -403,8 +408,16 @@ $chartDataJson = json_encode($chartData);
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                                        <span class="text-blue-800 font-medium"><?php echo strtoupper(substr($student['name'], 0, 2)); ?></span>
+                                    <div class="flex-shrink-0 h-10 w-10">
+                                        <?php if (!empty($studentInfo[$studentId]['profile_picture'])): ?>
+                                            <img class="h-10 w-10 rounded-full object-cover" 
+                                                 src="../../Uploads/ProfilePictures/<?php echo htmlspecialchars($studentInfo[$studentId]['profile_picture']); ?>" 
+                                                 alt="<?php echo htmlspecialchars(substr($student['name'], 0, 2)); ?>">
+                                        <?php else: ?>
+                                            <div class="flex items-center justify-center bg-blue-100 rounded-full h-10 w-10">
+                                                <span class="text-blue-800 font-medium"><?php echo strtoupper(substr($student['name'], 0, 2)); ?></span>
+                                            </div>
+                                        <?php endif; ?>
                                     </div>
                                     <div class="ml-4">
                                         <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($student['name']); ?></div>

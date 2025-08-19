@@ -51,18 +51,19 @@ function getClassStudents($conn, $class_id) {
     $students = [];
     try {
         $query = "SELECT 
-                    st_id,
-                    
-                    student_name,
-                    student_email,
-                    grade_level,
-                    strand,
-                    student_id,
-                    status,
-                    enrollment_date
-                  FROM class_enrollments_tb
-                  WHERE class_id = ?
-                  ORDER BY enrollment_date DESC";
+                    ce.st_id,
+                    ce.student_name,
+                    ce.student_email,
+                    ce.grade_level,
+                    ce.strand,
+                    ce.student_id,
+                    ce.status,
+                    ce.enrollment_date,
+                    sp.profile_picture
+                  FROM class_enrollments_tb ce
+                  LEFT JOIN students_profiles_tb sp ON ce.st_id = sp.st_id
+                  WHERE ce.class_id = ?
+                  ORDER BY ce.enrollment_date DESC";
         $stmt = $conn->prepare($query);
         $stmt->bind_param("i", $class_id);
         $stmt->execute();

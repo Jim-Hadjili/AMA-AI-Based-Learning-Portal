@@ -18,10 +18,12 @@ if (!$attempt_id) {
 
 // Fetch attempt details - updated to use teacher_classes_tb instead of class_tb
 $attemptStmt = $conn->prepare("
-    SELECT a.*, q.quiz_title, q.class_id, tc.class_name, tc.strand as subject
+    SELECT a.*, q.quiz_title, q.class_id, tc.class_name, tc.strand as subject,
+           sp.profile_picture
     FROM quiz_attempts_tb a
     JOIN quizzes_tb q ON a.quiz_id = q.quiz_id
     JOIN teacher_classes_tb tc ON q.class_id = tc.class_id
+    LEFT JOIN students_profiles_tb sp ON a.st_id = sp.st_id
     WHERE a.attempt_id = ? AND q.th_id = ?
 ");
 $attemptStmt->bind_param("is", $attempt_id, $teacher_id);
@@ -245,9 +247,17 @@ usort($allAttempts, function ($a, $b) {
                     <div>
                         <h3 class="text-sm font-medium text-gray-500">Student</h3>
                         <div class="mt-1 flex items-center">
-                            <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                                <span class="text-blue-800 font-medium"><?php echo strtoupper(substr($attempt['student_name'], 0, 2)); ?></span>
-                            </div>
+                            <?php if (!empty($attempt['profile_picture'])): ?>
+                                <div class="flex-shrink-0 h-10 w-10">
+                                    <img class="h-10 w-10 rounded-full object-cover" 
+                                         src="../../Uploads/ProfilePictures/<?php echo htmlspecialchars($attempt['profile_picture']); ?>" 
+                                         alt="<?php echo strtoupper(substr($attempt['student_name'], 0, 2)); ?>">
+                                </div>
+                            <?php else: ?>
+                                <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
+                                    <span class="text-blue-800 font-medium"><?php echo strtoupper(substr($attempt['student_name'], 0, 2)); ?></span>
+                                </div>
+                            <?php endif; ?>
                             <div class="ml-3">
                                 <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($attempt['student_name']); ?></p>
                                 <p class="text-sm text-gray-500"><?php echo htmlspecialchars($attempt['student_email']); ?></p>
