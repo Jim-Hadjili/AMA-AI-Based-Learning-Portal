@@ -1,8 +1,11 @@
 <div class="bg-white shadow rounded-lg overflow-hidden mb-8">
-    <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+    <div class="px-4 py-5 border-b border-gray-200 sm:px-6 flex items-center justify-between">
         <h3 class="text-lg leading-6 font-medium text-gray-900">
             Students
         </h3>
+        <?php if (!empty($uniqueStudents)): ?>
+            <span class="text-sm text-gray-500">Total: <?php echo count($uniqueStudents); ?></span>
+        <?php endif; ?>
     </div>
     <div class="overflow-x-auto">
         <?php if (empty($uniqueStudents)): ?>
@@ -15,18 +18,18 @@
             <table class="min-w-full divide-y divide-gray-200">
                 <thead class="bg-gray-50">
                     <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID Number</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Grade</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Strand</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attempts</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Best Score</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-bold uppercase tracking-wider">Student</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">ID Number</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">Grade</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">Strand</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">Attempts</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">Best Score</th>
+                        <th scope="col" class="px-6 py-3 text-center text-xs font-bold uppercase tracking-wider">Actions</th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
                     <?php foreach ($uniqueStudents as $studentId => $student): ?>
-                        <tr>
+                        <tr class="hover:bg-gray-50 transition">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="flex-shrink-0 h-10 w-10">
@@ -46,25 +49,25 @@
                                     </div>
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                                 <?php echo htmlspecialchars($studentInfo[$studentId]['student_id'] ?? 'Unknown'); ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-center text-gray-500">
                                 <?php echo htmlspecialchars($studentInfo[$studentId]['formatted_grade'] ?? 'Unknown'); ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                                 <?php echo htmlspecialchars(ucfirst($studentInfo[$studentId]['strand'] ?? 'Unknown')); ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            <td class="px-6 py-4 whitespace-nowrap text-center text-sm text-gray-500">
                                 <?php echo $student['attempts']; ?>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
+                            <td class="px-6 py-4 whitespace-nowrap text-center">
                                 <div class="text-sm font-medium <?php echo $student['best_percent'] >= 65 ? 'text-green-600' : 'text-red-600'; ?>">
                                     <?php echo $student['best_percent']; ?>%
                                 </div>
                             </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="viewStudentAttempt.php?attempt_id=<?php echo $student['latest_attempt_id']; ?>" class="text-blue-600 hover:text-blue-900">View Latest</a>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
+                                <a href="viewStudentAttempt.php?attempt_id=<?php echo $student['latest_attempt_id']; ?>" class="text-blue-600 hover:text-blue-900 transition">View Attempts</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
