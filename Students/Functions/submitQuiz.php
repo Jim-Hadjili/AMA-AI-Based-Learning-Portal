@@ -3,6 +3,8 @@ session_start();
 include_once '../../Assets/Auth/sessionCheck.php';
 include_once '../../Connection/conn.php';
 
+date_default_timezone_set('Asia/Manila');
+
 // Prevent back button access
 preventBackButton();
 
@@ -74,21 +76,24 @@ try {
     if ($result_check_attempt->num_rows > 0) {
         $attempt_id = $result_check_attempt->fetch_assoc()['attempt_id'];
         // Update existing attempt to completed and set student & quiz info
-        $update_attempt_sql = "UPDATE quiz_attempts_tb SET end_time = NOW(), status = 'completed', student_name = ?, student_email = ?, grade_level = ?, strand = ?, student_id = ?, th_id = ?, quiz_title = ?, parent_quiz_id = ?, quiz_type = ? WHERE attempt_id = ?";
+        $submission_datetime = date('Y-m-d H:i:s');
+        $update_attempt_sql = "UPDATE quiz_attempts_tb SET end_time = ?, status = 'completed', student_name = ?, student_email = ?, grade_level = ?, strand = ?, student_id = ?, th_id = ?, quiz_title = ?, parent_quiz_id = ?, quiz_type = ? WHERE attempt_id = ?";
         $stmt_update_attempt = $conn->prepare($update_attempt_sql);
-        $stmt_update_attempt->bind_param("sssssssssi", $student_name, $student_email, $grade_level, $strand, $student_school_id, $th_id, $quiz_title, $parent_quiz_id, $quiz_type, $attempt_id);
+        $stmt_update_attempt->bind_param("ssssssssssi", $submission_datetime, $student_name, $student_email, $grade_level, $strand, $student_school_id, $th_id, $quiz_title, $parent_quiz_id, $quiz_type, $attempt_id);
         $stmt_update_attempt->execute();
     } else {
         // Create a new attempt with student & quiz info
         $start_time = date('Y-m-d H:i:s');
+        $submission_datetime = $start_time; // For new attempts, submission time is the same as start time
         $status = 'completed';
-        $insert_attempt_sql = "INSERT INTO quiz_attempts_tb (quiz_id, st_id, start_time, status, student_name, student_email, grade_level, strand, student_id, th_id, quiz_title, parent_quiz_id, quiz_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        $insert_attempt_sql = "INSERT INTO quiz_attempts_tb (quiz_id, st_id, start_time, end_time, status, student_name, student_email, grade_level, strand, student_id, th_id, quiz_title, parent_quiz_id, quiz_type) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt_insert_attempt = $conn->prepare($insert_attempt_sql);
         $stmt_insert_attempt->bind_param(
-            "issssssssssss",
+            "isssssssssssss",
             $quiz_id,
             $student_id,
             $start_time,
+            $submission_datetime,
             $status,
             $student_name,
             $student_email,
