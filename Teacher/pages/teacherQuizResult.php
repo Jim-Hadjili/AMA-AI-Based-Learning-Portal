@@ -249,22 +249,21 @@ $chartDataJson = json_encode($chartData);
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="bg-gray-50 font-[Poppins]">
-    <?php include "../Includes/navbar.php"; ?>
     
-    <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
         <!-- Breadcrumb -->
         <nav class="flex mb-6" aria-label="Breadcrumb">
             <ol class="inline-flex items-center space-x-1 md:space-x-3">
                 <li class="inline-flex items-center">
-                    <a href="../index.php" class="text-gray-700 hover:text-blue-600">
+                    <a href="../Contents/Dashboard/teachersDashboard.php" class="text-gray-700 hover:text-blue-600">
                         <i class="fas fa-home mr-2"></i>Dashboard
                     </a>
                 </li>
                 <li>
                     <div class="flex items-center">
                         <i class="fas fa-chevron-right text-gray-400 mx-2 text-sm"></i>
-                        <a href="../pages/quizzes.php?class_id=<?php echo $class_id; ?>" class="text-gray-700 hover:text-blue-600">
-                            Quizzes
+                        <a href="../Contents/Tabs/classDetails.php?class_id=<?php echo $class_id; ?>" class="text-gray-700 hover:text-blue-600">
+                            Quizzes 
                         </a>
                     </div>
                 </li>
@@ -364,9 +363,9 @@ $chartDataJson = json_encode($chartData);
 
         <!-- Chart - Improved to clearly display student scores -->
         <?php if (count($studentScores) > 0): ?>
-        <div class="bg-white p-6 rounded-lg shadow mb-8">
-            <h2 class="text-lg font-semibold text-gray-900 mb-4">Student Performance Comparison</h2>
-            <div class="h-80">
+        <div class="chart-container rounded-2xl shadow-sm border p-6 mb-8">
+            <h2 class="text-xl font-semibold text-gray-900 mb-6">Student Performance Comparison</h2>
+            <div class="relative h-64">
                 <canvas id="resultsChart"></canvas>
             </div>
         </div>
@@ -432,7 +431,6 @@ $chartDataJson = json_encode($chartData);
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                 <a href="viewStudentAttempt.php?attempt_id=<?php echo $student['latest_attempt_id']; ?>" class="text-blue-600 hover:text-blue-900">View Latest</a>
-                                <a href="studentAllAttempts.php?student_id=<?php echo $studentId; ?>&quiz_id=<?php echo $quiz_id; ?>" class="ml-3 text-purple-600 hover:text-purple-900">All Attempts</a>
                             </td>
                         </tr>
                         <?php endforeach; ?>
@@ -442,69 +440,6 @@ $chartDataJson = json_encode($chartData);
             </div>
         </div>
 
-        <!-- All Attempts Collapsible Section -->
-        <div class="bg-white shadow rounded-lg overflow-hidden" x-data="{ open: false }">
-            <div class="px-4 py-5 border-b border-gray-200 sm:px-6 flex justify-between items-center cursor-pointer" @click="open = !open">
-                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                    All Attempts (Details)
-                </h3>
-                <button class="text-gray-500 hover:text-gray-700">
-                    <i class="fas" :class="open ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
-                </button>
-            </div>
-            <div class="overflow-x-auto" x-show="open" x-transition>
-                <?php if (empty($attempts)): ?>
-                <div class="text-center py-12">
-                    <i class="fas fa-clipboard-list text-gray-300 text-5xl mb-4"></i>
-                    <h3 class="text-lg font-medium text-gray-900">No attempts yet</h3>
-                    <p class="text-gray-500 mt-2">Students haven't attempted this quiz yet.</p>
-                </div>
-                <?php else: ?>
-                <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date Completed</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                        <?php foreach ($attempts as $attempt): ?>
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="flex items-center">
-                                    <div class="flex-shrink-0 h-10 w-10 flex items-center justify-center bg-blue-100 rounded-full">
-                                        <span class="text-blue-800 font-medium"><?php echo strtoupper(substr($attempt['student_name'], 0, 2)); ?></span>
-                                    </div>
-                                    <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($attempt['student_name']); ?></div>
-                                        <div class="text-sm text-gray-500"><?php echo htmlspecialchars($attempt['student_email']); ?></div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                <?php echo date('M j, Y, g:i a', strtotime($attempt['end_time'])); ?>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap">
-                                <div class="text-sm text-gray-900">
-                                    <?php 
-                                    $total = $attempt['total_questions'] ?: 1; // Prevent division by zero
-                                    $scorePercent = round(($attempt['score'] / $total) * 100);
-                                    echo "{$attempt['score']}/{$total} ({$scorePercent}%)"; 
-                                    ?>
-                                </div>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                <a href="viewStudentAttempt.php?attempt_id=<?php echo $attempt['attempt_id']; ?>" class="text-blue-600 hover:text-blue-900">View Details</a>
-                            </td>
-                        </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
-                <?php endif; ?>
-            </div>
-        </div>
     </div>
 
     <?php if (count($studentScores) > 0): ?>
@@ -513,35 +448,23 @@ $chartDataJson = json_encode($chartData);
         const chartLabels = <?php echo $chartLabelsJson; ?>;
         const chartData = <?php echo $chartDataJson; ?>;
         
-        // Use vibrant colors for better visibility
-        const backgroundColors = [
-            'rgba(54, 162, 235, 0.6)',
-            'rgba(75, 192, 192, 0.6)', 
-            'rgba(153, 102, 255, 0.6)',
-            'rgba(255, 159, 64, 0.6)',
-            'rgba(255, 99, 132, 0.6)',
-            'rgba(255, 206, 86, 0.6)',
-            'rgba(231, 233, 237, 0.6)',
-            'rgba(97, 205, 187, 0.6)',
-            'rgba(140, 122, 230, 0.6)',
-            'rgba(250, 130, 49, 0.6)'
-        ];
-        
-        // Create an array of colors matching the number of students
-        const colors = chartLabels.map((_, index) => 
-            backgroundColors[index % backgroundColors.length]
-        );
-        
         new Chart(ctx, {
-            type: 'bar',
+            type: 'line',
             data: {
                 labels: chartLabels,
                 datasets: [{
                     label: 'Score (%)',
                     data: chartData,
-                    backgroundColor: colors,
-                    borderColor: colors.map(color => color.replace('0.6', '1')),
-                    borderWidth: 1
+                    borderColor: '#0ea5e9', // accent-500
+                    backgroundColor: 'rgba(14, 165, 233, 0.1)', // accent-500 with transparency
+                    borderWidth: 2,
+                    tension: 0.4, // Smooth the line
+                    pointBackgroundColor: '#0ea5e9',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true, // Fill area under the line
                 }]
             },
             options: {
@@ -549,44 +472,53 @@ $chartDataJson = json_encode($chartData);
                 maintainAspectRatio: false,
                 plugins: {
                     legend: {
-                        display: false // Hide legend since we only have one data series
+                        display: false // Hide legend as there's only one dataset
+                    },
+                    title: {
+                        display: false, // Title is already in H2 tag
                     },
                     tooltip: {
                         callbacks: {
+                            title: function(context) {
+                                return chartLabels[context[0].dataIndex]; // Show student name in tooltip
+                            },
                             label: function(context) {
-                                return `Score: ${context.raw}%`;
+                                return context.dataset.label + ': ' + context.raw + '%';
                             }
                         }
                     }
                 },
                 scales: {
-                    y: {
-                        beginAtZero: true,
-                        max: 100,
-                        title: {
-                            display: true,
-                            text: 'Score (%)',
-                            font: {
-                                size: 14
-                            }
-                        },
-                        ticks: {
-                            callback: function(value) {
-                                return value + '%';
-                            }
-                        }
-                    },
                     x: {
+                        grid: {
+                            display: false // Hide x-axis grid lines
+                        },
                         title: {
                             display: true,
                             text: 'Students',
-                            font: {
-                                size: 14
-                            }
+                            color: '#4b5563' // gray-600
                         },
                         ticks: {
-                            maxRotation: 45,
-                            minRotation: 45
+                            display: false // Hide x-axis ticks/labels completely
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        ticks: {
+                            stepSize: 20,
+                            callback: function(value) {
+                                return value + '%';
+                            },
+                            color: '#4b5563' // gray-600
+                        },
+                        grid: {
+                            color: '#e5e7eb' // gray-200
+                        },
+                        title: {
+                            display: true,
+                            text: 'Score',
+                            color: '#4b5563' // gray-600
                         }
                     }
                 }
