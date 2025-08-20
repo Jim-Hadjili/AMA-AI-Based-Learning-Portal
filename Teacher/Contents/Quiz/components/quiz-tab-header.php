@@ -1,32 +1,93 @@
-<div class="mb-6">
-    <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div>
-            <h3 class="text-lg font-semibold text-gray-900 mb-2">Recent Quizzes</h3>
-            <div class="flex items-center space-x-6 text-sm text-gray-600">
-                <span class="flex items-center">
-                    <i class="fas fa-clipboard-list mr-2 text-blue-500"></i>
-                    <?php echo count($quizzes); ?> Total Quiz<?php echo count($quizzes) != 1 ? 'zes' : ''; ?>
-                </span>
-                <span class="flex items-center">
-                    <i class="fas fa-check-circle mr-2 text-green-500"></i>
-                    <?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'published'; })); ?> Published
-                </span>
-                <span class="flex items-center">
-                    <i class="fas fa-edit mr-2 text-yellow-500"></i>
-                    <?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'draft'; })); ?> Draft<?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'draft'; })) != 1 ? 's' : ''; ?>
-                </span>
+<!-- Updated Quiz Tab Header Component -->
+<div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 mb-6">
+    <div class="bg-white border-b border-gray-100 px-6 py-5">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="p-2 bg-indigo-100 rounded-lg">
+                    <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900">Recent Quizzes</h3>
+                    <p class="text-sm text-gray-600">Manage and track quiz performance</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="bg-white border-2 border-indigo-200 px-4 py-2 rounded-xl shadow-sm">
+                    <div class="text-center">
+                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Total Quizzes</p>
+                        <p class="text-xl font-bold text-indigo-600"><?php echo count($quizzes); ?></p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button id="addQuizTabBtn" type="button" class="inline-flex items-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-lg text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        </svg>
+                        Add Quiz
+                    </button>
+                    <button id="aiQuizBtn" class="inline-flex items-center px-4 py-2 border border-purple-300 text-sm font-medium rounded-lg text-purple-700 bg-purple-50 hover:bg-purple-100 hover:border-purple-400 transition-colors duration-200">
+                        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M13 10V3L4 14h7v7l9-11h-7z"/>
+                        </svg>
+                        AI Generator
+                    </button>
+                </div>
             </div>
         </div>
-        
-        <div class="flex flex-col sm:flex-row gap-3">
-            <!-- Create Quiz Button -->
-            <button id="addQuizTabBtn" type="button"
-                class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-purple-600 text-sm font-semibold rounded-lg text-purple-700 hover:text-white bg-purple-50 hover:bg-purple-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-purple-400">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+    </div>
+</div>
+
+<!-- Quiz Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 p-4">
+        <div class="flex items-center">
+            <div class="p-2 bg-green-100 rounded-lg mr-3">
+                <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
                 </svg>
-                <span class="font-semibold">Add Quiz</span>
-            </button>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Published</p>
+                <p class="text-lg font-bold text-gray-900"><?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'published'; })); ?></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 p-4">
+        <div class="flex items-center">
+            <div class="p-2 bg-yellow-100 rounded-lg mr-3">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Drafts</p>
+                <p class="text-lg font-bold text-gray-900"><?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'draft'; })); ?></p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 p-4">
+        <div class="flex items-center">
+            <div class="p-2 bg-blue-100 rounded-lg mr-3">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                    <path d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                </svg>
+            </div>
+            <div>
+                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Questions</p>
+                <p class="text-lg font-bold text-gray-900">
+                    <?php 
+                    $totalQuestions = 0;
+                    foreach ($quizzes as $quiz) {
+                        $totalQuestions += $quiz['question_count'] ?? 0;
+                    }
+                    echo $totalQuestions;
+                    ?>
+                </p>
+            </div>
         </div>
     </div>
 </div>
