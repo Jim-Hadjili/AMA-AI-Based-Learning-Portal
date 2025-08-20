@@ -5,21 +5,45 @@ include_once "fetch-announcements.php";
 <!-- Class Content Tabs -->
 <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
     <!-- Tab Navigation -->
-    <div class="flex border-b border-gray-200">
-        <button class="tab-btn active px-4 py-3 font-medium text-sm text-center flex-1 border-b-2 border-purple-primary text-purple-primary" data-tab="quizzes">
-            <i class="fas fa-tasks mr-2"></i> Quizzes
+    <div class="grid grid-cols-5 gap-5 p-4 bg-gray-50 border-b border-gray-200">
+        <!-- Quizzes Tab: Quiz/Question Icon -->
+        <button class="tab-btn active text-indigo-500 bg-white p-4 rounded shadow-md flex items-center justify-center transition-colors border-b-2 border-purple-primary" data-tab="quizzes">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <rect x="4" y="4" width="16" height="16" rx="2" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h8M8 14h4" />
+            </svg>
+            Quizzes
         </button>
-        <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="students">
-            <i class="fas fa-users mr-2"></i> Students
+        <!-- Students Tab: User Group Icon -->
+        <button class="tab-btn text-indigo-500 bg-white p-4 rounded shadow-md flex items-center justify-center transition-colors" data-tab="students">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a4 4 0 00-3-3.87M9 20h6M3 20h5v-2a4 4 0 00-3-3.87M16 7a4 4 0 11-8 0 4 4 0 018 0z" />
+            </svg>
+            Students
         </button>
-        <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="materials">
-            <i class="fas fa-book mr-2"></i> Materials
+        <!-- Materials Tab: Book Icon -->
+        <button class="tab-btn text-indigo-500 bg-white p-4 rounded shadow-md flex items-center justify-center transition-colors" data-tab="materials">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 19.5A2.5 2.5 0 006.5 22h11a2.5 2.5 0 002.5-2.5V6a2 2 0 00-2-2H6a2 2 0 00-2 2v13.5z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 6v16" />
+            </svg>
+            Materials
         </button>
-        <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="announcements">
-            <i class="fas fa-bullhorn mr-2"></i> Announcements
+        <!-- Announcements Tab: Megaphone Icon -->
+        <button class="tab-btn text-indigo-500 bg-white p-4 rounded shadow-md flex items-center justify-center transition-colors" data-tab="announcements">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8V6a4 4 0 00-8 0v2M5 8v8a2 2 0 002 2h10a2 2 0 002-2V8" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h8" />
+            </svg>
+            Announcements
         </button>
-        <button class="tab-btn px-4 py-3 font-medium text-sm text-center flex-1 text-gray-600 hover:text-gray-900" data-tab="info">
-            <i class="fas fa-info-circle mr-2"></i> Class Info
+        <!-- Class Info Tab: Info Icon -->
+        <button class="tab-btn text-indigo-500 bg-white p-4 rounded shadow-md flex items-center justify-center transition-colors" data-tab="info">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 16v-4M12 8h.01" />
+            </svg>
+            Class Info
         </button>
     </div>
 
