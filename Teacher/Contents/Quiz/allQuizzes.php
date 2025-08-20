@@ -81,8 +81,6 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
                 <!-- No Results State -->
                 <?php include 'allQuizzesIncludes/quiz-no-results.php'; ?>
             <?php else: ?>
-                <!-- Results Info -->
-                <?php include 'allQuizzesIncludes/quiz-results-info.php'; ?>
 
                 <!-- Quiz Cards Grid -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">

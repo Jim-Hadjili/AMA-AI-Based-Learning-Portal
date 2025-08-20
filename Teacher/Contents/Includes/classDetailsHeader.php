@@ -1,7 +1,7 @@
 <?php include "subjectSpecificStyles.php"; ?>
 <!-- Class Header - Sticky -->
 
-<div class="bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
+<div class="bg-white rounded-xl shadow-lg border border-gray-200 mb-6 overflow-hidden">
     <!-- Top accent strip (customize color as needed) -->
     <div class="h-1 bg-gradient-to-r <?php echo $style['strip']; ?>"></div>
     
@@ -10,7 +10,7 @@
             <!-- Left content -->
             <div class="flex items-start gap-5">
                 <!-- Icon container (customize icon/color as needed) -->
-                <div class="flex-shrink-0 w-14 h-14 rounded-2xl <?php echo $style['icon_bg']; ?> flex items-center justify-center">
+                <div class="flex-shrink-0 w-14 h-14 rounded-xl <?php echo $style['icon_bg']; ?> flex items-center justify-center">
                     <i class="<?php echo $style['icon_class']; ?> text-xl <?php echo $style['icon_color']; ?>"></i>
                 </div>
                 

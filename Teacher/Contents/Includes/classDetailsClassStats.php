@@ -1,8 +1,8 @@
-<div class="max-w-8xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
+<div class="max-w-8xl mx-auto bg-white rounded-xl shadow-lg border border-gray-200 mb-6 overflow-hidden">
     <div class="p-8">
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
             <!-- Students Card -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col items-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col items-center shadow">
                 <div class="flex items-center justify-between w-full mb-1">
                     <span class="text-sm font-medium text-gray-600">Students</span>
                     <div class="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
@@ -25,12 +25,12 @@
                         }
                         ?>
                     </span>
-                    <span class=" text-xs text-gray-500">Total</span>
+                    <span class="ml-1 text-xs text-gray-500">Total</span>
                 </div>
             </div>
 
             <!-- Quizzes Card -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col items-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col items-center shadow">
                 <div class="flex items-center justify-between w-full mb-1">
                     <span class="text-sm font-medium text-gray-600">Quizzes</span>
                     <div class="w-8 h-8 bg-purple-100 rounded-full flex items-center justify-center">
@@ -61,7 +61,7 @@
             </div>
 
             <!-- Class Code Card -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col items-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col items-center shadow">
                 <div class="flex items-center justify-between w-full mb-1">
                     <span class="text-sm font-medium text-gray-600">Class Code</span>
                     <div class="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center">
@@ -79,7 +79,7 @@
             </div>
 
             <!-- Grade Level Card -->
-            <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 flex flex-col items-center">
+            <div class="bg-white p-4 rounded-xl border border-gray-200 flex flex-col items-center shadow">
                 <div class="flex items-center justify-between w-full mb-1">
                     <span class="text-sm font-medium text-gray-600">Grade Level</span>
                     <div class="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center">
