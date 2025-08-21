@@ -1,5 +1,5 @@
 <div class="bg-white rounded-2xl card-shadow-lg overflow-hidden mb-8 animate-fade-in">
-    <div class="bg-gradient-to-r from-purple-500 to-pink-600 px-6 py-4">
+    <div class="bg-blue-500 px-6 py-4">
         <h3 class="text-lg font-semibold text-white flex items-center">
             <i class="fas fa-chart-pie mr-2"></i>
             Question Type Performance

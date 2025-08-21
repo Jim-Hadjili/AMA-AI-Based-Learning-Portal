@@ -1,5 +1,5 @@
 <div class="bg-white rounded-2xl card-shadow-lg overflow-hidden mb-8 animate-fade-in">
-    <div class="bg-gradient-to-r from-green-500 to-teal-600 px-6 py-4">
+    <div class="bg-blue-500 px-6 py-4">
         <h3 class="text-lg font-semibold text-white flex items-center">
             <i class="fas fa-microscope mr-2"></i>
             Detailed Question Analysis
@@ -45,17 +45,7 @@
                         </div>
                     </div>
 
-                    <!-- Quick Actions -->
-                    <div class="flex items-center space-x-2 no-print">
-                        <button onclick="toggleFeedback(<?php echo $question['question_id']; ?>)"
-                            class="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors">
-                            <i class="fas fa-comment-alt"></i>
-                        </button>
-                        <button onclick="flagQuestion(<?php echo $question['question_id']; ?>)"
-                            class="text-yellow-600 hover:text-yellow-800 p-2 rounded-lg hover:bg-yellow-50 transition-colors">
-                            <i class="fas fa-flag"></i>
-                        </button>
-                    </div>
+                   
                 </div>
 
                 <!-- Question Text -->

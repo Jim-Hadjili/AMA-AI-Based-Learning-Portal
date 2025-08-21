@@ -1,8 +1,8 @@
-<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+<div class="grid grid-cols-1 xl:grid-cols-3 gap-8 mb-8">
     <!-- Student Profile Card -->
-    <div class="lg:col-span-1">
-        <div class="bg-white rounded-2xl card-shadow-lg overflow-hidden animate-fade-in">
-            <div class="bg-gradient-to-r from-indigo-500 to-purple-600 px-6 py-4">
+    <div class="xl:col-span-1">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-fade-in hover:shadow-xl transition-shadow duration-200">
+            <div class="bg-blue-500 px-6 py-4">
                 <h3 class="text-lg font-semibold text-white flex items-center">
                     <i class="fas fa-user-graduate mr-2"></i>
                     Student Profile
@@ -23,7 +23,7 @@
                         <?php endif; ?>
                     </div>
 
-                    <div class="ml-4">
+                    <div class="ml-4 min-w-0">
                         <h4 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($attempt['student_name']); ?></h4>
                         <p class="text-gray-600"><?php echo ucfirst(str_replace('_', ' ', $attempt['grade_level'])); ?></p>
                         <p class="text-sm text-gray-500"><?php echo htmlspecialchars($attempt['strand']); ?></p>
@@ -37,16 +37,12 @@
                         <span class="text-sm text-gray-900"><?php echo htmlspecialchars($attempt['student_id'] ?? 'N/A'); ?></span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                        <span class="text-sm font-medium text-gray-600">Class</span>
+                        <span class="text-sm font-medium text-gray-600">Subject Name</span>
                         <span class="text-sm text-gray-900"><?php echo htmlspecialchars($attempt['class_name']); ?></span>
                     </div>
                     <div class="flex justify-between items-center py-2 border-b border-gray-100">
-                        <span class="text-sm font-medium text-gray-600">Subject</span>
+                        <span class="text-sm font-medium text-gray-600">Class Strand</span>
                         <span class="text-sm text-gray-900"><?php echo htmlspecialchars($attempt['subject']); ?></span>
-                    </div>
-                    <div class="flex justify-between items-center py-2">
-                        <span class="text-sm font-medium text-gray-600">Attempt ID</span>
-                        <span class="text-sm text-gray-900 font-mono">#<?php echo $attempt_id; ?></span>
                     </div>
                 </div>
 
@@ -81,9 +77,9 @@
     </div>
 
     <!-- Performance Analytics -->
-    <div class="lg:col-span-2">
-        <div class="bg-white rounded-2xl card-shadow-lg overflow-hidden animate-fade-in">
-            <div class="bg-gradient-to-r from-blue-500 to-cyan-600 px-6 py-4">
+    <div class="xl:col-span-2">
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200 animate-fade-in hover:shadow-xl transition-shadow duration-200">
+            <div class="bg-blue-500 px-6 py-4">
                 <h3 class="text-lg font-semibold text-white flex items-center">
                     <i class="fas fa-chart-line mr-2"></i>
                     Performance Analytics
@@ -159,36 +155,6 @@
                                     </span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Time Analysis -->
-                <div class="mt-8 pt-6 border-t border-gray-200">
-                    <h4 class="text-lg font-semibold text-gray-800 mb-4">Time Analysis</h4>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div class="bg-blue-50 rounded-lg p-4 text-center">
-                            <div class="text-2xl font-bold text-blue-600"><?php echo $timeSpent; ?></div>
-                            <div class="text-sm text-blue-700">Time Spent</div>
-                        </div>
-                        <div class="bg-gray-50 rounded-lg p-4 text-center">
-                            <div class="text-2xl font-bold text-gray-600">
-                                <?php echo $attempt['time_limit'] ? $attempt['time_limit'] . ' min' : 'No Limit'; ?>
-                            </div>
-                            <div class="text-sm text-gray-700">Time Allowed</div>
-                        </div>
-                        <div class="bg-green-50 rounded-lg p-4 text-center">
-                            <div class="text-2xl font-bold text-green-600">
-                                <?php
-                                if ($attempt['time_limit']) {
-                                    $timeUsedPercentage = min(100, (($startTime->diff($endTime)->h * 60 + $startTime->diff($endTime)->i) / $attempt['time_limit']) * 100);
-                                    echo round($timeUsedPercentage) . '%';
-                                } else {
-                                    echo 'N/A';
-                                }
-                                ?>
-                            </div>
-                            <div class="text-sm text-green-700">Time Utilized</div>
                         </div>
                     </div>
                 </div>
