@@ -77,7 +77,7 @@ $classes = getTeacherClasses($conn, $teacher_id);
             <?php include "../Includes/teacherClassCards.php"; ?>
             
             <!-- Content Sections -->
-            <?php include "../Includes/teacherContents.php"; ?>
+            <?php include "../../pages/teacherContents.php"; ?>
 
         </main>
     </div>
