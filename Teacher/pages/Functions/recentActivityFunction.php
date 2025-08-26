@@ -91,7 +91,6 @@ while ($row = $classRes->fetch_assoc()) {
 }
 
 if (empty($classIds)) {
-    echo '<div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6"><h3 class="text-lg font-semibold text-gray-900 mb-4">Recent Activity</h3><div class="text-center py-12"><i class="fas fa-clock text-gray-300 text-4xl mb-4"></i><p class="text-gray-500 mb-2">No classes found</p></div></div>';
     return;
 }
 

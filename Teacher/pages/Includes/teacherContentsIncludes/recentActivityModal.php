@@ -15,6 +15,7 @@
                 <i class="fas fa-times text-xl"></i>
             </button>
         </div>
+
         <!-- Modal Content -->
         <div class="p-6" id="modalContent">
             <!-- Content will be dynamically inserted here -->

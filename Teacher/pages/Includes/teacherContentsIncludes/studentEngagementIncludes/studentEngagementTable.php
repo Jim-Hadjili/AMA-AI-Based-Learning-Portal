@@ -1,33 +1,25 @@
-<div class="overflow-hidden border border-gray-200 rounded-lg">
+<div class="overflow-hidden border border-gray-200 rounded-xl shadow-lg">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Student</th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Classes</th>
-                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Activity</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wide">Student</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wide">Classes</th>
+                <th scope="col" class="px-6 py-3 text-center text-xs font-semibold text-gray-600 uppercase tracking-wide">Activity</th>
             </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white divide-y divide-gray-100">
             <?php
-            // For each student, we'll need to find their performance metrics
-            // This would normally be in the studentEngagementFunction.php but we'll add it here temporarily
             foreach ($uniqueStudents as $studentId => &$student) {
-                // Initialize with defaults
                 $student['best_quiz_name'] = '';
                 $student['needs_improvement_quiz_name'] = '';
                 $student['best_score_value'] = 0;
                 $student['needs_improvement_score'] = 100;
 
-                // Get all quiz attempts for this student
                 if (isset($students) && !empty($students)) {
                     $studentQuizScores = [];
-
-                    // Find best and worst performing quizzes
                     foreach ($students as $attempt) {
                         if ($attempt['student_id'] == $studentId) {
                             $quizId = $attempt['quiz_id'];
-
-                            // Keep track of latest score for each quiz
                             if (
                                 !isset($studentQuizScores[$quizId]) ||
                                 $attempt['score_percent'] > $studentQuizScores[$quizId]['score']
@@ -39,8 +31,6 @@
                             }
                         }
                     }
-
-                    // Find best and needs improvement quizzes
                     foreach ($studentQuizScores as $quizId => $data) {
                         if ($data['score'] > $student['best_score_value']) {
                             $student['best_score_value'] = $data['score'];
@@ -52,45 +42,43 @@
                         }
                     }
                 }
-
-                // Reset if no quizzes found
                 if ($student['needs_improvement_score'] == 100) {
                     $student['needs_improvement_score'] = 0;
                 }
             }
-            unset($student); // Break the reference
+            unset($student);
             ?>
 
             <?php foreach (array_slice($uniqueStudents, 0, 5) as $studentId => $student): ?>
-                <tr class="hover:bg-gray-50 cursor-pointer" onclick="showStudentModal('<?php echo $studentId; ?>')">
+                <tr class="hover:bg-indigo-50 cursor-pointer transition-colors duration-150" onclick="showStudentModal('<?php echo $studentId; ?>')">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
                                 <?php if (!empty($student['profile_picture'])): ?>
-                                    <img class="h-10 w-10 rounded-full" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" alt="">
+                                    <img class="h-10 w-10 rounded-full border-2 border-blue-100" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" alt="">
                                 <?php else: ?>
-                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                                    <div class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                                         <span class="text-blue-600 font-semibold"><?php echo strtoupper(substr($student['name'], 0, 2)); ?></span>
                                     </div>
                                 <?php endif; ?>
                             </div>
                             <div class="ml-4">
-                                <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($student['name']); ?></div>
-                                <div class="text-sm text-gray-500"><?php echo htmlspecialchars($student['email']); ?></div>
+                                <div class="text-sm font-bold text-gray-900"><?php echo htmlspecialchars($student['name']); ?></div>
+                                <div class="text-xs text-gray-500"><?php echo htmlspecialchars($student['email']); ?></div>
                             </div>
                         </div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                            <?php echo $student['enrolled_classes']; ?> out of <?php echo $totalClassesCount; ?>
+                        <span class="px-2 py-1 inline-flex text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800">
+                            <?php echo $student['enrolled_classes']; ?> / <?php echo $totalClassesCount; ?>
                         </span>
-                        <div class="text-xs text-gray-500 mt-1"> Class Enrolled In</div>
+                        <div class="text-xs text-gray-400 mt-1">Classes Enrolled</div>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-center">
-                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        <span class="px-2 py-1 inline-flex text-xs font-semibold rounded-full bg-green-100 text-green-800">
                             <?php echo $student['attempts']; ?>
                         </span>
-                        <div class="text-sm  mt-1"> Total Quiz Submitted</div>
+                        <div class="text-xs text-gray-400 mt-1">Quiz Submissions</div>
                     </td>
                 </tr>
             <?php endforeach; ?>
@@ -100,9 +88,9 @@
 
 <?php if (count($uniqueStudents) > 5): ?>
     <div class="text-center mt-4">
-        <a href="../Reports/quizResults.php" class="inline-flex items-center text-sm text-blue-600 hover:text-blue-800">
+        <a href="../Reports/quizResults.php" class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-150">
             View all students
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
             </svg>
         </a>

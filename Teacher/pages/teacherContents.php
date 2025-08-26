@@ -3,7 +3,7 @@ include "Functions/recentActivityFunction.php";
 include "Functions/studentEngagementFunction.php";
 ?>
 
-<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
 
     <!-- Recent Activity -->
     <?php include 'Includes/teacherContentsIncludes/recentActivity.php'; ?>

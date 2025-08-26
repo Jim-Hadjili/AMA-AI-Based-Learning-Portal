@@ -1,13 +1,13 @@
-<div id="studentModal-<?php echo $studentId; ?>" class="fixed inset-0 z-50 hidden overflow-auto bg-gray-900 bg-opacity-50 flex items-center justify-center">
-    <div class="bg-white rounded-lg shadow-xl w-11/12 max-w-4xl max-h-[90vh] overflow-auto">
+<div id="studentModal-<?php echo $studentId; ?>" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
+    <div class="bg-white rounded-xl shadow-lg border border-gray-200 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto transition-all duration-300">
         <!-- Modal Header -->
-        <div class="px-6 py-4 border-b flex items-center justify-between">
-            <div class="flex items-center">
-                <div class="flex-shrink-0 h-12 w-12 mr-4">
+        <div class="bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100 px-6 py-5 rounded-t-xl flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="flex-shrink-0 h-12 w-12 mr-2">
                     <?php if (!empty($student['profile_picture'])): ?>
-                        <img class="h-12 w-12 rounded-full" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" alt="">
+                        <img class="h-12 w-12 rounded-full border-2 border-blue-100" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" alt="">
                     <?php else: ?>
-                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
                             <span class="text-blue-600 font-semibold"><?php echo strtoupper(substr($student['name'], 0, 2)); ?></span>
                         </div>
                     <?php endif; ?>
@@ -16,12 +16,10 @@
                     <h3 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($student['name']); ?></h3>
                     <p class="text-gray-500"><?php echo htmlspecialchars($student['email']); ?></p>
                     <?php
-                    // Get more info from studentEnrollments or students_profiles_tb if available
                     $profile = [];
                     if (isset($studentEnrollments[$studentId]['profile'])) {
                         $profile = $studentEnrollments[$studentId]['profile'];
                     } else {
-                        // fallback: try to get from $student if available
                         $profile = $student;
                     }
                     ?>
@@ -33,7 +31,7 @@
                     </div>
                 </div>
             </div>
-            <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="text-gray-400 hover:text-gray-500">
+            <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="text-gray-400 hover:text-gray-500 transition-colors duration-200">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                 </svg>
@@ -71,11 +69,8 @@
                             <tbody class="bg-white divide-y divide-gray-200">
                                 <?php foreach ($studentEnrollments[$studentId]['classes'] as $class): ?>
                                     <?php
-                                    // Count original quizzes for this class (manual, parent_quiz_id NULL or 0)
                                     $classId = $class['class_id'];
                                     $totalOriginalQuizzes = $availableQuizzesPerClass[$classId] ?? 0;
-
-                                    // Count submitted quizzes by this student for this class (manual, parent_quiz_id NULL or 0)
                                     $submittedQuizzes = 0;
                                     if (isset($students) && !empty($students)) {
                                         $submittedQuizIds = [];
@@ -85,7 +80,6 @@
                                                 $attempt['class_id'] == $classId &&
                                                 isset($attempt['quiz_id']) &&
                                                 isset($attempt['quiz_title']) &&
-                                                // Only count original quizzes
                                                 (!isset($attempt['parent_quiz_id']) || !$attempt['parent_quiz_id'])
                                             ) {
                                                 $submittedQuizIds[$attempt['quiz_id']] = true;
@@ -169,11 +163,11 @@
         </div>
 
         <!-- Modal Footer -->
-        <div class="px-6 py-4 bg-gray-50 border-t text-right">
-            <a href="../Reports/studentProfile.php?student_id=<?php echo $studentId; ?>" class="inline-flex items-center px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-700 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring ring-blue-300 disabled:opacity-25 transition ease-in-out duration-150">
+        <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 rounded-b-xl flex justify-end items-center gap-2">
+            <a href="../Reports/studentProfile.php?student_id=<?php echo $studentId; ?>" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-200">
                 View Full Profile
             </a>
-            <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:ring ring-blue-200 active:text-gray-800 active:bg-gray-50 disabled:opacity-25 transition ease-in-out duration-150 ml-3">
+            <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-all duration-200">
                 Close
             </button>
         </div>
