@@ -13,4 +13,6 @@ include "Functions/studentEngagementFunction.php";
 
 </div>
 
+<?php include "Includes/teacherContentsIncludes/recentActivityModal.php" ?>
+
 <?php include 'Scripts/recentActivityScript.php'; ?>
