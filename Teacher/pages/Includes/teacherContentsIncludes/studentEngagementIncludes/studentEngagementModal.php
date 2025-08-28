@@ -38,13 +38,10 @@
                         <div><span class="font-semibold">ID Number:</span> <?php echo htmlspecialchars($profile['student_id'] ?? $studentId); ?></div>
                         <div><span class="font-semibold">Grade Level:</span>
                             <?php
-                            // Clean up grade_level display
                             $gradeRaw = $profile['grade_level'] ?? ($student['grade_level'] ?? '');
-                            // If multiple grades, pick the latest (or first), or just clean up the string
                             if (is_array($gradeRaw)) {
                                 $gradeRaw = end($gradeRaw);
                             }
-                            // Replace underscores and commas
                             $gradeClean = preg_replace('/_/', ' ', $gradeRaw);
                             $gradeClean = preg_replace('/,/', ' or ', $gradeClean);
                             echo htmlspecialchars(trim($gradeClean));
