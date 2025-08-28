@@ -316,4 +316,5 @@ usort($activities, function ($a, $b) {
 });
 
 // Limit to most recent 15
+$totalActivityCount = count($activities); // Or get the full count before slicing to 15
 $activities = array_slice($activities, 0, 15);
