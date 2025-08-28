@@ -4,28 +4,52 @@
         <div class="bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100 px-6 py-5 rounded-t-xl flex items-center justify-between">
             <div class="flex items-center gap-3">
                 <div class="flex-shrink-0 h-12 w-12 mr-2">
-                    <?php if (!empty($student['profile_picture'])): ?>
-                        <img class="h-12 w-12 rounded-full border-2 border-blue-100" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>" alt="">
-                    <?php else: ?>
-                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
-                            <span class="text-blue-600 font-semibold"><?php echo strtoupper(substr($student['name'], 0, 2)); ?></span>
-                        </div>
-                    <?php endif; ?>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($student['name']); ?></h3>
-                    <p class="text-gray-500"><?php echo htmlspecialchars($student['email']); ?></p>
                     <?php
+                    // Get student profile from students_profiles_tb if available
                     $profile = [];
                     if (isset($studentEnrollments[$studentId]['profile'])) {
                         $profile = $studentEnrollments[$studentId]['profile'];
                     } else {
-                        $profile = $student;
+                        // Try to get from students_profiles_tb if not set
+                        $profileQuery = $conn->prepare("SELECT * FROM students_profiles_tb WHERE st_id = ?");
+                        $profileQuery->bind_param("s", $studentId);
+                        $profileQuery->execute();
+                        $profileRes = $profileQuery->get_result();
+                        if ($profileRes && $profileRes->num_rows > 0) {
+                            $profile = $profileRes->fetch_assoc();
+                        } else {
+                            $profile = $student;
+                        }
                     }
                     ?>
+                    <?php if (!empty($profile['profile_picture'])): ?>
+                        <img class="h-12 w-12 rounded-full border-2 border-blue-100" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($profile['profile_picture']); ?>" alt="">
+                    <?php else: ?>
+                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
+                            <span class="text-blue-600 font-semibold"><?php echo strtoupper(substr($profile['st_userName'] ?? $student['name'], 0, 2)); ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($profile['st_userName'] ?? $student['name']); ?></h3>
+                    <p class="text-gray-500"><?php echo htmlspecialchars($profile['st_email'] ?? $student['email']); ?></p>
                     <div class="mt-2 text-sm text-gray-700">
+                        <div><span class="font-semibold">Position:</span> <?php echo htmlspecialchars($profile['st_position'] ?? 'student'); ?></div>
                         <div><span class="font-semibold">ID Number:</span> <?php echo htmlspecialchars($profile['student_id'] ?? $studentId); ?></div>
-                        <div><span class="font-semibold">Grade Level:</span> <?php echo htmlspecialchars($profile['grade_level'] ?? ($student['grade_level'] ?? '')); ?></div>
+                        <div><span class="font-semibold">Grade Level:</span>
+                            <?php
+                            // Clean up grade_level display
+                            $gradeRaw = $profile['grade_level'] ?? ($student['grade_level'] ?? '');
+                            // If multiple grades, pick the latest (or first), or just clean up the string
+                            if (is_array($gradeRaw)) {
+                                $gradeRaw = end($gradeRaw);
+                            }
+                            // Replace underscores and commas
+                            $gradeClean = preg_replace('/_/', ' ', $gradeRaw);
+                            $gradeClean = preg_replace('/,/', ' or ', $gradeClean);
+                            echo htmlspecialchars(trim($gradeClean));
+                            ?>
+                        </div>
                         <div><span class="font-semibold">Strand:</span> <?php echo htmlspecialchars($profile['strand'] ?? ($student['strand'] ?? '')); ?></div>
                         <div><span class="font-semibold">Status:</span> <?php echo htmlspecialchars($profile['status'] ?? ($student['status'] ?? 'Active')); ?></div>
                     </div>
