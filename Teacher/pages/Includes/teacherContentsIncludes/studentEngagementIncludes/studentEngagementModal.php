@@ -1,16 +1,15 @@
 <div id="studentModal-<?php echo $studentId; ?>" class="fixed inset-0 z-50 hidden overflow-auto bg-black bg-opacity-50 flex items-center justify-center">
     <div class="bg-white rounded-xl shadow-lg border border-gray-200 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto transition-all duration-300">
         <!-- Modal Header -->
-        <div class="bg-gradient-to-r from-indigo-50 to-white border-b border-gray-100 px-6 py-5 rounded-t-xl flex items-center justify-between">
-            <div class="flex items-center gap-3">
-                <div class="flex-shrink-0 h-12 w-12 mr-2">
+        <div class="bg-white border-b border-gray-200 px-8 py-6 rounded-t-xl flex items-center justify-between shadow-sm">
+            <div class="flex items-center gap-5">
+                <div class="flex-shrink-0 h-14 w-14 mr-2">
                     <?php
                     // Get student profile from students_profiles_tb if available
                     $profile = [];
                     if (isset($studentEnrollments[$studentId]['profile'])) {
                         $profile = $studentEnrollments[$studentId]['profile'];
                     } else {
-                        // Try to get from students_profiles_tb if not set
                         $profileQuery = $conn->prepare("SELECT * FROM students_profiles_tb WHERE st_id = ?");
                         $profileQuery->bind_param("s", $studentId);
                         $profileQuery->execute();
@@ -23,20 +22,22 @@
                     }
                     ?>
                     <?php if (!empty($profile['profile_picture'])): ?>
-                        <img class="h-12 w-12 rounded-full border-2 border-blue-100" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($profile['profile_picture']); ?>" alt="">
+                        <img class="h-14 w-14 rounded-full border-4 border-indigo-200 shadow" src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($profile['profile_picture']); ?>" alt="">
                     <?php else: ?>
-                        <div class="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center border-2 border-blue-200">
-                            <span class="text-blue-600 font-semibold"><?php echo strtoupper(substr($profile['st_userName'] ?? $student['name'], 0, 2)); ?></span>
+                        <div class="h-14 w-14 rounded-full bg-indigo-100 flex items-center justify-center border-4 border-indigo-200 shadow">
+                            <span class="text-indigo-700 font-bold text-lg"><?php echo strtoupper(substr($profile['st_userName'] ?? $student['name'], 0, 2)); ?></span>
                         </div>
                     <?php endif; ?>
                 </div>
                 <div>
-                    <h3 class="text-xl font-bold text-gray-900"><?php echo htmlspecialchars($profile['st_userName'] ?? $student['name']); ?></h3>
-                    <p class="text-gray-500"><?php echo htmlspecialchars($profile['st_email'] ?? $student['email']); ?></p>
-                    <div class="mt-2 text-sm text-gray-700">
-                        <div><span class="font-semibold">Position:</span> <?php echo htmlspecialchars($profile['st_position'] ?? 'student'); ?></div>
-                        <div><span class="font-semibold">ID Number:</span> <?php echo htmlspecialchars($profile['student_id'] ?? $studentId); ?></div>
-                        <div><span class="font-semibold">Grade Level:</span>
+                    <h3 class="text-2xl font-extrabold text-gray-900 flex items-center gap-2">
+                        <?php echo htmlspecialchars($profile['st_userName'] ?? $student['name']); ?>
+                    </h3>
+                    <p class="text-gray-500 text-sm"><?php echo htmlspecialchars($profile['st_email'] ?? $student['email']); ?></p>
+                    <div class="mt-2 grid grid-cols-2 gap-x-6 gap-y-1 text-sm text-gray-700">
+                        <div><span class="font-semibold text-gray-600">Position:</span> <?php echo htmlspecialchars($profile['st_position'] ?? 'Student'); ?></div>
+                        <div><span class="font-semibold text-gray-600">ID:</span> <?php echo htmlspecialchars($profile['student_id'] ?? $studentId); ?></div>
+                        <div><span class="font-semibold text-gray-600">Grade:</span>
                             <?php
                             $gradeRaw = $profile['grade_level'] ?? ($student['grade_level'] ?? '');
                             if (is_array($gradeRaw)) {
@@ -47,16 +48,10 @@
                             echo htmlspecialchars(trim($gradeClean));
                             ?>
                         </div>
-                        <div><span class="font-semibold">Strand:</span> <?php echo htmlspecialchars($profile['strand'] ?? ($student['strand'] ?? '')); ?></div>
-                        <div><span class="font-semibold">Status:</span> <?php echo htmlspecialchars($profile['status'] ?? ($student['status'] ?? 'Active')); ?></div>
+                        <div><span class="font-semibold text-gray-600">Strand:</span> <?php echo htmlspecialchars($profile['strand'] ?? ($student['strand'] ?? '')); ?></div>
                     </div>
                 </div>
             </div>
-            <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="text-gray-400 hover:text-gray-500 transition-colors duration-200">
-                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-                </svg>
-            </button>
         </div>
 
         <!-- Modal Content -->
@@ -136,58 +131,10 @@
                 <?php endif; ?>
             </div>
 
-            <!-- Performance Summary -->
-            <div class="mb-6">
-                <h4 class="text-lg font-semibold mb-3">Performance Summary</h4>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="bg-white border rounded-lg p-4">
-                        <p class="text-sm font-medium text-gray-700 mb-2">Best Score</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xl font-bold text-green-600"><?php echo $student['best_percent']; ?>%</span>
-                            <span class="text-sm text-gray-500"><?php echo htmlspecialchars($student['best_quiz_name']); ?></span>
-                        </div>
-                    </div>
-                    <div class="bg-white border rounded-lg p-4">
-                        <p class="text-sm font-medium text-gray-700 mb-2">Average Score</p>
-                        <div class="flex items-center justify-between">
-                            <span class="text-xl font-bold text-blue-600"><?php echo $student['avg_percent']; ?>%</span>
-                            <span class="text-sm text-gray-500">Across all quizzes</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Activity Status -->
-            <div>
-                <h4 class="text-lg font-semibold mb-3">Activity Status</h4>
-                <div class="bg-white border rounded-lg p-4">
-                    <div class="flex items-center justify-between mb-2">
-                        <span class="text-sm font-medium text-gray-700">Activity Level</span>
-                        <span class="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
-                                        <?php if ($student['activity_level'] == 'High'): ?>
-                                            bg-green-100 text-green-800
-                                        <?php elseif ($student['activity_level'] == 'Medium'): ?>
-                                            bg-yellow-100 text-yellow-800
-                                        <?php else: ?>
-                                            bg-red-100 text-red-800
-                                        <?php endif; ?>
-                                    ">
-                            <?php echo $student['activity_level']; ?>
-                        </span>
-                    </div>
-                    <div class="flex items-center justify-between">
-                        <span class="text-sm font-medium text-gray-700">Days Enrolled</span>
-                        <span class="text-sm text-gray-500"><?php echo $student['days_enrolled']; ?> days</span>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <!-- Modal Footer -->
         <div class="bg-gray-50 px-6 py-4 border-t border-gray-100 rounded-b-xl flex justify-end items-center gap-2">
-            <a href="../Reports/studentProfile.php?student_id=<?php echo $studentId; ?>" class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-all duration-200">
-                View Full Profile
-            </a>
             <button onclick="closeStudentModal('<?php echo $studentId; ?>')" class="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-all duration-200">
                 Close
             </button>

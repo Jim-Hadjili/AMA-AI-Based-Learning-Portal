@@ -59,12 +59,6 @@
             </div>
         `;
 
-            // Add action button to view student profile
-            modalActions.innerHTML = `
-            <a href="../Students/viewStudentProfile.php?student_id=${activity.student_id}" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
-                View Student Profile
-            </a>
-        `;
         } else if (activity.type === 'quiz_submission') {
             // For quiz submissions, show the latest attempt (may be AI-generated)
             const quizTypeDisplay = activity.latest_quiz_type !== 'manual' ?
@@ -126,11 +120,7 @@
             <a href="../Functions/viewStudentAttempt.php?attempt_id=${activity.latest_attempt_id}" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 View Latest Attempt
             </a>
-            ${activity.latest_attempt_id !== activity.attempt_id ? `
-            <a href="../Functions/viewStudentAttempt.php?attempt_id=${activity.attempt_id}" class="ml-2 px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
-                View First Attempt
-            </a>
-            ` : ''}
+            
         `;
         }
 
