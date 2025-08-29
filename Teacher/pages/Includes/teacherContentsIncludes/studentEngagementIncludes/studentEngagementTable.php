@@ -49,7 +49,7 @@
             unset($student);
             ?>
 
-            <?php foreach (array_slice($uniqueStudents, 0, 5) as $studentId => $student): ?>
+            <?php foreach (array_slice($uniqueStudents, 0, 10) as $studentId => $student): ?>
                 <tr class="hover:bg-indigo-50 cursor-pointer transition-colors duration-150" onclick="showStudentModal('<?php echo $studentId; ?>')">
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
@@ -85,14 +85,3 @@
         </tbody>
     </table>
 </div>
-
-<?php if (count($uniqueStudents) > 5): ?>
-    <div class="text-center mt-4">
-        <a href="../Reports/quizResults.php" class="inline-flex items-center text-sm text-indigo-600 hover:text-indigo-800 font-semibold transition-colors duration-150">
-            View all students
-            <svg class="ml-1 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
-            </svg>
-        </a>
-    </div>
-<?php endif; ?>

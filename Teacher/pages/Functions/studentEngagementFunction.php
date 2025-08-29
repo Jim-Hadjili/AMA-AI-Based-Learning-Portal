@@ -254,6 +254,28 @@ if ($quizAttemptsResult && $quizAttemptsResult->num_rows > 0) {
     }
 }
 
+// Ensure all enrolled students are displayed, even if they have no quiz attempts
+foreach ($studentEnrollments as $studentId => $enrollment) {
+    if (!isset($uniqueStudents[$studentId])) {
+        $uniqueStudents[$studentId] = [
+            'name' => $enrollment['name'],
+            'email' => $enrollment['email'],
+            'profile_picture' => $enrollment['profile_picture'],
+            'attempts' => 0,
+            'enrolled_classes' => $enrollment['total_classes'],
+            'best_score' => 0,
+            'best_percent' => 0,
+            'avg_percent' => 0,
+            'total_score' => 0,
+            'days_enrolled' => isset($enrollment['first_enrollment']) ? round((time() - strtotime($enrollment['first_enrollment'])) / (60 * 60 * 24)) : 0,
+            'activity_level' => 'Low',
+            'engagement_score' => 0,
+            'latest_result' => null,
+            'latest_time' => null
+        ];
+    }
+}
+
 // Calculate engagement score and activity level for each student without using login data
 foreach ($uniqueStudents as $studentId => &$student) {
     // Calculate percentage of available quizzes attempted
