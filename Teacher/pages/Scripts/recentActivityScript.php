@@ -117,7 +117,7 @@
 
             // Add action button to view the latest attempt details
             modalActions.innerHTML = `
-            <a href="../Functions/viewStudentAttempt.php?attempt_id=${activity.latest_attempt_id}" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+            <a href="../../pages/viewStudentAttempt.php?attempt_id=${activity.latest_attempt_id}" class="ml-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
                 View Latest Attempt
             </a>
             
