@@ -20,8 +20,8 @@ include "Functions/allRecentActivityFunction.php";
             <!-- Back Button -->
             <div class="flex items-center px-6 py-4 border-b border-gray-100">
                 <a href="../Contents/Dashboard/teachersDashboard.php" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
-                        <i class="fas fa-arrow-left mr-2"></i>
-                        <span>Back to Class</span>
+                        <i class="fas fa-home mr-2"></i>
+                        <span>Back to Dashboard</span>
                     </a>
                 <h1 class="ml-4 text-2xl font-bold text-gray-900">All Recent Activity</h1>
             </div>
