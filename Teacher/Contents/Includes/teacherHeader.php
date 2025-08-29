@@ -3,18 +3,14 @@
     <div class="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <!-- Left Section: Mobile Menu Toggle (for mobile) & Logo/Tagline -->
         <div class="flex items-center gap-4">
-            <!-- Mobile Menu Button -->
-            <div onclick="toggleMobileMenu()" class="lg:hidden p-2 rounded-md bg-white shadow-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 transition-colors duration-200 cursor-pointer">
-                <i class="fas fa-bars text-xl"></i>
-            </div>
-            <!-- Logo/Tagline (optional, add your logo here) -->
-            
+
+
             <!-- Logo and Tagline -->
             <a href="#" class="hidden sm:flex items-center gap-3 font-bold text-purple-700 text-lg">
                 <img src="../../../Assets/Images/Logo.png" alt="AMA Logo" class="h-12 w-12 object-contain" />
                 <span class="text-gray-900 font-bold text-xl tracking-tight">AMA Teacher Portal</span>
             </a>
-                    </div>
+        </div>
 
         <!-- Right Section: User Profile and Notifications -->
         <div class="flex items-center gap-4">
@@ -114,6 +110,7 @@
     function openEditTeacherProfileModal() {
         document.getElementById('editTeacherProfileModal').classList.remove('hidden');
     }
+
     function closeEditTeacherProfileModal() {
         document.getElementById('editTeacherProfileModal').classList.add('hidden');
     }
