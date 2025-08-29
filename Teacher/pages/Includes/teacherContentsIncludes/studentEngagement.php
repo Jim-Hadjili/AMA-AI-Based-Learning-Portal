@@ -1,5 +1,5 @@
 <div class="w-full mb-8">
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 h-[1270px] flex flex-col">
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 flex flex-col <?php echo empty($uniqueStudents) ? 'min-h-[400px]' : ''; ?>">
         <!-- Header Section -->
         <div class="bg-white border-b border-gray-100 px-6 py-6 flex-shrink-0">
             <div class="flex items-center gap-4 justify-between">
@@ -27,22 +27,16 @@
 
         <div class="p-6 flex-1 overflow-y-auto">
             <?php if (empty($uniqueStudents)): ?>
-
                 <?php include "studentEngagementIncludes/studentEngagementEmptyState.php" ?>
-
             <?php else: ?>
-
                 <!-- Summary Cards -->
                 <?php include "studentEngagementIncludes/studentEngagementSummaryCards.php" ?>
-
                 <!-- Student Performance Table -->
                 <?php include "studentEngagementIncludes/studentEngagementTable.php" ?>
-
                 <!-- Student Detail Modals -->
                 <?php foreach ($uniqueStudents as $studentId => $student): ?>
                     <?php include "studentEngagementIncludes/studentEngagementModal.php" ?>
                 <?php endforeach; ?>
-
             <?php endif; ?>
         </div>
     </div>

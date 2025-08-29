@@ -1,5 +1,5 @@
-<div class="w-full mb-8 ">
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 h-[1270px] flex flex-col">
+<div class="w-full mb-8">
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 flex flex-col <?php echo empty($activities) ? 'min-h-[400px]' : ''; ?>">
 
         <!-- Header Section -->
         <div class="bg-white border-b border-gray-100 px-6 py-6">
