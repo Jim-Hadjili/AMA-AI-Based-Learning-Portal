@@ -1,5 +1,5 @@
-<div class="w-full mb-8">
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+<div class="w-full mb-8 ">
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 h-[1270px] flex flex-col">
 
         <!-- Header Section -->
         <div class="bg-white border-b border-gray-100 px-6 py-6">
