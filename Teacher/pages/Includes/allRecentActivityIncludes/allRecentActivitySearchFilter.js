@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const searchInput = document.getElementById("activitySearch");
   const typeFilter = document.getElementById("activityTypeFilter");
   const classFilter = document.getElementById("classFilter");
+  const resetButton = document.getElementById("resetActivityFilters");
   const timeline = document.getElementById("activityTimeline");
   const items = timeline ? timeline.querySelectorAll(".activity-item") : [];
 
@@ -28,8 +29,35 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  function resetFilters() {
+    // Clear input values
+    searchInput.value = "";
+    typeFilter.value = "";
+    classFilter.value = "";
+    
+    // Show all activity items
+    items.forEach((item) => {
+      item.style.display = "";
+    });
+    
+    // Dispatch change events to ensure any other listeners know the filters have been reset
+    [typeFilter, classFilter].forEach(select => {
+      const changeEvent = new Event('change');
+      select.dispatchEvent(changeEvent);
+    });
+    
+    // Focus on the search field after reset
+    searchInput.focus();
+  }
+
+  // Add event listeners for filters
   [searchInput, typeFilter, classFilter].forEach((el) => {
     el.addEventListener("input", filterActivities);
     el.addEventListener("change", filterActivities);
   });
+  
+  // Add event listener for reset button
+  if (resetButton) {
+    resetButton.addEventListener("click", resetFilters);
+  }
 });
