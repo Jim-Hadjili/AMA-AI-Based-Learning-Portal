@@ -21,8 +21,9 @@ document.addEventListener("click", function (event) {
 (function () {
   const searchInput = document.getElementById("studentSearch");
   const filterSelect = document.getElementById("classFilter");
+  const resetButton = document.getElementById("resetFilters");
   const tableBody = document.getElementById("studentTableBody");
-  if (!searchInput || !filterSelect || !tableBody) return;
+  if (!searchInput || !filterSelect || !tableBody || !resetButton) return;
   const rows = tableBody.querySelectorAll("tr");
   function filterRows() {
     const search = searchInput.value.toLowerCase();
@@ -33,8 +34,8 @@ document.addEventListener("click", function (event) {
       const classes = row.getAttribute("data-student-classes");
       const matchesSearch =
         !search ||
-        (name && name.includes(search)) ||
-        (email && email.includes(search));
+        (name && name.toLowerCase().includes(search)) ||
+        (email && email.toLowerCase().includes(search));
       const matchesFilter =
         !filter || (classes && classes.split(",").includes(filter));
       if (matchesSearch && matchesFilter) {
@@ -44,6 +45,26 @@ document.addEventListener("click", function (event) {
       }
     });
   }
+  
+  function resetFilters() {
+    // Clear input values
+    searchInput.value = "";
+    filterSelect.value = "";
+    
+    // Show all rows explicitly
+    rows.forEach((row) => {
+      row.style.display = "";
+    });
+    
+    // Optional: trigger a change event on the filter select to ensure any other listeners know it changed
+    const changeEvent = new Event('change');
+    filterSelect.dispatchEvent(changeEvent);
+    
+    // Optional: focus on the search field after reset
+    searchInput.focus();
+  }
+  
   searchInput.addEventListener("input", filterRows);
   filterSelect.addEventListener("change", filterRows);
+  resetButton.addEventListener("click", resetFilters);
 })();

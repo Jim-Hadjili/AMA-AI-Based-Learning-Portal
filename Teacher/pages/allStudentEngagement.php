@@ -8,15 +8,18 @@ include_once "Functions/allStudentEngagementFunction.php";
 
 <?php include "Includes/allStudentEngagementIncludes/allStudentEngagementHeadTag.php"; ?>
 
+<?php include "Includes/floatingButton.php" ?>
+
 <body class="bg-gray-50 font-[Poppins]">
 
-    <div class="max-w-5xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="max-w-8xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+
+        <?php include "Includes/allStudentEngagementIncludes/allStudentEngagementBreadcrumb.php"; ?>
 
         <!-- Header Card -->
         <?php include "Includes/allStudentEngagementIncludes/allStudentEngagementHeader.php"; ?>
 
-        <?php include "Includes/allStudentEngagementIncludes/allStudentEngagementBreadcrumb.php"; ?>
-
+        <!-- Empty State or Main Content -->
         <?php if (empty($uniqueStudents)): ?>
             <div class="bg-white rounded-xl shadow-lg border border-gray-200 px-6 py-12">
                 <?php include "Includes/allStudentEngagementIncludes/allStudentEngagementEmptyState.php"; ?>
@@ -47,3 +50,5 @@ include_once "Functions/allStudentEngagementFunction.php";
 </body>
 
 </html>
+
+<script src="Scripts/floatingButtonScript.js"></script>
