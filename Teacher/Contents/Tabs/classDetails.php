@@ -120,6 +120,8 @@ $notification_message = $_GET['message'] ?? '';
     </style>
 </head>
 
+<?php include "../../pages/Includes/floatingButton.php" ?>
+
 <body class="bg-gray-100 min-h-screen">
     <!-- Notification Container -->
     <div id="notification-container" class="fixed bottom-4 right-4 z-50 flex flex-col space-y-2"></div>
@@ -307,3 +309,5 @@ $notification_message = $_GET['message'] ?? '';
 </body>
 
 </html>
+
+<script src="../../pages/Scripts/floatingButtonScript.js"></script>
