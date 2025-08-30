@@ -133,11 +133,6 @@
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                     <?php echo $quiz['total_attempts']; ?>
-                                    <?php if ($quiz['total_attempts'] > $quiz['attempt_count'] && $quiz['attempt_count'] > 0): ?>
-                                        <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
-                                            +<?php echo $quiz['total_attempts'] - $quiz['attempt_count']; ?> AI
-                                        </span>
-                                    <?php endif; ?>
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
