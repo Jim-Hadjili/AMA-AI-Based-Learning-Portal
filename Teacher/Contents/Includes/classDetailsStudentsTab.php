@@ -191,7 +191,7 @@
                                 </td>
 
                                 <td class="px-6 py-4 whitespace-nowrap text-center">
-                                    <a href=""
+                                    <a href="../../pages/studentClassInfo.php?student_id=<?php echo htmlspecialchars($student['st_id']); ?>&class_id=<?php echo htmlspecialchars($classDetails['class_id']); ?>"
                                         class="inline-flex items-center px-3 py-1.5 border border-blue-300 text-xs font-medium rounded-md text-blue-700 bg-blue-50 hover:bg-blue-100 hover:border-blue-400 transition-colors duration-200">
                                         <svg class="w-3 h-3 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                             <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
