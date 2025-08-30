@@ -1,4 +1,4 @@
-<div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden mb-8">
+<div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden">
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
