@@ -184,7 +184,7 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                     <div class="flex-shrink-0">
                         <?php if (!empty($student['profile_picture'])): ?>
                             <img class="h-24 w-24 rounded-full object-cover border-4 border-gray-200"
-                                 src="../../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>"
+                                 src="../../Uploads/ProfilePictures/<?php echo htmlspecialchars($student['profile_picture']); ?>"
                                  alt="<?php echo htmlspecialchars($student['st_userName']); ?>">
                         <?php else: ?>
                             <div class="h-24 w-24 rounded-full bg-gray-200 border-4 border-gray-300 flex items-center justify-center">
@@ -223,7 +223,7 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                     </div>
                     
                     <div class="bg-gray-50 rounded-lg p-4 border border-gray-200">
-                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Subject</p>
+                        <p class="text-sm text-gray-500 uppercase tracking-wider mb-1">Subject Strand</p>
                         <p class="font-semibold text-gray-900"><?php echo htmlspecialchars($classDetails['strand']); ?></p>
                     </div>
                 </div>
@@ -260,6 +260,44 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
             </div>
         </div>
         
+        <!-- Search and Filter Section - Now Outside the Table -->
+        <div class="bg-white rounded-xl shadow-md overflow-hidden mb-6 border border-gray-200">
+            <div class="px-6 py-5 border-b border-gray-200">
+                <h3 class="text-lg font-semibold text-gray-900">Search & Filters</h3>
+            </div>
+            <div class="p-4 bg-gray-50">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <!-- Search Input -->
+                    <div class="flex-1">
+                        <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Search Quiz</label>
+                        <div class="relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                            <input type="text" id="quiz-search" class="focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md" placeholder="Search by quiz title...">
+                        </div>
+                    </div>
+                    
+                    <!-- Status Filter -->
+                    <div class="w-full md:w-48">
+                        <label for="status-filter" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select id="status-filter" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-blue-500 focus:border-blue-500 rounded-md">
+                            <option value="all">All Statuses</option>
+                            <option value="completed">Completed</option>
+                            <option value="not-attempted">Not Attempted</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Reset Button -->
+                    <div class="w-full md:w-auto flex items-end">
+                        <button id="reset-filters" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <i class="fas fa-undo mr-2"></i> Reset
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <!-- Quizzes Table -->
         <div class="bg-white rounded-xl shadow-md overflow-hidden border border-gray-200">
             <div class="px-6 py-5 border-b border-gray-200 flex justify-between items-center">
@@ -267,6 +305,7 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
             </div>
             
             <?php if (empty($quizzes)): ?>
+                <!-- Empty state - No Quizzes Available -->
                 <div class="p-6 text-center">
                     <div class="inline-block p-4 rounded-full bg-gray-100 mb-4">
                         <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -282,22 +321,24 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                         <thead class="bg-gray-50">
                             <tr>
                                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quiz</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Questions</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Attempts</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Latest Score</th>
-                                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Questions</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Attempts</th>
+                                <th scope="col" class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                             </tr>
                         </thead>
-                        <tbody class="bg-white divide-y divide-gray-200">
+                        <tbody id="quiz-table-body" class="bg-white divide-y divide-gray-200">
                             <?php foreach ($quizzes as $quiz): ?>
-                                <tr class="hover:bg-gray-50">
+                                <tr class="hover:bg-gray-50 quiz-row" 
+                                    data-title="<?php echo htmlspecialchars(strtolower($quiz['quiz_title'])); ?>"
+                                    data-status="<?php echo !$quiz['latest_attempt'] ? 'not-attempted' : ($quiz['latest_attempt']['status'] === 'completed' ? 'completed' : 'other'); ?>"
+                                    data-attempts="<?php echo $quiz['total_attempts'] > 0 ? 'with-attempts' : 'no-attempts'; ?>">
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <div class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($quiz['quiz_title']); ?></div>
                                         <div class="text-xs text-gray-500"><?php echo date('M j, Y', strtotime($quiz['created_at'])); ?></div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <?php if ($quiz['quiz_type'] == 'manual'): ?>
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
                                                 Manual
@@ -308,10 +349,10 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
                                         <?php echo $quiz['question_count']; ?> questions
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
+                                    <td class="px-6 py-4 whitespace-nowrap text-center">
                                         <?php if (!$quiz['latest_attempt']): ?>
                                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                 Not Attempted
@@ -326,33 +367,16 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                        <?php echo $quiz['total_attempts']; ?> / <?php echo $quiz['allow_retakes'] ? 'Unlimited' : '1'; ?>
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 text-center">
+                                        <?php echo $quiz['total_attempts']; ?>
                                         <?php if ($quiz['total_attempts'] > $quiz['attempt_count'] && $quiz['attempt_count'] > 0): ?>
                                             <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-purple-100 text-purple-800">
                                                 +<?php echo $quiz['total_attempts'] - $quiz['attempt_count']; ?> AI
                                             </span>
                                         <?php endif; ?>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap">
-                                        <?php if ($quiz['latest_attempt'] && $quiz['latest_attempt']['status'] === 'completed'): ?>
-                                            <div class="flex items-center">
-                                                <?php 
-                                                    $scorePercent = round(($quiz['latest_attempt']['score'] / $quiz['question_count']) * 100);
-                                                    $scoreClass = $scorePercent >= 75 ? 'text-green-600' : 'text-red-600';
-                                                ?>
-                                                <div class="mr-2 w-16 bg-gray-200 rounded-full h-2.5">
-                                                    <div class="<?php echo $scorePercent >= 75 ? 'bg-green-600' : 'bg-red-600'; ?> h-2.5 rounded-full" style="width: <?php echo $scorePercent; ?>%"></div>
-                                                </div>
-                                                <span class="text-sm font-medium <?php echo $scoreClass; ?>">
-                                                    <?php echo $quiz['latest_attempt']['score']; ?>/<?php echo $quiz['question_count']; ?> (<?php echo $scorePercent; ?>%)
-                                                </span>
-                                            </div>
-                                        <?php else: ?>
-                                            <span class="text-sm text-gray-500">N/A</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                    
+                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-center">
                                         <?php if ($quiz['latest_attempt'] && $quiz['latest_attempt']['status'] === 'completed'): ?>
                                             <a href="viewStudentAttempt.php?attempt_id=<?php echo $quiz['latest_attempt']['attempt_id']; ?>" class="text-indigo-600 hover:text-indigo-900">
                                                 View Attempt
@@ -366,13 +390,78 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                         </tbody>
                     </table>
                 </div>
+                
+                <!-- Empty Results Message -->
+                <div id="no-results-message" class="hidden p-8 text-center">
+                    <div class="inline-block p-4 rounded-full bg-gray-100 mb-4">
+                        <svg class="w-8 h-8 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg>
+                    </div>
+                    <h4 class="text-lg font-medium text-gray-900 mb-2">No matching quizzes found</h4>
+                    <p class="text-gray-500">Try adjusting your search or filter criteria</p>
+                </div>
             <?php endif; ?>
         </div>
     </div>
 
-
     <script>
-        // You can add any JavaScript functionality here if needed
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.getElementById('quiz-search');
+        const statusFilter = document.getElementById('status-filter');
+        const resetButton = document.getElementById('reset-filters');
+        const quizRows = document.querySelectorAll('.quiz-row');
+        const noResultsMessage = document.getElementById('no-results-message');
+        const quizTableBody = document.getElementById('quiz-table-body');
+        
+        // Function to apply filters
+        function applyFilters() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const statusValue = statusFilter.value;
+            
+            let visibleCount = 0;
+            
+            quizRows.forEach(row => {
+                const title = row.dataset.title;
+                const status = row.dataset.status;
+                
+                // Check if row matches all current filters
+                const matchesSearch = title.includes(searchTerm);
+                const matchesStatus = statusValue === 'all' || status === statusValue;
+                
+                // Show/hide row based on filter matches
+                if (matchesSearch && matchesStatus) {
+                    row.classList.remove('hidden');
+                    visibleCount++;
+                } else {
+                    row.classList.add('hidden');
+                }
+            });
+            
+            // Show "no results" message if no visible rows
+            if (visibleCount === 0) {
+                noResultsMessage.classList.remove('hidden');
+                quizTableBody.classList.add('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+                quizTableBody.classList.remove('hidden');
+            }
+        }
+        
+        // Add event listeners to all filter inputs
+        searchInput.addEventListener('input', applyFilters);
+        statusFilter.addEventListener('change', applyFilters);
+        
+        // Reset filters
+        resetButton.addEventListener('click', function() {
+            searchInput.value = '';
+            statusFilter.value = 'all';
+            applyFilters();
+        });
+        
+        // Initialize filters
+        applyFilters();
+    });
     </script>
 </body>
 </html>
