@@ -236,7 +236,7 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                 <h3 class="text-lg font-semibold text-gray-900">Performance Overview</h3>
             </div>
             <div class="p-6">
-                <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="bg-blue-50 rounded-lg p-4 border border-blue-100">
                         <p class="text-sm text-blue-600 uppercase tracking-wider mb-1">Total Quizzes</p>
                         <p class="text-2xl font-bold text-blue-800"><?php echo $totalQuizzes; ?></p>
@@ -250,11 +250,6 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
                     <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-100">
                         <p class="text-sm text-yellow-600 uppercase tracking-wider mb-1">Pending</p>
                         <p class="text-2xl font-bold text-yellow-800"><?php echo $totalQuizzes - $completedQuizzes; ?></p>
-                    </div>
-                    
-                    <div class="bg-purple-50 rounded-lg p-4 border border-purple-100">
-                        <p class="text-sm text-purple-600 uppercase tracking-wider mb-1">Average Score</p>
-                        <p class="text-2xl font-bold text-purple-800"><?php echo $averageScore; ?>%</p>
                     </div>
                 </div>
             </div>

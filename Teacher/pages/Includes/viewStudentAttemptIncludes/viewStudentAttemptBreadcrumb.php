@@ -3,9 +3,9 @@
         <ol class="inline-flex items-center space-x-1 md:space-x-2">
             <li>
                 <div class="flex items-center space-x-3">
-                    <a href="../pages/teacherQuizResult.php?quiz_id=<?php echo $quiz_id; ?>" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
+                    <a href="javascript:history.back()" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
                         <i class="fas fa-arrow-left mr-2"></i>
-                        <span>Back to Quiz Results</span>
+                        <span>Back</span>
                     </a>
                 </div>
             </li>
