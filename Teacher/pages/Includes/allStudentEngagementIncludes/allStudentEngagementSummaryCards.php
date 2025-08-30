@@ -10,7 +10,7 @@
             <div class="flex-1 min-w-0">
                 <h3 class="text-xs font-semibold text-blue-600 uppercase tracking-wide mb-1">Total Students</h3>
                 <p class="text-2xl font-bold text-gray-900"><?php echo $totalStudentsEnrolled ?? 0; ?></p>
-                <p class="text-sm text-gray-500 mt-1">Across <?php echo $totalClassesCount; ?> classes</p>
+                <p class="text-sm text-gray-500 mt-1">Across all <?php echo $totalClassesCount; ?> classes</p>
             </div>
         </div>
     </div>
@@ -25,7 +25,7 @@
             <div class="flex-1 min-w-0">
                 <h3 class="text-xs font-semibold text-green-600 uppercase tracking-wide mb-1">Quizzes Created</h3>
                 <p class="text-2xl font-bold text-gray-900"><?php echo $totalQuizzesCreated ?? 0; ?></p>
-                <p class="text-sm text-gray-500 mt-1">Published by you</p>
+                <p class="text-sm text-gray-500 mt-1">Published by you all Across the <?php echo $totalClassesCount; ?> Classes</p>
             </div>
         </div>
     </div>
