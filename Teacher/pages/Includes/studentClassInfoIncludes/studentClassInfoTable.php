@@ -13,14 +13,6 @@
                     <p class="text-sm text-gray-600">Complete list of all quizzes and student attempts</p>
                 </div>
             </div>
-            <?php if (!empty($quizzes)): ?>
-                <div class="bg-white px-4 py-2 rounded-xl shadow-sm">
-                    <div class="text-center">
-                        <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Total Quizzes</p>
-                        <p class="text-xl font-bold text-blue-600"><?php echo count($quizzes); ?></p>
-                    </div>
-                </div>
-            <?php endif; ?>
         </div>
     </div>
 
