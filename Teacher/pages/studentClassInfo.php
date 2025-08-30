@@ -171,7 +171,7 @@ $averageScore = $totalPossibleScore > 0 ? round(($totalScore / $totalPossibleSco
     
     <div class="container mx-auto px-4 py-8">
         <div class="flex items-center mb-6">
-            <a href="javascript:history.back()" class="text-blue-600 hover:text-blue-800 mr-2">
+            <a href="../Contents/Tabs/classDetails.php?class_id=<?php echo $class_id; ?>" class="text-blue-600 hover:text-blue-800 mr-2">
                 <i class="fas fa-arrow-left"></i> Back to Class
             </a>
             <h1 class="text-2xl font-bold text-gray-800">Student Information</h1>
