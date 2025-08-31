@@ -89,7 +89,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <p class="text-sm text-gray-500">Latest Score</p>
-                                <p class="font-medium">${activity.latest_score}</p>
+                                <p class="font-medium">${activity.latest_score} <span class="text-xs text-gray-500 ml-2">(${activity.latest_score_percent}%)</span></p>
                             </div>
                             <div>
                                 <p class="text-sm text-gray-500">Total Attempts</p>

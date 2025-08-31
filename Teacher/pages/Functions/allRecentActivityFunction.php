@@ -185,85 +185,72 @@ if ($enrollments && $enrollments->num_rows > 0) {
     }
 }
 
+// Helper function to get all descendant quiz IDs (including original)
+function getQuizChainIds($conn, $quiz_id) {
+    $ids = [$quiz_id];
+    $queue = [$quiz_id];
+    while (!empty($queue)) {
+        $current = array_shift($queue);
+        $stmt = $conn->prepare("SELECT quiz_id FROM quizzes_tb WHERE parent_quiz_id = ?");
+        $stmt->bind_param("i", $current);
+        $stmt->execute();
+        $res = $stmt->get_result();
+        while ($row = $res->fetch_assoc()) {
+            $ids[] = $row['quiz_id'];
+            $queue[] = $row['quiz_id'];
+        }
+    }
+    return $ids;
+}
+
 // Quiz submissions - track the first attempt per student-quiz combination
 if ($quizSubmissions && $quizSubmissions instanceof mysqli_result && $quizSubmissions->num_rows > 0) {
-    // For the alternative approach, track which student-quiz combos we've seen
     $processedStudentQuizzes = [];
 
     while ($row = $quizSubmissions->fetch_assoc()) {
-        // Create a unique key for this student-quiz combination
         $studentQuizKey = $row['st_id'] . '-' . $row['quiz_id'];
-
-        // If using the alternative approach, skip if we've already seen this student-quiz combo
-        if (isset($processedStudentQuizzes[$studentQuizKey])) {
-            continue;
-        }
-
-        // Mark this student-quiz combo as processed
+        if (isset($processedStudentQuizzes[$studentQuizKey])) continue;
         $processedStudentQuizzes[$studentQuizKey] = true;
 
-        // Get quiz title and verify it's not AI-generated
         $quizTitle = $row['quiz_title'] ?? '';
-        $originalQuizId = $row['quiz_id']; // Store the original quiz ID
+        $originalQuizId = $row['quiz_id'];
 
-        if (empty($quizTitle)) {
-            $quizStmt = $conn->prepare("SELECT quiz_title, quiz_type FROM quizzes_tb WHERE quiz_id = ?");
-            $quizStmt->bind_param("i", $row['quiz_id']);
-            $quizStmt->execute();
-            $quizRes = $quizStmt->get_result();
-            if ($quizRow = $quizRes->fetch_assoc()) {
-                // Skip AI-generated quizzes
-                if (isset($quizRow['quiz_type']) && $quizRow['quiz_type'] != 'manual') {
-                    continue;
-                }
-                $quizTitle = $quizRow['quiz_title'];
-            }
-        }
+        // Get all quiz IDs in the chain (original + all descendants)
+        $quizChainIds = getQuizChainIds($conn, $originalQuizId);
+        $quizChainIdsStr = implode(',', array_map('intval', $quizChainIds));
 
-        // Get total attempts for this student and quiz (including AI-generated attempts)
+        // Get total attempts for this student across all quizzes in the chain
         $totalAttemptsStmt = $conn->prepare("
             SELECT COUNT(*) as total_attempts 
-            FROM quiz_attempts_tb qa
-            JOIN quizzes_tb q ON qa.quiz_id = q.quiz_id
-            WHERE qa.st_id = ? AND (
-                qa.quiz_id = ? OR 
-                q.parent_quiz_id = ? OR 
-                q.quiz_id IN (SELECT quiz_id FROM quizzes_tb WHERE parent_quiz_id = ?)
-            )
+            FROM quiz_attempts_tb 
+            WHERE st_id = ? AND quiz_id IN ($quizChainIdsStr)
         ");
-        $totalAttemptsStmt->bind_param("siii", $row['st_id'], $row['quiz_id'], $row['quiz_id'], $row['quiz_id']);
+        $totalAttemptsStmt->bind_param("s", $row['st_id']);
         $totalAttemptsStmt->execute();
         $totalAttemptsRes = $totalAttemptsStmt->get_result();
         $totalAttemptsRow = $totalAttemptsRes->fetch_assoc();
         $totalAttempts = $totalAttemptsRow['total_attempts'] ?? 1;
 
-        // Get the most recent AI-generated attempt for this student and related quizzes
+        // Get the most recent attempt for this student across all quizzes in the chain
         $latestAttemptStmt = $conn->prepare("
             SELECT qa.*, q.quiz_title, q.quiz_type
             FROM quiz_attempts_tb qa
             JOIN quizzes_tb q ON qa.quiz_id = q.quiz_id
-            WHERE qa.st_id = ? AND (
-                qa.quiz_id = ? OR 
-                q.parent_quiz_id = ? OR 
-                q.quiz_id IN (SELECT quiz_id FROM quizzes_tb WHERE parent_quiz_id = ?)
-            )
-            AND qa.status = 'completed'
-            ORDER BY 
-                CASE WHEN q.quiz_type != 'manual' THEN 0 ELSE 1 END, -- Prioritize AI-generated quizzes
-                qa.end_time DESC
+            WHERE qa.st_id = ? AND qa.quiz_id IN ($quizChainIdsStr) AND qa.status = 'completed'
+            ORDER BY qa.end_time DESC
             LIMIT 1
         ");
-        $latestAttemptStmt->bind_param("siii", $row['st_id'], $row['quiz_id'], $row['quiz_id'], $row['quiz_id']);
+        $latestAttemptStmt->bind_param("s", $row['st_id']);
         $latestAttemptStmt->execute();
         $latestAttemptRes = $latestAttemptStmt->get_result();
 
-        // Default to the original attempt if no AI-generated attempt is found
         $latestAttemptId = $row['attempt_id'];
         $latestScore = $row['score'] ?? 0;
         $latestQuizId = $row['quiz_id'];
         $latestQuizTitle = $quizTitle;
         $latestQuizType = 'manual';
         $latestEndTime = $row['activity_time'];
+        $latestScoreDisplay = "{$latestScore}/?";
 
         if ($latestAttemptRow = $latestAttemptRes->fetch_assoc()) {
             $latestAttemptId = $latestAttemptRow['attempt_id'];
@@ -272,6 +259,25 @@ if ($quizSubmissions && $quizSubmissions instanceof mysqli_result && $quizSubmis
             $latestQuizTitle = $latestAttemptRow['quiz_title'];
             $latestQuizType = $latestAttemptRow['quiz_type'];
             $latestEndTime = $latestAttemptRow['end_time'];
+
+            // Get total questions for the latest quiz
+            $questionCountStmt = $conn->prepare("SELECT COUNT(*) as total_questions FROM quiz_questions_tb WHERE quiz_id = ?");
+            $questionCountStmt->bind_param("i", $latestQuizId);
+            $questionCountStmt->execute();
+            $questionCountRes = $questionCountStmt->get_result();
+            $questionCountRow = $questionCountRes->fetch_assoc();
+            $totalQuestions = $questionCountRow['total_questions'] ?? 1;
+
+            // Get correct answers for the latest attempt
+            $correctAnswersStmt = $conn->prepare("SELECT COUNT(*) as correct_answers FROM student_answers_tb WHERE attempt_id = ? AND is_correct = 1");
+            $correctAnswersStmt->bind_param("i", $latestAttemptId);
+            $correctAnswersStmt->execute();
+            $correctAnswersRes = $correctAnswersStmt->get_result();
+            $correctAnswersRow = $correctAnswersRes->fetch_assoc();
+            $correctAnswers = $correctAnswersRow['correct_answers'] ?? 0;
+
+            // Format score and percentage
+            $latestScoreDisplay = "{$correctAnswers}/{$totalQuestions} (" . ($totalQuestions > 0 ? round(($correctAnswers / $totalQuestions) * 100) : 0) . "%)";
         }
 
         // Generate avatar if no profile picture
@@ -283,22 +289,21 @@ if ($quizSubmissions && $quizSubmissions instanceof mysqli_result && $quizSubmis
 
         if (isset($classNames[$row['class_id']])) {
             $activities[] = [
-                'time' => $row['activity_time'],  // Original first attempt time for the feed
+                'time' => $row['activity_time'],
                 'type' => $row['type'],
                 'class_id' => $row['class_id'],
                 'class_name' => $classNames[$row['class_id']],
                 'desc' => "<b>{$row['student_name']}</b> attempted quiz <b>{$quizTitle}</b> in <b>{$classNames[$row['class_id']]}</b>",
                 'student_name' => $row['student_name'],
                 'student_id' => $row['st_id'],
-                'quiz_id' => $row['quiz_id'],  // Original quiz ID
-                'quiz_title' => $quizTitle,    // Original quiz title
-                'attempt_id' => $row['attempt_id'],  // Original attempt ID
+                'quiz_id' => $row['quiz_id'],
+                'quiz_title' => $quizTitle,
+                'attempt_id' => $row['attempt_id'],
                 'total_attempts' => $totalAttempts,
                 'profile_picture' => $profilePic,
                 'has_custom_profile' => !empty($row['profile_picture']),
-                // Latest attempt info (may be AI-generated)
                 'latest_attempt_id' => $latestAttemptId,
-                'latest_score' => $latestScore,
+                'latest_score' => $latestScoreDisplay,
                 'latest_quiz_id' => $latestQuizId,
                 'latest_quiz_title' => $latestQuizTitle,
                 'latest_quiz_type' => $latestQuizType,

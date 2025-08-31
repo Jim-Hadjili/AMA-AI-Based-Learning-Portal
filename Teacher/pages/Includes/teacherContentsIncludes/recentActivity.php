@@ -15,7 +15,7 @@
                         <p class="text-sm text-gray-500 mt-1">Latest actions and events in your classes</p>
                     </div>
                 </div>
-                <?php if (isset($totalActivityCount) && $totalActivityCount > 15): ?>
+                <?php if (isset($totalActivityCount) && $totalActivityCount > 1): ?>
                     <a href="../../pages/recentActivityFull.php" class="text-sm text-blue-600 hover:text-blue-800 font-medium flex items-center gap-1 transition-colors">
                         <span>View All</span>
                         <svg class="w-3 h-3 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
