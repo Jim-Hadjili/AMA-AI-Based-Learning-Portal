@@ -47,17 +47,17 @@
                     name="department"
                     class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-emerald-500 focus:bg-white transition-all duration-200 text-sm text-ama-gray appearance-none"
                     required>
-                    <option value="">Select department</option>
-                    <option value="mathematics">Mathematics</option>
-                    <option value="science">Science</option>
-                    <option value="english">English</option>
-                    <option value="filipino">Filipino</option>
-                    <option value="social_studies">Social Studies</option>
-                    <option value="ict">ICT</option>
-                    <option value="business">Business</option>
-                    <option value="arts">Arts</option>
-                    <option value="pe_health">PE & Health</option>
-                    <option value="guidance">Guidance</option>
+                    <option value="" selected disabled>Select department</option>
+                    <option value="Mathematics">Mathematics</option>
+                    <option value="Science">Science</option>
+                    <option value="English">English</option>
+                    <option value="Filipino">Filipino</option>
+                    <option value="Social Studies">Social Studies</option>
+                    <option value="ICT">ICT</option>
+                    <option value="Business">Business</option>
+                    <option value="Arts">Arts</option>
+                    <option value="PE & Health">PE & Health</option>
+                    <option value="Guidance">Guidance</option>
                 </select>
                 <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
             </div>

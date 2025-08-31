@@ -35,8 +35,8 @@
                     class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:bg-white transition-all duration-200 text-sm text-ama-gray appearance-none"
                     required>
                     <option value="">Select grade</option>
-                    <option value="grade_11">Grade 11</option>
-                    <option value="grade_12">Grade 12</option>
+                    <option value="grade 11">Grade 11</option>
+                    <option value="grade 12">Grade 12</option>
                 </select>
                 <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
             </div>
@@ -51,12 +51,12 @@
                     class="w-full pl-10 pr-3 py-2.5 bg-gray-50 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-purple-500 focus:bg-white transition-all duration-200 text-sm text-ama-gray appearance-none"
                     required>
                     <option value="">Select strand</option>
-                    <option value="stem">STEM</option>
-                    <option value="abm">ABM</option>
-                    <option value="humss">HUMSS</option>
-                    <option value="gas">GAS</option>
-                    <option value="tvl_ict">TVL-ICT</option>
-                    <option value="tvl_he">TVL-HE</option>
+                    <option value="STEM">STEM</option>
+                    <option value="ABM">ABM</option>
+                    <option value="HUMSS">HUMSS</option>
+                    <option value="GAS">GAS</option>
+                    <option value="TVL-ICT">TVL-ICT</option>
+                    <option value="TVL-HE">TVL-HE</option>
                 </select>
                 <i class="fas fa-chevron-down absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
             </div>

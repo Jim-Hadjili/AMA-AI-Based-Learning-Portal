@@ -8,7 +8,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'] ?? '';
     $password = $_POST['password'] ?? '';
     $employee_id = $_POST['employee_id'] ?? '';
-    $department = $_POST['department'] ?? '';
+    $department = isset($_POST['department']) ? $_POST['department'] : '';
     $subject_expertise = $_POST['subject_expertise'] ?? '';
     
     // Validation
@@ -53,14 +53,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $errors[] = "This email is already registered";
     }
     
-    // Check if the teacher ID already exists - only check by th_id
-    $check_th_query = "SELECT * FROM teachers_profiles_tb WHERE th_id = ?";
-    $check_th_stmt = $conn->prepare($check_th_query);
-    $check_th_stmt->bind_param("s", $employee_id);
-    $check_th_stmt->execute();
-    $th_result = $check_th_stmt->get_result();
+    // Check if the employee ID already exists
+    $check_emp_query = "SELECT * FROM teachers_profiles_tb WHERE employee_id = ?";
+    $check_emp_stmt = $conn->prepare($check_emp_query);
+    $check_emp_stmt->bind_param("s", $employee_id);
+    $check_emp_stmt->execute();
+    $emp_result = $check_emp_stmt->get_result();
     
-    if ($th_result->num_rows > 0) {
+    if ($emp_result->num_rows > 0) {
         $errors[] = "Employee ID is already registered";
     }
     
@@ -84,16 +84,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Insert into users_tb
         $user_query = "INSERT INTO users_tb (user_id, userName, userEmail, userPosition, userPassword) 
-                       VALUES (?, ?, ?, 'teacher', ?)";
+                       VALUES (?, ?, ?, 'Teacher', ?)";
         $user_stmt = $conn->prepare($user_query);
         $user_stmt->bind_param("ssss", $user_id, $fullname, $email, $hashed_password);
         $user_stmt->execute();
         
-        // Insert into teachers_profiles_tb with employee_id as th_id
-        $profile_query = "INSERT INTO teachers_profiles_tb (th_id, th_userName, th_Email, th_position, th_teacherPassword, department, subject_expertise) 
-                          VALUES (?, ?, ?, 'teacher', ?, ?, ?)";
+        // Insert into teachers_profiles_tb with user_id as th_id and employee_id in employee_id field
+        $profile_query = "INSERT INTO teachers_profiles_tb (th_id, th_userName, th_Email, th_position, th_teacherPassword, employee_id, department, subject_expertise) 
+                          VALUES (?, ?, ?, 'Teacher', ?, ?, ?, ?)";
         $profile_stmt = $conn->prepare($profile_query);
-        $profile_stmt->bind_param("ssssss", $employee_id, $fullname, $email, $hashed_password, $department, $subject_expertise);
+        $profile_stmt->bind_param("sssssss", $user_id, $fullname, $email, $hashed_password, $employee_id, $department, $subject_expertise);
         $profile_stmt->execute();
         
         // Commit transaction
