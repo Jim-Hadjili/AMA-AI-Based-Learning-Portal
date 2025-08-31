@@ -33,7 +33,7 @@
 
                 if ($tableCheckResult->num_rows > 0) {
                     // Table exists, proceed with the count
-                    $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND status = 'published'";
+                    $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND status = 'published' AND quiz_type = 'manual'";
                     $quizStmt = $conn->prepare($quizQuery);
                     $quizStmt->bind_param("i", $class['class_id']);
                     $quizStmt->execute();

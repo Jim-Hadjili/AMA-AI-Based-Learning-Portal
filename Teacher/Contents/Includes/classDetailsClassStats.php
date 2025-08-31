@@ -41,7 +41,7 @@
                     <span class="text-xl font-bold text-gray-900">
                         <?php
                         if (isset($class_id)) {
-                            $debug_stmt = $conn->prepare("SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ?");
+                            $debug_stmt = $conn->prepare("SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND quiz_type = 'manual'");
                             $debug_stmt->bind_param("i", $class_id);
                             $debug_stmt->execute();
                             $debug_result = $debug_stmt->get_result();

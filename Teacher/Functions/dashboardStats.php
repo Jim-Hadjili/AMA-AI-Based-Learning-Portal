@@ -18,27 +18,31 @@ function getTeacherDashboardStats($conn, $classes, $teacher_id) {
     
     // Check if classes array is available and not empty
     if (!empty($classes)) {
+        $studentIds = [];
         // Count active classes
         foreach ($classes as $class) {
             if (isset($class['status']) && $class['status'] === 'active') {
                 $stats['activeClassesCount']++;
             }
-            
-            // Try to count students per class
+
+            // Collect student IDs for unique count
             try {
                 $tableCheckQuery = "SHOW TABLES LIKE 'class_enrollments_tb'";
                 $tableCheckResult = $conn->query($tableCheckQuery);
-                
+
                 if ($tableCheckResult && $tableCheckResult->num_rows > 0) {
-                    $enrollmentQuery = "SELECT COUNT(DISTINCT st_id) as student_count FROM class_enrollments_tb WHERE class_id = ? AND status = 'active'";
+                    $enrollmentQuery = "SELECT DISTINCT st_id FROM class_enrollments_tb WHERE class_id = ? AND status = 'active'";
                     $enrollmentStmt = $conn->prepare($enrollmentQuery);
                     $enrollmentStmt->bind_param("i", $class['class_id']);
                     $enrollmentStmt->execute();
                     $enrollmentResult = $enrollmentStmt->get_result();
-                    $stats['totalStudents'] += $enrollmentResult->fetch_assoc()['student_count'];
+                    while ($row = $enrollmentResult->fetch_assoc()) {
+                        if (!empty($row['st_id'])) {
+                            $studentIds[$row['st_id']] = true;
+                        }
+                    }
                 }
             } catch (Exception $e) {
-                // Log error silently
                 error_log("Error counting students: " . $e->getMessage());
             }
             
@@ -46,9 +50,9 @@ function getTeacherDashboardStats($conn, $classes, $teacher_id) {
             try {
                 $tableCheckQuery = "SHOW TABLES LIKE 'quizzes_tb'";
                 $tableCheckResult = $conn->query($tableCheckQuery);
-                
+
                 if ($tableCheckResult && $tableCheckResult->num_rows > 0) {
-                    $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ?";
+                    $quizQuery = "SELECT COUNT(*) as quiz_count FROM quizzes_tb WHERE class_id = ? AND quiz_type = 'manual'";
                     $quizStmt = $conn->prepare($quizQuery);
                     $quizStmt->bind_param("i", $class['class_id']);
                     $quizStmt->execute();
@@ -60,6 +64,8 @@ function getTeacherDashboardStats($conn, $classes, $teacher_id) {
                 error_log("Error counting quizzes: " . $e->getMessage());
             }
         }
+        // Count unique student IDs
+        $stats['totalStudents'] = count($studentIds);
     }
 
     // Try to count messages
