@@ -8,15 +8,18 @@
             Quiz Already Passed
         </h2>
 
-        <div class="mb-4 text-gray-700">
+        <div class="mb-4 text-gray-700 ">
             <p class="mb-2">
                 You have already passed this quiz.
             </p>
-            <p class="mb-2">
+            <p class="mb-2 hidden">
                 <span class="font-semibold">Score:</span>
                 <span id="quizPassedScore" class="text-emerald-600 font-bold">0</span>
             </p>
-           
+            <p class="mb-2 hidden">
+                <span class="font-semibold">Attempts:</span>
+                <span id="quizPassedAttempts" class="text-blue-600 font-bold">1</span>
+            </p>
             <p>
                 You can view your quiz results, check your answers, and see your attempt history by clicking the <span class="font-semibold text-blue-600">View Result</span> button below.
             </p>
