@@ -84,14 +84,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // Insert into users_tb
         $user_query = "INSERT INTO users_tb (user_id, userName, userEmail, userPosition, userPassword) 
-                       VALUES (?, ?, ?, 'Teacher', ?)";
+                       VALUES (?, ?, ?, 'teacher', ?)";
         $user_stmt = $conn->prepare($user_query);
         $user_stmt->bind_param("ssss", $user_id, $fullname, $email, $hashed_password);
         $user_stmt->execute();
         
         // Insert into teachers_profiles_tb with user_id as th_id and employee_id in employee_id field
         $profile_query = "INSERT INTO teachers_profiles_tb (th_id, th_userName, th_Email, th_position, th_teacherPassword, employee_id, department, subject_expertise) 
-                          VALUES (?, ?, ?, 'Teacher', ?, ?, ?, ?)";
+                          VALUES (?, ?, ?, 'teacher', ?, ?, ?, ?)";
         $profile_stmt = $conn->prepare($profile_query);
         $profile_stmt->bind_param("sssssss", $user_id, $fullname, $email, $hashed_password, $employee_id, $department, $subject_expertise);
         $profile_stmt->execute();
