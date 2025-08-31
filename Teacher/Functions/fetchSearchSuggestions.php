@@ -44,7 +44,7 @@ try {
                 tc.strand,
                 tc.status,
                 (SELECT COUNT(*) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
-                (SELECT COUNT(*) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS quiz_count
+                (SELECT COUNT(*) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published' AND q.quiz_type = 'manual') AS quiz_count
             FROM
                 teacher_classes_tb tc
             WHERE

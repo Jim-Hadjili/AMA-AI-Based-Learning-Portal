@@ -45,7 +45,7 @@ $stmt = $conn->prepare("SELECT
                             tc.created_at,
                             tc.status,
                             (SELECT COUNT(DISTINCT ce.st_id) FROM class_enrollments_tb ce WHERE ce.class_id = tc.class_id AND ce.status = 'active') AS student_count,
-                            (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published') AS quiz_count
+                            (SELECT COUNT(q.quiz_id) FROM quizzes_tb q WHERE q.class_id = tc.class_id AND q.status = 'published' AND q.quiz_type = 'manual') AS quiz_count
                         FROM teacher_classes_tb tc
                         WHERE tc.class_code = ?");
 $stmt->bind_param("s", $class_code);
