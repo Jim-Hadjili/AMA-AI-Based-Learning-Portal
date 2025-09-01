@@ -63,7 +63,7 @@ if (empty($questions)) {
 }
 
 // Save quiz to DB
-$stmt = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_topic, quiz_description, status, quiz_type) VALUES (?, ?, ?, ?, ?, 'published', 'manual')");
+$stmt = $conn->prepare("INSERT INTO quizzes_tb (class_id, th_id, quiz_title, quiz_topic, quiz_description, status, quiz_type, allow_retakes) VALUES (?, ?, ?, ?, ?, 'draft', 'manual', 1)");
 $stmt->bind_param("issss", $class_id, $teacher_id, $title, $topic, $instructions);
 $stmt->execute();
 $quiz_id = $conn->insert_id;
