@@ -18,6 +18,13 @@ document.addEventListener("DOMContentLoaded", function () {
   // Additional initializations
   initializeModalHandling();
   initializeTabNavigation();
+
+  const aiQuizBtn = document.getElementById("aiQuizBtn");
+  if (aiQuizBtn) {
+    aiQuizBtn.addEventListener("click", function () {
+      document.getElementById("aiQuizGeneratorModal").classList.remove("hidden");
+    });
+  }
 });
 
 /**
@@ -82,17 +89,6 @@ function initModalFunctionality() {
   window.closeAddQuizModal = function () {
     document.getElementById("addQuizModal").classList.add("hidden");
   };
-
-  // Add event listeners to buttons
-  const editClassBtn = document.getElementById("editClassBtn");
-  if (editClassBtn) {
-    editClassBtn.addEventListener("click", window.openEditClassModal);
-  }
-
-  const addQuizBtn = document.getElementById("addQuizBtn");
-  if (addQuizBtn) {
-    addQuizBtn.addEventListener("click", window.openAddQuizModal);
-  }
 
   // Modal close buttons
   const closeButtons = document.querySelectorAll(".modal-close");
@@ -378,4 +374,8 @@ function initializeTabNavigation() {
       }
     });
   });
+}
+
+function closeAIQuizGeneratorModal() {
+  document.getElementById("aiQuizGeneratorModal").classList.add("hidden");
 }

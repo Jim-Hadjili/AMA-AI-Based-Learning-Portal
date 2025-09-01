@@ -149,7 +149,7 @@ $notification_message = $_GET['message'] ?? '';
             </div>
         </main>
     </div>
-
+<?php include "../Modals/aiQuizGeneratorModal.php"; ?>
     <!-- Include modals -->
     <?php
     // Create the Modals directory if it's not already handled by your project structure

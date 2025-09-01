@@ -6,9 +6,9 @@ require_once __DIR__ . '/../../Functions/fetchQuizzes.php';
 // Fetch quizzes for the current class
 $quizzes = fetchQuizzes($conn, $class_id, $_SESSION['user_id']);
 
-// Filter out AI-generated quizzes (quiz_type = '1')
+// Filter to show only manual and Teacher-AI generated quizzes
 $quizzes = array_filter($quizzes, function($quiz) {
-    return $quiz['quiz_type'] === 'manual';
+    return $quiz['quiz_type'] === 'manual' || $quiz['quiz_type'] === 'Teacher-AI';
 });
 
 // Limit to 6 quizzes for initial display
