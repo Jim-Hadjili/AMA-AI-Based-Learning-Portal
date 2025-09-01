@@ -1,97 +1,75 @@
 <!-- Add Quiz Modal -->
-<div id="addQuizModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <!-- Background overlay -->
-        <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+<div id="addQuizModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-gray-100 transform transition-all duration-300">
+        <!-- Header -->
+        <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-100 rounded-t-2xl">
+            <h3 class="text-xl font-bold text-purple-900 flex items-center gap-2">
+                <span class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+                    <i class="fas fa-file-alt text-purple-600"></i>
+                </span>
+                Add New Quiz
+            </h3>
+            <button type="button" onclick="closeAddQuizModal()" class="text-gray-400 hover:text-purple-600 transition-colors duration-150 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                <i class="fas fa-times text-xl"></i>
+            </button>
         </div>
-
-        <!-- Modal panel -->
-        <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-            <form id="addQuizForm">
-                <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                    <div class="sm:flex sm:items-start">
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900 mb-4">
-                                Add New Quiz
-                            </h3>
-                            
-                            <!-- Form inputs -->
-                            <div class="space-y-4">
-                                <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
-                                
-                                <div>
-                                    <label for="quiz_title" class="block text-sm font-medium text-gray-700 mb-1">Quiz Title</label>
-                                    <input type="text" name="quiz_title" id="quiz_title" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500" required>
-                                </div>
-                                
-                                <div>
-                                    <label for="quiz_description" class="block text-sm font-medium text-gray-700 mb-1">Instructions</label>
-                                    <textarea name="quiz_description" id="quiz_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500"></textarea>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="time_limit" class="block text-sm font-medium text-gray-700 mb-1">Time Limit (minutes)</label>
-                                        <input type="number" name="time_limit" id="time_limit" min="1" value="30" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="passing_score" class="block text-sm font-medium text-gray-700 mb-1">Passing Score (%)</label>
-                                        <input type="number" name="passing_score" id="passing_score" min="1" max="100" value="70" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                                    </div>
-                                </div>
-                                
-                                <div class="grid grid-cols-2 gap-4">
-                                    <div>
-                                        <label for="due_date" class="block text-sm font-medium text-gray-700 mb-1">Due Date (Optional)</label>
-                                        <input type="date" name="due_date" id="due_date" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                                    </div>
-                                    
-                                    <div>
-                                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                                        <select name="status" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                                            <option value="draft">Draft</option>
-                                            <option value="published">Published</option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <!-- Allow Retake Option -->
-                                <div>
-                                    <label for="allow_retakes" class="block text-sm font-medium text-gray-700 mb-1">Allow Retake</label>
-                                    <select name="allow_retakes" id="allow_retakes" class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-purple-500 focus:border-purple-500">
-                                        <option value="1" selected>Yes</option>
-                                        <option value="0">No</option>
-                                    </select>
-                                </div>
-                                
-                                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4">
-                                    <div class="flex">
-                                        <div class="flex-shrink-0">
-                                            <i class="fas fa-exclamation-triangle text-yellow-400"></i>
-                                        </div>
-                                        <div class="ml-3">
-                                            <p class="text-sm text-yellow-700">
-                                                You'll be able to add questions after creating the quiz.
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+        <form id="addQuizForm" class="px-6 py-6 bg-white">
+            <input type="hidden" name="class_id" value="<?php echo $class_id; ?>">
+            <div class="space-y-4">
+                <div>
+                    <label for="quiz_title" class="block text-sm font-medium text-gray-700 mb-1">Quiz Title<span class="text-red-500">*</span></label>
+                    <input type="text" name="quiz_title" id="quiz_title" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent" required>
+                </div>
+                <div>
+                    <label for="quiz_description" class="block text-sm font-medium text-gray-700 mb-1">Instructions</label>
+                    <textarea name="quiz_description" id="quiz_description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent"></textarea>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="time_limit" class="block text-sm font-medium text-gray-700 mb-1">Time Limit (minutes)</label>
+                        <input type="number" name="time_limit" id="time_limit" min="1" value="30" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="passing_score" class="block text-sm font-medium text-gray-700 mb-1">Passing Score (%)</label>
+                        <input type="number" name="passing_score" id="passing_score" min="1" max="100" value="70" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
                     </div>
                 </div>
-                <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-                    <button type="submit" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-purple-primary text-base font-medium text-white hover:bg-purple-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:ml-3 sm:w-auto sm:text-sm">
-                        Create Quiz
-                    </button>
-                    <button type="button" onclick="closeAddQuizModal()" class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
-                        Cancel
-                    </button>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label for="due_date" class="block text-sm font-medium text-gray-700 mb-1">Due Date (Optional)</label>
+                        <input type="date" name="due_date" id="due_date" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <select name="status" id="status" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                            <option value="draft">Draft</option>
+                            <option value="published">Published</option>
+                        </select>
+                    </div>
                 </div>
-            </form>
-        </div>
+                <div class="hidden">
+                    <label for="allow_retakes" class="block text-sm font-medium text-gray-700 mb-1">Allow Retake</label>
+                    <select name="allow_retakes" id="allow_retakes" class="w-full px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent">
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                    </select>
+                </div>
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 rounded-lg flex items-center gap-3">
+                    <i class="fas fa-exclamation-triangle text-yellow-400"></i>
+                    <p class="text-sm text-yellow-700">
+                        You'll be able to add questions after creating the quiz.
+                    </p>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="button" onclick="closeAddQuizModal()" class="px-4 py-2 border border-gray-300 bg-white rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
+                    Cancel
+                </button>
+                <button type="submit" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg shadow-sm text-sm font-medium text-white hover:from-purple-700 hover:to-purple-800 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    <i class="fas fa-plus mr-1.5"></i>Create Quiz
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 

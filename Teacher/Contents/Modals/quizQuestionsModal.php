@@ -1,84 +1,80 @@
 <!-- Quiz Questions Modal -->
-<div id="quizQuestionsModal" class="fixed inset-0 z-50 overflow-y-auto hidden">
-    <div class="flex items-center justify-center min-h-screen p-0">
-        <div class="bg-white rounded-lg shadow-xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-                <h3 class="text-lg font-medium text-gray-900">
-                    Create Questions
-                </h3>
-                <button onclick="closeQuizQuestionsModal()" class="text-gray-400 hover:text-gray-500 focus:outline-none">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            
-            <!-- Modal Body -->
-            <div class="flex-1 overflow-y-auto p-6">
-                <div class="flex flex-col md:flex-row gap-6">
-                    <!-- Left sidebar for question navigation -->
-                    <div class="w-full md:w-64 space-y-4">
-                        <div class="flex items-center justify-between">
-                            <h4 class="font-medium text-gray-700">Questions</h4>
-                            <button id="addQuestionBtn" class="text-purple-primary hover:text-purple-dark" title="Add Question">
-                                <i class="fas fa-plus-circle"></i>
+<div id="quizQuestionsModal" class="fixed inset-0 z-50 overflow-y-auto bg-black bg-opacity-40 flex items-center justify-center hidden">
+    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col border border-gray-100 transform transition-all duration-300">
+        <!-- Modal Header -->
+        <div class="flex justify-between items-center px-8 py-6 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-100 rounded-t-2xl">
+            <h3 class="text-2xl font-bold text-purple-900 flex items-center gap-2">
+                <span class="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-2">
+                    <i class="fas fa-question-circle text-purple-600"></i>
+                </span>
+                Create Quiz Questions
+            </h3>
+            <button onclick="closeQuizQuestionsModal()" class="text-gray-400 hover:text-purple-600 transition-colors duration-150 rounded-full p-2 focus:outline-none focus:ring-2 focus:ring-purple-300">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+        </div>
+        <!-- Modal Body -->
+        <div class="flex-1 overflow-y-auto px-8 py-8 bg-white">
+            <div class="flex flex-col md:flex-row gap-8">
+                <!-- Left sidebar for question navigation -->
+                <div class="w-full md:w-72 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-medium text-gray-700">Questions</h4>
+                        <button id="addQuestionBtn" class="text-purple-600 hover:text-purple-800 transition-colors" title="Add Question">
+                            <i class="fas fa-plus-circle text-xl"></i>
+                        </button>
+                    </div>
+                    <!-- Question list -->
+                    <div class="bg-gray-50 rounded-lg p-4 max-h-[50vh] overflow-y-auto border border-gray-200">
+                        <ul id="question-list" class="space-y-2">
+                            <li class="text-center text-gray-500 py-4 text-sm">
+                                No questions yet. Click the + button to add a question.
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- Question type selection -->
+                    <div>
+                        <h4 class="font-medium text-gray-700 mb-2">Question Type</h4>
+                        <div class="space-y-2">
+                            <button class="question-type-btn w-full py-2 px-3 text-left border border-gray-300 rounded-lg text-sm hover:bg-purple-50 transition-colors" data-type="multiple-choice">
+                                <i class="fas fa-list-ul mr-2 text-purple-600"></i> Multiple Choice
+                            </button>
+                            <button class="question-type-btn w-full py-2 px-3 text-left border border-gray-300 rounded-lg text-sm hover:bg-blue-50 transition-colors" data-type="checkbox">
+                                <i class="fas fa-check-square mr-2 text-blue-500"></i> Checkbox (Multiple Answers)
+                            </button>
+                            <button class="question-type-btn w-full py-2 px-3 text-left border border-gray-300 rounded-lg text-sm hover:bg-green-50 transition-colors" data-type="true-false">
+                                <i class="fas fa-toggle-on mr-2 text-green-500"></i> True/False
+                            </button>
+                            <button class="question-type-btn w-full py-2 px-3 text-left border border-gray-300 rounded-lg text-sm hover:bg-orange-50 transition-colors" data-type="short-answer">
+                                <i class="fas fa-pen mr-2 text-orange-500"></i> Short Answer
                             </button>
                         </div>
-                        
-                        <!-- Question list -->
-                        <div class="bg-gray-50 rounded-lg p-4 max-h-[50vh] overflow-y-auto">
-                            <ul id="question-list" class="space-y-2">
-                                <li class="text-center text-gray-500 py-4 text-sm">
-                                    No questions yet. Click the + button to add a question.
-                                </li>
-                            </ul>
-                        </div>
-                        
-                        <!-- Question type selection -->
-                        <div>
-                            <h4 class="font-medium text-gray-700 mb-2">Question Type</h4>
-                            <div class="space-y-2">
-                                <button class="question-type-btn w-full py-2 px-3 text-left border rounded-md text-sm" data-type="multiple-choice">
-                                    <i class="fas fa-list-ul mr-2 text-purple-primary"></i> Multiple Choice
-                                </button>
-                                <button class="question-type-btn w-full py-2 px-3 text-left border rounded-md text-sm" data-type="checkbox">
-                                    <i class="fas fa-check-square mr-2 text-blue-500"></i> Checkbox (Multiple Answers)
-                                </button>
-                                <button class="question-type-btn w-full py-2 px-3 text-left border rounded-md text-sm" data-type="true-false">
-                                    <i class="fas fa-toggle-on mr-2 text-green-500"></i> True/False
-                                </button>
-                                <button class="question-type-btn w-full py-2 px-3 text-left border rounded-md text-sm" data-type="short-answer">
-                                    <i class="fas fa-pen mr-2 text-orange-500"></i> Short Answer
-                                </button>
-                            </div>
-                        </div>
                     </div>
-                    
-                    <!-- Right side for question editing -->
-                    <div class="flex-1 bg-white rounded-lg">
-                        <!-- Question editor -->
-                        <div id="question-editor" class="p-4 border rounded-lg">
-                            <div class="text-center py-8 text-gray-500">
-                                <i class="fas fa-edit text-3xl mb-2"></i>
-                                <p>Select or add a question to start editing</p>
-                            </div>
+                </div>
+                <!-- Right side for question editing -->
+                <div class="flex-1 bg-white rounded-lg border border-gray-100">
+                    <!-- Question editor -->
+                    <div id="question-editor" class="p-6">
+                        <div class="text-center py-12 text-gray-500">
+                            <i class="fas fa-edit text-3xl mb-2"></i>
+                            <p>Select or add a question to start editing</p>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <!-- Modal Footer -->
-            <div class="px-6 py-4 border-t border-gray-200 flex justify-between">
-                <div>
-                    <span id="question-count" class="text-sm text-gray-500">0 questions</span>
-                </div>
-                <div class="space-x-2">
-                    <button onclick="closeQuizQuestionsModal()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50">
-                        Cancel
-                    </button>
-                    <button id="saveQuestionsBtn" class="px-4 py-2 bg-purple-primary text-white rounded-md hover:bg-purple-dark">
-                        Save Quiz
-                    </button>
-                </div>
+        </div>
+        <!-- Modal Footer -->
+        <div class="px-8 py-6 border-t border-gray-100 flex justify-between bg-white rounded-b-2xl">
+            <div>
+                <span id="question-count" class="text-sm text-gray-500">0 questions</span>
+            </div>
+            <div class="space-x-2">
+                <button onclick="closeQuizQuestionsModal()" class="px-4 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 hover:text-gray-900 transition-colors shadow-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
+                    Cancel
+                </button>
+                <button id="saveQuestionsBtn" class="px-4 py-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg shadow-sm text-sm font-medium text-white hover:from-purple-700 hover:to-purple-800 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                    <i class="fas fa-save mr-1.5"></i>Save Quiz
+                </button>
             </div>
         </div>
     </div>
