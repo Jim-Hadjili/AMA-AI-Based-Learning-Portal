@@ -40,7 +40,7 @@
 </div>
 
 <!-- Quiz Statistics Cards -->
-<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
     <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 p-4">
         <div class="flex items-center">
             <div class="p-2 bg-green-100 rounded-lg mr-3">
@@ -65,28 +65,6 @@
             <div>
                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Drafts</p>
                 <p class="text-lg font-bold text-gray-900"><?php echo count(array_filter($quizzes, function($q) { return $q['status'] === 'draft'; })); ?></p>
-            </div>
-        </div>
-    </div>
-    
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 p-4">
-        <div class="flex items-center">
-            <div class="p-2 bg-blue-100 rounded-lg mr-3">
-                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                    <path d="M16 4v12l-4-2-4 2V4M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-                </svg>
-            </div>
-            <div>
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Questions</p>
-                <p class="text-lg font-bold text-gray-900">
-                    <?php 
-                    $totalQuestions = 0;
-                    foreach ($quizzes as $quiz) {
-                        $totalQuestions += $quiz['question_count'] ?? 0;
-                    }
-                    echo $totalQuestions;
-                    ?>
-                </p>
             </div>
         </div>
     </div>
