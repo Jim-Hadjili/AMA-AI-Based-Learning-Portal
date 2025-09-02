@@ -1,19 +1,20 @@
-<!-- Quiz Instructions -->
-<div class="border-b border-gray-100 p-6">
-    <div class="flex items-center mb-3">
-        <div class="w-8 h-8 rounded-full bg-yellow-50 flex items-center justify-center mr-2">
-            <i class="fas fa-info-circle text-yellow-500"></i>
+<div class="bg-white rounded-xl shadow-lg overflow-hidden mb-8 border border-gray-200">
+    <div class="px-6 py-5 border-b border-gray-200 flex items-center gap-3">
+        <div class="p-2 bg-yellow-100 rounded-lg">
+            <i class="fas fa-info-circle text-yellow-600"></i>
         </div>
-        <h2 class="text-lg font-semibold text-gray-800">Instructions</h2>
+        <h2 class="text-lg font-semibold text-gray-900">Instructions</h2>
     </div>
-    <p class="text-gray-600 pl-10">
-        <?php if (!empty($quiz['instructions'])): ?>
-            <?php echo htmlspecialchars($quiz['instructions']); ?>
-        <?php else: ?>
-            Complete all questions to the best of your ability.
-            <?php if ($quiz['time_limit']): ?>
-                You have <?php echo $quiz['time_limit']; ?> minutes to complete this quiz.
+    <div class="p-6">
+        <p class="text-gray-600">
+            <?php if (!empty($quiz['instructions'])): ?>
+                <?php echo htmlspecialchars($quiz['instructions']); ?>
+            <?php else: ?>
+                Complete all questions to the best of your ability.
+                <?php if ($quiz['time_limit']): ?>
+                    You have <?php echo $quiz['time_limit']; ?> minutes to complete this quiz.
+                <?php endif; ?>
             <?php endif; ?>
-        <?php endif; ?>
-    </p>
+        </p>
+    </div>
 </div>

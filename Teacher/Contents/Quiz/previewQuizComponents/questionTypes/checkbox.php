@@ -1,15 +1,17 @@
 <!-- Checkbox -->
 <div class="space-y-3">
-    <?php foreach ($question['options'] as $option): ?>
-        <div class="flex items-center p-3 rounded-lg option-hover">
-            <input type="checkbox" 
-                name="question_<?php echo $question['question_id']; ?>[]" 
-                id="option_<?php echo $option['option_id']; ?>" 
-                value="<?php echo $option['option_id']; ?>" 
-                class="h-4 w-4 text-blue-600 rounded border-gray-300 focus:ring-blue-500">
-            <label for="option_<?php echo $option['option_id']; ?>" class="ml-3 block text-gray-700 w-full cursor-pointer">
-                <?php echo htmlspecialchars($option['option_text']); ?>
-            </label>
-        </div>
+    <?php foreach ($question['options'] as $optIndex => $option): ?>
+        <label class="flex items-center gap-3 mb-3 <?php echo !empty($option['is_correct']) ? 'bg-green-100 border border-green-300 rounded-lg px-3 py-2' : ''; ?>">
+            <input 
+                type="checkbox" 
+                disabled 
+                <?php echo !empty($option['is_correct']) ? 'checked' : ''; ?> 
+                class="form-checkbox h-5 w-5 text-green-600 border-gray-300 rounded"
+            >
+            <span class="text-gray-800"><?php echo htmlspecialchars($option['option_text']); ?></span>
+            <?php if (!empty($option['is_correct'])): ?>
+                <span class="ml-2 text-green-600"><i class="fas fa-check"></i></span>
+            <?php endif; ?>
+        </label>
     <?php endforeach; ?>
 </div>

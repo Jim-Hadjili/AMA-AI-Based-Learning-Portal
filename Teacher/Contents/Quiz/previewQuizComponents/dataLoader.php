@@ -55,6 +55,31 @@ function loadQuizData($conn, $quiz_id, $teacher_id) {
             // Always set options key to avoid undefined index
             $question['options'] = [];
         }
+
+        // Fetch correct answer for short-answer and true-false types
+        if ($type === 'short-answer') {
+            $saSql = "SELECT correct_answer FROM short_answer_tb WHERE question_id = ?";
+            $saStmt = $conn->prepare($saSql);
+            $saStmt->bind_param("i", $question['question_id']);
+            $saStmt->execute();
+            $saResult = $saStmt->get_result();
+            $saRow = $saResult->fetch_assoc();
+            $question['correct_answer'] = $saRow ? $saRow['correct_answer'] : '';
+        }
+        if ($type === 'true-false') {
+            // For true/false, you can store correct answer in a column or options, but let's check if it's set
+            if (!isset($question['correct_answer'])) {
+                // If not set, try to get from options
+                $tfSql = "SELECT option_text FROM question_options_tb WHERE question_id = ? AND is_correct = 1 LIMIT 1";
+                $tfStmt = $conn->prepare($tfSql);
+                $tfStmt->bind_param("i", $question['question_id']);
+                $tfStmt->execute();
+                $tfResult = $tfStmt->get_result();
+                $tfRow = $tfResult->fetch_assoc();
+                $question['correct_answer'] = $tfRow ? strtolower(trim($tfRow['option_text'])) : '';
+            }
+        }
+
         $questions[] = $question;
     }
 

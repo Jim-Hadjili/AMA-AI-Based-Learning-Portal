@@ -1,67 +1,58 @@
-<?php
-// Optionally, include subject style logic here if you want the accent/icon to match the subject
-// Example (if $quiz['class_name'] is available):
-// include '../includes/quiz-nav.php'; // Or copy the subject style logic here
-// Then use $style['strip'], $style['icon_bg'], $style['icon_color'], $style['icon_class']
-?>
-
-<div class="max-w-8xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 mb-6 overflow-hidden">
-    <!-- Top accent strip (optional: use subject color if available) -->
-    <div class="h-1 bg-gradient-to-r from-blue-400 to-blue-600"></div>
-    <div class="p-8">
-        <div class="flex items-start gap-5 mb-4">
-            <!-- Main quiz icon (optional, or use subject icon) -->
-            <div class="flex-shrink-0 w-14 h-14 rounded-2xl bg-blue-100 flex items-center justify-center">
-                <i class="fas fa-clipboard-list text-2xl text-blue-500"></i>
+<!-- Quiz Info Card -->
+<div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 mb-8">
+    <div class="bg-white border-b border-gray-100 px-6 py-6">
+        <div class="flex items-center gap-4">
+            <div class="p-3 bg-blue-100 rounded-xl">
+                <i class="fas fa-clipboard-list text-blue-600 text-2xl"></i>
             </div>
-            <div class="min-w-0 flex-1">
-                <h1 class="text-3xl font-semibold text-gray-900 mb-2 leading-tight">
-                    <?php echo htmlspecialchars($quiz['quiz_title']); ?>
-                </h1>
-                <?php if (!empty($quiz['quiz_description'])): ?>
-                    <p class="text-gray-600 text-base mb-2 leading-relaxed">
-                        <?php echo htmlspecialchars($quiz['quiz_description']); ?>
-                    </p>
-                <?php endif; ?>
+            <div>
+                <h1 class="text-2xl font-bold text-gray-900 mb-1"><?php echo htmlspecialchars($quiz['quiz_title']); ?></h1>
+                <p class="text-lg font-medium text-gray-700"><?php echo htmlspecialchars($quiz['quiz_description']); ?></p>
+                <p class="text-sm text-gray-500 mt-1">Preview mode &mdash; only visible to teachers</p>
             </div>
-            
-        </div>
-        <div class="flex flex-wrap items-center gap-6 pt-4 border-t border-gray-100 text-sm">
-            <div class="flex items-center gap-2 text-gray-700">
-                <div class="w-8 h-8 rounded-full bg-blue-50 flex items-center justify-center">
-                    <i class="fas fa-clock text-blue-500"></i>
-                </div>
-                <span>
-                    <span class="font-medium"><?php echo $quiz['time_limit'] ? $quiz['time_limit'].' minutes' : 'No time limit'; ?></span>
-                </span>
-            </div>
-            <div class="flex items-center gap-2 text-gray-700">
-                <div class="w-8 h-8 rounded-full bg-green-50 flex items-center justify-center">
-                    <i class="fas fa-question text-green-500"></i>
-                </div>
-                <span>
-                    <span class="font-medium"><?php echo count($questions); ?></span> Questions
-                </span>
-            </div>
-            <div class="flex items-center gap-2 text-gray-700">
-                <div class="w-8 h-8 rounded-full bg-purple-50 flex items-center justify-center">
-                    <i class="fas fa-star text-purple-500"></i>
-                </div>
-                <span>
-                    <span class="font-medium"><?php echo $totalPoints; ?></span> Points
-                </span>
-            </div>
-
-            <!-- Spacer to push the edit button to the right -->
             <div class="flex-1"></div>
+            <a href="editQuiz.php?quiz_id=<?php echo $quiz_id; ?>" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+                <i class="fas fa-edit mr-2"></i>
+                Edit Quiz
+            </a>
+        </div>
+    </div>
+</div>
 
-            <!-- Edit button and preview mode label side by side -->
-            <div class="flex items-center gap-3">
-                <a href="editQuiz.php?quiz_id=<?php echo $quiz_id; ?>" 
-                   class="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-                    <i class="fas fa-edit mr-2"></i>
-                    Edit Quiz
-                </a>
+<div class="grid grid-cols-1 gap-6 sm:grid-cols-3 mb-8">
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
+        <div class="p-6 flex items-center gap-4">
+            <div class="p-3 bg-blue-100 rounded-xl">
+                <i class="fas fa-clock text-blue-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Time Limit</h3>
+                <p class="text-2xl font-bold text-gray-900"><?php echo $quiz['time_limit'] ? $quiz['time_limit'] . ' min' : 'No limit'; ?></p>
+                <p class="text-xs text-gray-500 mt-1">Quiz duration</p>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
+        <div class="p-6 flex items-center gap-4">
+            <div class="p-3 bg-green-100 rounded-xl">
+                <i class="fas fa-question text-green-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Questions</h3>
+                <p class="text-2xl font-bold text-gray-900"><?php echo count($questions); ?></p>
+                <p class="text-xs text-gray-500 mt-1">Total questions</p>
+            </div>
+        </div>
+    </div>
+    <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
+        <div class="p-6 flex items-center gap-4">
+            <div class="p-3 bg-purple-100 rounded-xl">
+                <i class="fas fa-star text-purple-600"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Total Points</h3>
+                <p class="text-2xl font-bold text-gray-900"><?php echo $totalPoints; ?></p>
+                <p class="text-xs text-gray-500 mt-1">Quiz points</p>
             </div>
         </div>
     </div>
