@@ -72,33 +72,22 @@ $style = $subjectStyles[$subject] ?? $subjectStyles['Default'];
 ?>
 
 <!-- Quiz Nav Styled Like Class Details Header -->
-<div class="max-w-8xl mx-auto bg-white rounded-2xl shadow-sm border border-gray-100 my-6 overflow-hidden">
-    <!-- Top accent strip (subject color) -->
-    <div class="h-1 bg-gradient-to-r <?php echo $style['strip'] ?? 'from-gray-500 to-gray-700'; ?>"></div>
-    <div class="p-8">
-        <div class="flex items-start justify-between gap-6">
-            <!-- Left content -->
-            <div class="flex items-start gap-5">
-                <!-- Icon container -->
-                <div class="flex-shrink-0 w-14 h-14 rounded-2xl <?php echo $style['icon_bg']; ?> flex items-center justify-center">
-                    <i class="<?php echo $style['icon_class']; ?> text-xl <?php echo $style['icon_color']; ?>"></i>
+<div class="bg-white rounded-2xl shadow-lg border border-gray-200 mb-8 overflow-hidden">
+            <div class="h-2 <?php echo $style['icon_bg']; ?>"></div>
+            <div class="px-8 py-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+                <div class="flex items-center gap-5">
+                    <div class="w-16 h-16 rounded-xl <?php echo $style['icon_bg']; ?> flex items-center justify-center border-2 border-gray-200">
+                        <i class="<?php echo $style['icon_class']; ?> text-2xl <?php echo $style['icon_color']; ?>"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Quiz: <?php echo htmlspecialchars($quiz['quiz_title']); ?></h1>
+                        <p class="text-gray-600 text-base"><?php echo htmlspecialchars($quiz['class_name']); ?> • <?php echo htmlspecialchars($quiz['class_code']); ?></p>
+                    </div>
                 </div>
-                <!-- Quiz/Class information -->
-                <div class="min-w-0 flex-1">
-                    <h1 class="text-2xl font-semibold text-gray-900 mb-2 leading-tight">
-                        Edit Quiz: <?php echo htmlspecialchars($quiz['quiz_title']); ?>
-                    </h1>
-                    <p class="text-gray-600 text-base mb-2 leading-relaxed">
-                        <?php echo htmlspecialchars($quiz['class_name']); ?> • <?php echo htmlspecialchars($quiz['class_code']); ?>
-                    </p>
+                <div>
+                    <button id="saveQuizBtn" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-purple-600 text-white font-semibold shadow hover:bg-purple-700 transition">
+                        <i class="fas fa-save mr-2"></i> Save Changes
+                    </button>
                 </div>
-            </div>
-            <!-- Actions -->
-            <div class="flex-shrink-0 flex flex-col items-end gap-2">
-                <button id="saveQuizBtn" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors flex items-center">
-                    <i class="fas fa-save mr-2"></i>Save Changes
-                </button>
             </div>
         </div>
-    </div>
-</div>

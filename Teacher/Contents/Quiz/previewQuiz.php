@@ -43,8 +43,8 @@ $totalPoints = $data['totalPoints'];
     <?php include 'previewQuizComponents/header.php'; ?>
 </head>
 
-<body class="bg-gray-50 font-[Poppins]">
-    <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+<body class="bg-gray-100 font-[Poppins]">
+    <div class="max-w-9xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
         <!-- Breadcrumb -->
         <?php include "previewQuizComponents/navigation.php" ?>
 

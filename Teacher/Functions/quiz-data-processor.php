@@ -8,7 +8,8 @@
  * @return array Quiz details or redirects if not found
  */
 function getQuizDetails($conn, $quiz_id, $teacher_id) {
-    $quizQuery = "SELECT q.*, tc.class_name, tc.class_code 
+    $quizQuery = "SELECT q.*, tc.class_name, tc.class_code,
+                  (SELECT COUNT(*) FROM quiz_attempts_tb WHERE quiz_id = q.quiz_id) as attempts_count
                   FROM quizzes_tb q 
                   JOIN teacher_classes_tb tc ON q.class_id = tc.class_id 
                   WHERE q.quiz_id = ? AND q.th_id = ?";

@@ -34,31 +34,43 @@ $processedQuestions = processQuestionsForJavaScript($questions);
     <?php include 'includes/quiz-header.php'; ?>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen font-[Poppins]">
+
     <!-- Notification Container -->
     <div id="notification-container"></div>
 
+    <div class="max-w-9xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
 
+        <!-- Breadcrumb Navigation -->
+        <?php include "includes/editQuizBreadcrumb.php" ?>
 
-    <!-- Main Content -->
-    <div class="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Main Card -->
+        <?php include "includes/quiz-nav.php" ?>
 
-        <?php include 'includes/editQuizBreadcrumb.php'; ?>
+        <!-- Main Content: Single Column Layout -->
+        <div class="flex flex-col gap-8">
 
-        <?php include 'includes/quiz-nav.php'; ?>
+            <!-- Top Row: Quiz Settings & Add Question Type -->
+            <div class="flex flex-row gap-8">
 
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                <!-- Quiz Settings Card -->
+                <?php include "includes/quiz-settings-form.php"; ?>
 
-            <!-- Left Sidebar - Quiz Settings & Question List -->
-            <div class="lg:col-span-1 space-y-6">
-                <?php include 'includes/quiz-settings-form.php'; ?>
-                <?php include 'includes/question-list.php'; ?>
-                <?php include 'includes/question-types.php'; ?>
+                <!-- Add Question Type Card -->
+                <?php include "includes/question-types.php"; ?>
+
+                <!-- Quiz Info Card -->
+                <?php include "includes/quiz-info-card.php"; ?>
+
             </div>
 
-            <!-- Right Content - Question Editor -->
-            <div class="lg:col-span-3">
-                <?php include 'includes/question-editor.php'; ?>
+            <!-- Bottom Row: Questions & Question Editor -->
+            <div class="flex flex-row gap-8">
+                <!-- Question Editor Card (Wider) -->
+                <?php include "includes/question-editor.php"; ?>
+
+                <!-- Questions List Card -->
+                <?php include "includes/question-list.php"; ?>
             </div>
         </div>
     </div>
