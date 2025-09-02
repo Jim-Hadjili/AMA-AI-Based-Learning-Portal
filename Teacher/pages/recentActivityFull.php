@@ -9,7 +9,7 @@ include "Functions/allRecentActivityFunction.php";
 
 <?php include "Includes/floatingButton.php" ?>
 
-<body class="bg-gray-50 font-[Poppins]">
+<body class="bg-gray-50 font-[sans-serif]">
 
     <div class="max-w-8xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
 

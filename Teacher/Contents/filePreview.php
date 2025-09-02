@@ -26,7 +26,7 @@
     </style>
 </head>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen font-[sans-serif]">
     <!-- Main Content -->
     <div class="container mx-auto p-4 lg:p-6">
         <!-- Header with Navigation -->

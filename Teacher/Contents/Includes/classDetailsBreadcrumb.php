@@ -4,7 +4,7 @@
             <li>
                 <div class="flex items-center space-x-3">
                     <a href="../Dashboard/teachersDashboard.php" class="bg-white hover:bg-gray-50 text-gray-700 px-4 py-2.5 rounded-xl flex items-center text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md border border-gray-400/50">
-                        <i class="fas fa-home mr-2"></i> Dashboard
+                        <i class="fas fa-home mr-2"></i>Back to Dashboard
                     </a>
                 </div>
             </li>
@@ -13,8 +13,8 @@
                     <svg class="w-4 h-4 text-black mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                     </svg>
-                    <span class="px-3 py-2 text-gray-900 font-medium bg-gray-50 rounded-xl">
-                        <?php echo htmlspecialchars($classDetails['class_name']); ?>
+                    <span class="px-3 py-2 text-gray-900 font-bold bg-gray-100 rounded-xl">
+                        <?php echo htmlspecialchars($classDetails['class_name']); ?> Classroom
                     </span>
                 </div>
             </li>

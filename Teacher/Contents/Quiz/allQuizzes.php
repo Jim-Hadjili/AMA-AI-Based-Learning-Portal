@@ -61,7 +61,7 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
     <?php include 'allQuizzesIncludes/quiz-header.php'; ?>
 </head>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen font-[sans-serif]">
     
 
     <!-- Main Content -->

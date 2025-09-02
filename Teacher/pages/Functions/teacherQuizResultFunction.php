@@ -35,6 +35,13 @@ if ($quizResult->num_rows === 0) {
 $quiz = $quizResult->fetch_assoc();
 $class_id = $quiz['class_id'];
 
+// Fetch class info for breadcrumb
+$classStmt = $conn->prepare("SELECT class_name FROM teacher_classes_tb WHERE class_id = ?");
+$classStmt->bind_param("i", $class_id);
+$classStmt->execute();
+$classRes = $classStmt->get_result();
+$classInfo = $classRes->fetch_assoc();
+
 // Get all related quiz IDs (original + AI regenerated versions)
 function getAllRelatedQuizIds($conn, $quiz_id) {
     $ids = [$quiz_id];
@@ -239,3 +246,4 @@ $chartData = array_map(function($s) { return $s['percent']; }, array_values($stu
 
 $chartLabelsJson = json_encode($chartLabels);
 $chartDataJson = json_encode($chartData);
+?>

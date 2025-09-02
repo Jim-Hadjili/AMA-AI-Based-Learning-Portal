@@ -34,7 +34,7 @@ $processedQuestions = processQuestionsForJavaScript($questions);
     <?php include 'includes/quiz-header.php'; ?>
 </head>
 
-<body class="bg-gray-100 min-h-screen font-[Poppins]">
+<body class="bg-gray-100 min-h-screen font-[sans-serif]">
 
     <!-- Notification Container -->
     <div id="notification-container"></div>

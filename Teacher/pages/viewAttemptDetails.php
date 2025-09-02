@@ -7,7 +7,7 @@
 
 <?php include "Includes/floatingButton.php" ?>
 
-<body class="bg-gray-50 min-h-screen">
+<body class="bg-gray-50 min-h-screen font-[sans-serif]">
 
     
 

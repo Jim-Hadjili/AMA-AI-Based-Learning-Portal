@@ -56,7 +56,7 @@ $classes = getTeacherClasses($conn, $teacher_id);
 
 <?php include "../../pages/Includes/floatingButton.php" ?>
 
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen font-[sans-serif]">
     <!-- Mobile Overlay -->
     <div id="overlay" class="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden hidden" onclick="closeMobileMenu()"></div>
 
