@@ -29,7 +29,7 @@
         <?php include "DashboardsIncludes/studentsHeader.php" ?>
 
         <!-- Main Content Area with padding to offset fixed header -->
-        <main class="p-4 lg:p-6 pt-6">
+        <main class="max-w-9xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
             <!-- Welcome Section with Search Button -->
             <?php include "DashboardsIncludes/welcomeSection.php" ?>
 

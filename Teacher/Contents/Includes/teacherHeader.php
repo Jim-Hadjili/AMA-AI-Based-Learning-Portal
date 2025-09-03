@@ -56,14 +56,14 @@
 </header>
 
 <!-- Welcome Section -->
-<div class="px-4 sm:px-6 lg:px-8 py-4">
+<div class="px-4 sm:px-6 lg:px-8 pt-6">
     <!-- Enhanced welcome section with better gradient and animations -->
     <div class="relative bg-white rounded-3xl p-8 border border-blue-100/50 shadow-lg hover:shadow-xl transition-all duration-500 overflow-hidden"> 
         
         <div class="relative flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
             <div class="space-y-3">
                 <!-- Enhanced typography with better spacing and animations -->
-                <h1 class="text-3xl lg:text-4xl font-bold bg-gradient-to-r from-gray-900 via-blue-800 to-indigo-900 bg-clip-text text-transparent leading-tight">
+                <h1 class="text-3xl lg:text-4xl font-bold  text-black leading-tight">
                     Welcome back, <?php echo htmlspecialchars($user_name); ?>! 
                     <span class="inline-block animate-bounce">👋</span>
                 </h1>

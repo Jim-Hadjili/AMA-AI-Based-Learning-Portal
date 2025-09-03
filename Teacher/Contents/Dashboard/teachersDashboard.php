@@ -68,7 +68,7 @@ $classes = getTeacherClasses($conn, $teacher_id);
         <?php include "../Includes/teacherHeader.php"; ?>
 
         <!-- Main Content Area -->
-        <main class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+        <main class="max-w-9xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
 
             <!-- Stats Cards -->
             <?php include "../Includes/teacherStatusCards.php"; ?>
