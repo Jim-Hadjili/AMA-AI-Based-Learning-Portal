@@ -52,6 +52,11 @@ function getSubjectFromClassName($className)
         'pe' => 'PE',
         'ict' => 'ICT',
         'home economics' => 'Home Economics',
+        'literature' => 'Literature',
+        'filipino' => 'Filipino',
+        'music' => 'Music',
+        'computer' => 'Computer',
+        'programming' => 'Programming',
     ];
     foreach ($subjectKeywords as $keyword => $subject) {
         if (strpos($classNameLower, $keyword) !== false) {
