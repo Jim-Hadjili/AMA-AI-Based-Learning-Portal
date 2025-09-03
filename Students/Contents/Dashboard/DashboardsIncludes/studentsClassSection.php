@@ -4,13 +4,16 @@
         <div class="flex items-center space-x-4">
         </div>
 
-        <button onclick="showClassSearchModal()" type="button"
-            class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button type="button"
+            onclick="showClassSearchModal()"
+            class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+            aria-label="Search Enrolled Classes">
+            <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" viewBox="0 0 24 24" fill="currentColor">
                 <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2" fill="none" />
                 <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             </svg>
-            <div class="font-semibold">Search Enrolled Classes</div>
+            <span class="relative">Search Enrolled Classes</span>
         </button>
 
     </div>
@@ -151,15 +154,22 @@
             </div>
             <h3 class="text-lg font-medium text-gray-900 mb-2">No Classes Yet</h3>
             <p class="text-gray-500 mb-6 max-w-md mx-auto">You haven't enrolled in any classes yet. Join a class using the class code provided by your teacher.</p>
-            <button onclick="showJoinClassModal()" class="bg-blue-primary hover:bg-blue-dark text-white px-6 py-2 rounded-lg text-sm font-medium transition-colors duration-200 inline-flex items-center">
-                <i class="fas fa-search mr-2"></i> Join Your First Class
+            <button type="button"
+                onclick="showJoinClassModal()"
+                class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+                aria-label="Join Your First Class">
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm4.293-9.707a1 1 0 00-1.414 0L10 11.172l-2.879-2.879a1 1 0 10-1.414 1.414l3.586 3.586a1 1 0 001.414 0l3.586-3.586a1 1 0 000-1.414z" clip-rule="evenodd" />
+                </svg>
+                <span class="relative">Join Your First Class</span>
             </button>
         </div>
     <?php else: ?>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php
             $totalClasses = count($enrolledClasses);
-            $initialDisplayCount = 6;
+            $initialDisplayCount = 1;
             $hasMoreClasses = ($totalClasses > $initialDisplayCount);
 
             foreach ($enrolledClasses as $index => $class):
@@ -171,7 +181,7 @@
 
                 // Determine subject-specific styles using the derived class_subject
                 $subject = $class['class_subject'] ?? null;
-                
+
                 // If no specific subject is set, try to detect from class name
                 if (!$subject) {
                     $className = strtolower($class['class_name']);
@@ -182,12 +192,12 @@
                         }
                     }
                 }
-                
+
                 // If still no subject found, use default
                 if (!$subject || !isset($subjectStyles[$subject])) {
                     $subject = 'Default';
                 }
-                
+
                 $style = $subjectStyles[$subject];
             ?>
                 <div class="bg-white rounded-xl shadow-sm border <?php echo $style['border']; ?> hover:shadow-md transition-all duration-200 overflow-hidden transform hover:-translate-y-1 class-card <?php echo $isHidden; ?>"
@@ -243,8 +253,8 @@
                         </div>
 
                         <div class="mt-4 pt-4 border-t border-gray-100">
-                            <a href="../Pages/classDetails.php?class_id=<?php echo $class['class_id']; ?>" 
-                               class="w-full inline-block text-center py-2 rounded-lg <?php echo $style['icon_bg']; ?> <?php echo $style['link_color']; ?> font-medium hover:opacity-90 transition-opacity">
+                            <a href="../Pages/classDetails.php?class_id=<?php echo $class['class_id']; ?>"
+                                class="w-full inline-block text-center py-2 rounded-lg <?php echo $style['icon_bg']; ?> <?php echo $style['link_color']; ?> font-medium hover:opacity-90 transition-opacity">
                                 View Class <i class="fas fa-arrow-right ml-1"></i>
                             </a>
                         </div>
@@ -255,15 +265,15 @@
 
         <?php if ($hasMoreClasses): ?>
             <div class="text-center mt-4">
-                <button type="button"
+                <button
+                    type="button"
                     onclick="window.location.href='../Pages/studentAllClasses.php'"
-                    class="inline-flex items-center justify-center space-x-2 py-3 px-6 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                    </svg>
-                    <span class="font-semibold">View All Classes</span>
-                    <span class="bg-blue-200 text-blue-800 px-2 py-1 rounded-full text-xs font-bold ml-2">
-                        <?php echo $totalClasses; ?>
+                    class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+                    aria-label="View All Classes">
+                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <span class="flex items-center justify-center gap-3 w-full">
+                        <i class="fas fa-layer-group pt-[2px] h-5 w-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                        <span class="relative">View All <?php echo $totalClasses; ?> Classes</span>
                     </span>
                 </button>
             </div>
