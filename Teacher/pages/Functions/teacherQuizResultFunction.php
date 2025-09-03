@@ -42,6 +42,9 @@ $classStmt->execute();
 $classRes = $classStmt->get_result();
 $classInfo = $classRes->fetch_assoc();
 
+// Add class_name to $quiz for breadcrumb
+$quiz['class_name'] = $classInfo['class_name'];
+
 // Get all related quiz IDs (original + AI regenerated versions)
 function getAllRelatedQuizIds($conn, $quiz_id) {
     $ids = [$quiz_id];

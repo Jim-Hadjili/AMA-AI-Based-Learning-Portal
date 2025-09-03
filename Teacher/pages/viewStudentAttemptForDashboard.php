@@ -10,10 +10,10 @@
 
 <body class="bg-gray-50 font-[sans-serif]">
 
-    <div class="max-w-9xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
         <!-- Breadcrumb -->
-        <nav class="flex mb-4 -mt-4" aria-label="Breadcrumb">
+        <nav class="flex mb-4" aria-label="Breadcrumb">
             <div class="bg-white backdrop-blur-sm rounded-2xl border border-gray-100/60 shadow-sm px-4 py-3">
                 <ol class="inline-flex items-center space-x-1 md:space-x-2">
                     <li>
@@ -29,8 +29,9 @@
                             <svg class="w-4 h-4 text-black mx-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
                             </svg>
-                            <span class="px-3 py-2 text-gray-900 font-medium bg-gray-50 rounded-xl">
-                                Student Attemptsss </span>
+                            <span class="px-3 py-2 text-gray-900 font-bold bg-gray-100 rounded-xl">
+                                <?php echo htmlspecialchars($quiz['quiz_title']); ?> Quiz Student Attempt
+                            </span>
                         </div>
                     </li>
                 </ol>

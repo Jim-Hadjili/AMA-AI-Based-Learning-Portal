@@ -36,6 +36,11 @@ $material = $result->fetch_assoc();
 $file_path = '../../' . $material['file_path'];
 $extension = pathinfo($material['file_path'], PATHINFO_EXTENSION);
 
+// Add this to make $classDetails available
+$classDetails = [
+    'class_name' => $material['class_name']
+];
+
 // Helper function for file size formatting
 function formatFileSize($bytes) {
     if ($bytes >= 1073741824) {

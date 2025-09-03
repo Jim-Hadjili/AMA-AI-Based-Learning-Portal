@@ -11,7 +11,7 @@ include "Functions/allRecentActivityFunction.php";
 
 <body class="bg-gray-50 font-[sans-serif]">
 
-    <div class="max-w-8xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
         <!-- Back Button -->
         <?php include "Includes/allRecentActivityIncludes/allRecentActivityBreadcrumb.php"; ?>

@@ -40,6 +40,12 @@ $quiz_id = $attempt['quiz_id'];
 $student_id = $attempt['st_id'];
 $quiz_title = $attempt['quiz_title'];
 
+// Make $quiz available for breadcrumb and other includes
+$quiz = [
+    'class_name' => $attempt['class_name'],
+    'quiz_title' => $attempt['quiz_title']
+];
+
 // Fetch all questions for this quiz
 $questionsStmt = $conn->prepare("
     SELECT * FROM quiz_questions_tb 

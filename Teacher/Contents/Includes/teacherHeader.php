@@ -1,12 +1,10 @@
 <!-- Mobile Menu Button - Outside Header -->
-<header class="bg-gray-100  sticky top-0 z-30 ">
+<header class="bg-white  sticky top-0 z-30 ">
     <div class="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <!-- Left Section: Mobile Menu Toggle (for mobile) & Logo/Tagline -->
         <div class="flex items-center gap-4">
-
-
             <!-- Logo and Tagline -->
-            <a href="#" class="hidden sm:flex items-center gap-3 font-bold text-purple-700 text-lg">
+            <a href="../Dashboard/teachersDashboard.php" class="hidden sm:flex items-center gap-3 font-bold text-purple-700 text-lg">
                 <img src="../../../Assets/Images/Logo.png" alt="AMA Logo" class="h-12 w-12 object-contain" />
                 <span class="text-gray-900 font-bold text-xl tracking-tight">AMA Teacher Portal</span>
             </a>

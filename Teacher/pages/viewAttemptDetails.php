@@ -11,7 +11,7 @@
 
     
 
-    <div class="max-w-9xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+    <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
     <?php include "Includes/viewAttemptDetailsIncludes/viewAttemptDetailsBreadcrumb.php"; ?>
 

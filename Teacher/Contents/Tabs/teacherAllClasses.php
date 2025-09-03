@@ -21,7 +21,7 @@
     <!-- Main Content -->
     <div class="min-h-screen">
         <!-- Main Content Area -->
-        <main class="p-4 lg:p-6 max-w-8xl mx-auto">
+        <main class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
             <!-- All Classes Section -->
             <div>
                 <?php include "AllClassesComponents/allClassesBreadcrumb.php"; ?>

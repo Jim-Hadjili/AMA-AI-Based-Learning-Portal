@@ -130,7 +130,7 @@ $notification_message = $_GET['message'] ?? '';
     <div class="min-h-screen">
 
         <!-- Main Content Area -->
-        <main class="p-4 lg:p-6">
+        <main class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 
             <?php include "../Includes/classDetailsBreadcrumb.php"; ?>
 
