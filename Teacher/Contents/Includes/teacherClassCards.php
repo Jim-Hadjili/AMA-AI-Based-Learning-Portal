@@ -4,16 +4,19 @@
         <h2 class="text-xl font-bold text-gray-900">Your Classes</h2>
         <div class="flex items-center gap-4">
             <!-- Enhanced Add Class Button with Animation -->
-            <a
-                href="#"
+            <button
                 id="searchSidebarBtn"
+                type="button"
                 onclick="window.openSearchClassModal && window.openSearchClassModal()"
-                class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-blue-600 bg-blue-50 text-blue-700 text-sm font-semibold hover:bg-blue-600 hover:text-white transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-1">
-                <span class="flex items-center justify-center w-5 h-5">
-                    <i class="fas fa-search text-[15px] leading-none"></i>
+                class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+                aria-label="Search Class">
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                <!-- Changed icon to a magnifying glass (Font Awesome) -->
+                <span class="flex items-center justify-center gap-3 w-full">
+                    <i class="fas fa-search pt-[2px] h-5 w-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                    <span class="relative">Search Class</span>
                 </span>
-                <span class="leading-none whitespace-nowrap">Search Class</span>
-            </a>
+            </button>
         </div>
     </div>
 
@@ -271,13 +274,17 @@
         </div>
         <?php if (isset($classes) && count($classes) > 6): ?>
             <div class="text-center mt-6">
-                <a href="../Tabs/teacherAllClasses.php"
-                   class="inline-flex items-center justify-center space-x-2 py-3 px-5 border border-blue-600 text-sm font-semibold rounded-lg text-blue-700 hover:text-white bg-blue-50 hover:bg-blue-600 transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm0 2h12v10H4V5zm3 2a1 1 0 011 1v2h2V8a1 1 0 112 0v2h2a1 1 0 110 2h-2v2a1 1 0 11-2 0v-2H8a1 1 0 110-2h2V8a1 1 0 01-1-1z" clip-rule="evenodd"/>
-                    </svg>
-                    <div class="font-semibold">View All <?php echo count($classes); ?> Classes</div>
-                </a>
+                <button
+                    type="button"
+                    onclick="window.location.href='../Tabs/teacherAllClasses.php'"
+                    class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+                    aria-label="View All Classes">
+                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <span class="flex items-center justify-center gap-3 w-full">
+                        <i class="fas fa-layer-group pt-[2px] h-5 w-5 group-hover:rotate-90 transition-transform duration-300"></i>
+                        <span class="relative">View All <?php echo count($classes); ?> Classes</span>
+                    </span>
+                </button>
             </div>
         <?php endif; ?>
     <?php else: ?>
@@ -287,8 +294,18 @@
             </div>
             <h3 class="text-lg font-medium text-gray-900 mb-2">No Classes Yet</h3>
             <p class="text-gray-500 mb-4 max-w-md mx-auto">You haven't created any classes yet. Create your first class to get started.</p>
-            <button id="addEmptyClassBtn" class="px-5 py-2.5 bg-purple-primary text-white rounded-lg hover:bg-purple-dark transition-colors duration-200 shadow-sm">
-                <i class="fas fa-plus mr-2"></i>Add Your First Class
+            <button
+                id="addEmptyClassBtn"
+                type="button"
+                onclick="window.openAddClassModal && window.openAddClassModal()"
+                class="group relative inline-flex items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden"
+                aria-label="Add New Class"
+            >
+                <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 group-hover:rotate-90 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
+                </svg>
+                <span class="relative">Add Your First Class</span>
             </button>
         </div>
     <?php endif; ?>
