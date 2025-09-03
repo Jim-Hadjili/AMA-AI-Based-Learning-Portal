@@ -1,17 +1,17 @@
 <!-- Mobile Menu Button - Outside Header -->
-<header class="bg-white border-b border-gray-200 sticky top-0 z-30" role="banner" aria-label="Teacher Portal Header">
+<header class="bg-white border-b border-gray-200 sticky top-0 z-30 py-2" role="banner" aria-label="Teacher Portal Header">
     <div class="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6 lg:px-8">
         <!-- Left Section: Logo/Tagline -->
         <div class="flex items-center gap-3">
             <!-- Logo and Tagline -->
             <a href="../Dashboard/teachersDashboard.php" class="flex items-center gap-3 group" aria-label="Go to Dashboard">
-                <img src="../../../Assets/Images/Logo.png" alt="AMA Logo" class="h-10 w-10 object-contain" />
-                <span class="text-gray-900 font-semibold text-lg tracking-tight group-hover:text-blue-600 transition-colors">AMA Teacher Portal</span>
+                <img src="../../../Assets/Images/Logo.png" alt="AMA Logo" class="h-14 w-14 object-contain" />
+                <span class="font-bold text-lg sm:text-lg md:text-2xl tracking-tight group-hover:text-blue-600 transition-colors">AMA Teacher Portal</span>
             </a>
         </div>
 
         <!-- Right Section: User Profile -->
-        <div class="flex items-center">
+        <div class="flex items-center border-2 border-gray-300 rounded-xl">
             <div class="relative">
                 <button id="teacherProfileTrigger" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                     onclick="toggleTeacherProfileDropdown(event)" aria-haspopup="true" aria-expanded="false" aria-label="Open profile menu">
