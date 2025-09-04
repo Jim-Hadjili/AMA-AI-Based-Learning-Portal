@@ -18,9 +18,6 @@
         <!-- Page Header -->
         <?php include "Includes/teacherQuizResultIncludes/teacherQuizResultHeader.php"; ?>
 
-        <!-- Summary Cards -->
-        <?php include "Includes/teacherQuizResultIncludes/teacherQuizResultSummaryCards.php"; ?>
-
         <!-- Graph -->
         <?php include "Includes/teacherQuizResultIncludes/teacherQuizResultGraph.php"; ?>
 

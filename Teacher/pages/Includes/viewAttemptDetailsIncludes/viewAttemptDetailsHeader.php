@@ -1,7 +1,7 @@
-<div class="w-full">
-    <div class="bg-white shadow-lg rounded-xl overflow-hidden mb-8 border border-gray-200">
+<div class="w-full max-w-8xl mx-auto">
+    <div class="bg-white shadow-lg rounded-2xl overflow-hidden mb-8 border border-white/50 backdrop-blur-sm">
         <!-- Header Section -->
-        <div class="bg-white border-b border-gray-100 px-6 py-6 flex items-center gap-4">
+        <div class="bg-white border-b-2 border-gray-200 px-6 py-6 flex items-center gap-4">
             <div class="p-4 bg-blue-100 rounded-xl">
                 <i class="fas fa-clipboard-check text-blue-600 text-3xl"></i>
             </div>
@@ -17,7 +17,7 @@
                 </p>
             </div>
             <div class="ml-auto flex items-center space-x-3 no-print">
-                <button onclick="window.print()" class="bg-white bg-opacity-10 hover:bg-opacity-20 text-blue-700 px-4 py-2 rounded-lg transition-all duration-200 backdrop-blur-sm border border-blue-200">
+                <button onclick="window.print()" class="bg-white bg-opacity-10 hover:bg-opacity-20 text-blue-700 px-4 py-2 rounded-2xl transition-all duration-200 backdrop-blur-sm border border-blue-200 shadow-lg hover:shadow-xl">
                     <i class="fas fa-print mr-2"></i>Print Report
                 </button>  
             </div>

@@ -35,8 +35,6 @@
         <!-- File Information -->
         <?php include "./FilePreviewComponents/fileInfoSection.php"; ?>
 
-        <!-- File Preview -->
-        <?php include "./FilePreviewComponents/filePreviewSection.php"; ?>
     </div>
 
     <!-- Include the download modal -->

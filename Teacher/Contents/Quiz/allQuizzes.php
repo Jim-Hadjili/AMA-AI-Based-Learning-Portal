@@ -61,11 +61,11 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
     <?php include 'allQuizzesIncludes/quiz-header.php'; ?>
 </head>
 
-<body class="bg-gray-50 min-h-screen font-[sans-serif]">
+<body class="bg-gray-100 min-h-screen font-[sans-serif]">
     
 
     <!-- Main Content -->
-    <div class="max-w-8xl mx-auto px-4 py-6">
+    <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
 <!-- Header Navigation -->
     <?php include 'allQuizzesIncludes/quiz-nav.php'; ?>
 

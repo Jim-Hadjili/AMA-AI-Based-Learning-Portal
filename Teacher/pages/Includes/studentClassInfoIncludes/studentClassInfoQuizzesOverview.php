@@ -1,53 +1,50 @@
+<style>
+    .group:hover .group-hover-rotate {
+        transform: rotate(12deg);
+        transition: transform 0.3s;
+    }
+</style>
+
 <div class="w-full mb-8">
-    <div class="grid grid-cols-1 gap-6 sm:grid-cols-3">
-        <!-- Total Quizzes Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
-            <div class="p-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-3 bg-blue-100 rounded-xl">
-                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
-                        </svg>
+    <div class="bg-white rounded-2xl shadow-lg border border-white/50 backdrop-blur-sm overflow-hidden mb-4">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-3 p-6">
+            <!-- Total Quizzes Card -->
+            <div class="group bg-white/80 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden border border-blue-400 hover:shadow-xl hover:scale-105 transition-all duration-300">
+                <div class="flex items-center gap-4 p-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg transform transition-transform duration-300 group-hover-rotate">
+                        <i class="fas fa-tasks text-white text-xl"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Total Quizzes</h3>
-                        <p class="text-2xl font-bold text-gray-900"><?php echo $totalQuizzes; ?></p>
+                        <p class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"><?php echo $totalQuizzes; ?></p>
                         <p class="text-xs text-gray-500 mt-1">Available quizzes</p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Completed Quizzes Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
-            <div class="p-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-3 bg-green-100 rounded-xl">
-                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+            <!-- Completed Quizzes Card -->
+            <div class="group bg-white/80 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden border border-green-400 hover:shadow-xl hover:scale-105 transition-all duration-300">
+                <div class="flex items-center gap-4 p-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg transform transition-transform duration-300 group-hover-rotate">
+                        <i class="fas fa-check-circle text-white text-xl"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Completed</h3>
-                        <p class="text-2xl font-bold text-gray-900"><?php echo $completedQuizzes; ?></p>
+                        <p class="text-2xl font-bold bg-gradient-to-r from-green-600 to-green-800 bg-clip-text text-transparent"><?php echo $completedQuizzes; ?></p>
                         <p class="text-xs text-gray-500 mt-1">Finished quizzes</p>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Pending Quizzes Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 hover:shadow-xl transition-shadow duration-200">
-            <div class="p-6">
-                <div class="flex items-center gap-4">
-                    <div class="p-3 bg-yellow-100 rounded-xl">
-                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
+            <!-- Pending Quizzes Card -->
+            <div class="group bg-white/80 backdrop-blur-sm shadow-lg rounded-2xl overflow-hidden border border-yellow-400 hover:shadow-xl hover:scale-105 transition-all duration-300">
+                <div class="flex items-center gap-4 p-6">
+                    <div class="w-12 h-12 bg-gradient-to-br from-yellow-500 to-yellow-600 rounded-2xl flex items-center justify-center shadow-lg transform transition-transform duration-300 group-hover-rotate">
+                        <i class="fas fa-hourglass-half text-white text-xl"></i>
                     </div>
                     <div class="flex-1 min-w-0">
                         <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Pending</h3>
-                        <p class="text-2xl font-bold text-gray-900"><?php echo $totalQuizzes - $completedQuizzes; ?></p>
+                        <p class="text-2xl font-bold bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent"><?php echo $totalQuizzes - $completedQuizzes; ?></p>
                         <p class="text-xs text-gray-500 mt-1">Not yet attempted</p>
                     </div>
                 </div>

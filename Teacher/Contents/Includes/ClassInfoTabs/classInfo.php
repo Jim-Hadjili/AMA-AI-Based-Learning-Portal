@@ -27,7 +27,7 @@
 
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <!-- Basic Information Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 flex flex-col">
             <div class="bg-white border-b border-gray-100 px-6 py-4">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-blue-100 rounded-lg">
@@ -38,18 +38,18 @@
                     <h4 class="text-lg font-semibold text-gray-900">Basic Information</h4>
                 </div>
             </div>
-            <div class="p-6 space-y-4">
+            <div class="p-6 space-y-4 flex-1">
                 <div class="flex flex-col">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Class Name</label>
                     <span class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($classDetails['class_name']); ?></span>
                 </div>
                 <div class="flex flex-col">
-                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Subject</label>
-                    <span class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($classDetails['subject_name'] ?? 'Not specified'); ?></span>
+                    <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Class Strand</label>
+                    <span class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($classDetails['strand'] ?? 'Not specified'); ?></span>
                 </div>
                 <div class="flex flex-col">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Grade Level</label>
-                    <span class="text-sm font-medium text-gray-900">Grade <?php echo htmlspecialchars($classDetails['grade_level']); ?><?php echo !empty($classDetails['strand']) ? ' - ' . htmlspecialchars($classDetails['strand']) : ''; ?></span>
+                    <span class="text-sm font-medium text-gray-900">Grade <?php echo htmlspecialchars($classDetails['grade_level']); ?></span>
                 </div>
                 <div class="flex flex-col">
                     <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Class Code</label>
@@ -67,63 +67,8 @@
             </div>
         </div>
 
-        <!-- Class Schedule Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200">
-            <div class="bg-white border-b border-gray-100 px-6 py-4">
-                <div class="flex items-center gap-3">
-                    <div class="p-2 bg-green-100 rounded-lg">
-                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                            <path d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-8 0H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2"/>
-                        </svg>
-                    </div>
-                    <h4 class="text-lg font-semibold text-gray-900">Class Schedule</h4>
-                </div>
-            </div>
-            <div class="p-6">
-                <?php if (!empty($classDetails['schedule']) || !empty($classDetails['time_start']) || !empty($classDetails['time_end'])): ?>
-                    <div class="space-y-4">
-                        <?php if (!empty($classDetails['schedule'])): ?>
-                            <div class="flex flex-col">
-                                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Days</label>
-                                <span class="inline-flex items-center px-3 py-2 rounded-full text-sm font-medium bg-green-100 text-green-800 border border-green-200 w-fit">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-8 0H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2"/>
-                                    </svg>
-                                    <?php echo htmlspecialchars($classDetails['schedule']); ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                        <?php if (!empty($classDetails['time_start']) && !empty($classDetails['time_end'])): ?>
-                            <div class="flex flex-col">
-                                <label class="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-1">Time</label>
-                                <span class="inline-flex items-center px-3 py-2 rounded-full text-sm font-medium bg-blue-100 text-blue-800 border border-blue-200 w-fit">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                        <path d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                    <?php
-                                    $timeStart = date("g:i A", strtotime($classDetails['time_start']));
-                                    $timeEnd = date("g:i A", strtotime($classDetails['time_end']));
-                                    echo "$timeStart - $timeEnd";
-                                    ?>
-                                </span>
-                            </div>
-                        <?php endif; ?>
-                    </div>
-                <?php else: ?>
-                    <div class="text-center py-8">
-                        <div class="p-3 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                            <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-                                <path d="M8 7V3a2 2 0 012-2h4a2 2 0 012 2v4m-6 0V6a2 2 0 012-2h4a2 2 0 012 2v1m-6 0h8m-8 0H6a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V9a2 2 0 00-2-2h-2"/>
-                            </svg>
-                        </div>
-                        <p class="text-gray-500 text-sm">No schedule information available</p>
-                    </div>
-                <?php endif; ?>
-            </div>
-        </div>
-
         <!-- Description Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 lg:col-span-2">
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 flex flex-col">
             <div class="bg-white border-b border-gray-100 px-6 py-4">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-purple-100 rounded-lg">
@@ -134,26 +79,27 @@
                     <h4 class="text-lg font-semibold text-gray-900">Class Description</h4>
                 </div>
             </div>
-            <div class="p-6">
+            <div class="p-6 flex-1 flex ">
                 <?php if (!empty($classDetails['class_description'])): ?>
-                    <div class="prose prose-sm max-w-none">
-                        <p class="text-gray-700 leading-relaxed"><?php echo nl2br(htmlspecialchars($classDetails['class_description'])); ?></p>
+                    <div class="prose prose-sm max-w-none w-full">
+                        <p class="text-gray-700 leading-relaxed text-justify"><?php echo nl2br(htmlspecialchars($classDetails['class_description'])); ?></p>
                     </div>
                 <?php else: ?>
-                    <div class="text-center py-8">
+                    <div class="text-center py-8 w-full">
                         <div class="p-3 bg-gray-100 rounded-full w-16 h-16 mx-auto mb-4 flex items-center justify-center">
                             <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                                 <path d="M4 6h16M4 12h16M4 18h7"/>
                             </svg>
                         </div>
-                        <p class="text-gray-500 text-sm">No description available</p>
+                        <p class="text-gray-500 text-sm text-justify">No description available</p>
                     </div>
                 <?php endif; ?>
             </div>
         </div>
+    </div>
 
         <!-- Class Statistics Card -->
-        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 lg:col-span-2">
+        <div class="bg-white shadow-lg rounded-xl overflow-hidden border border-gray-200 lg:col-span-2 mt-8">
             <div class="bg-white border-b border-gray-100 px-6 py-4">
                 <div class="flex items-center gap-3">
                     <div class="p-2 bg-yellow-100 rounded-lg">
