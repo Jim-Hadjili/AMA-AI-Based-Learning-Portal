@@ -1,5 +1,5 @@
 <?php if (isset($classes) && count($classes) > 0): ?>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 bg-white rounded-2xl shadow-sm border p-8">
         <?php
         foreach ($displayClasses as $class):
             // Count enrolled students for this class - with error handling

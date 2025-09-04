@@ -1,4 +1,4 @@
-<form method="GET" action="teacherAllClasses.php" class="max-w-8xl mx-auto bg-white p-8 rounded-2xl border border-gray-100 shadow-sm mb-6 overflow-hidden">
+<form method="GET" action="teacherAllClasses.php" class="max-w-8xl mx-auto bg-white p-8 rounded-2xl border border-gray-100 shadow-sm my-4 overflow-hidden">
     <!-- Top accent strip for consistency -->
     <div class="h-1 bg-gradient-to-r from-purple-400 to-purple-600 mb-6"></div>
     <div class="flex flex-col md:flex-row md:items-end gap-4">

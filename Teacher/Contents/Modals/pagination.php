@@ -1,11 +1,5 @@
 <?php if ($totalPages > 1): ?>
-    <div class="mt-6  flex flex-col items-center">
-        <!-- Page Stats -->
-        <div class="text-sm text-gray-600 mb-3">
-            <span>Showing page <?php echo $currentPage; ?> of <?php echo $totalPages; ?></span>
-            <span class="mx-2">•</span>
-            <span><?php echo $totalClasses; ?> total classes</span>
-        </div>
+    <div class="mt-6  flex flex-col align-center items-center">
         
         <!-- Pagination Controls -->
         <nav class="inline-flex rounded-xl shadow-sm overflow-hidden" aria-label="Pagination">

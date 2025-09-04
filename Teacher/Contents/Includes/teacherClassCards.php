@@ -1,5 +1,5 @@
 <!-- Class Cards Section -->
-<div class="mt-6">
+<div class="mt-6 bg-white rounded-2xl shadow-sm border p-8">
     <div class="flex items-center justify-between mb-6">
         <h2 class="text-xl font-bold text-gray-900">Your Classes</h2>
         <div class="flex items-center gap-4">

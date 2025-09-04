@@ -83,7 +83,7 @@ $statsData = calculateQuizStats($conn, $class_id, $teacher_id, $searchTerm, $sta
             <?php else: ?>
 
                 <!-- Quiz Cards Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 mb-8 bg-white rounded-2xl shadow-sm border p-8">
                     <?php foreach ($quizzes as $quiz): ?>
                         <?php include 'allQuizzesIncludes/quiz-card.php'; ?>
                     <?php endforeach; ?>
