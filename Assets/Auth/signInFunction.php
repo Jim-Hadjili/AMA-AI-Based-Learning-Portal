@@ -59,7 +59,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $_SESSION['user_email'] = $user['userEmail'];
     $_SESSION['user_position'] = $user['userPosition'];
     $_SESSION['login_time'] = time();
-    $_SESSION['session_token'] = generateSessionToken(); // Add a unique session token
+    $_SESSION['session_token'] = generateSessionToken();
+    if ($user['userPosition'] === 'student') {
+        $_SESSION['st_id'] = $user['user_id'];
+        // Load grade_level and strand for student
+        $stmt = $conn->prepare("SELECT grade_level, strand FROM students_profiles_tb WHERE st_id = ?");
+        $stmt->bind_param("s", $_SESSION['st_id']);
+        $stmt->execute();
+        $stmt->bind_result($grade_level, $strand);
+        if ($stmt->fetch()) {
+            $_SESSION['grade_level'] = $grade_level;
+            $_SESSION['strand'] = $strand;
+        }
+        $stmt->close();
+    }
     
     // Determine redirect URL based on role
     $redirect_url = '';
