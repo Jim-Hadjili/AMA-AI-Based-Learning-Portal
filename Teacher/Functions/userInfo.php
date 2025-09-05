@@ -7,7 +7,7 @@ $session_token = $_SESSION['session_token'];
 
 // Get teacher ID from database
 $teacherId = null;
-$query = "SELECT th_id FROM teachers_profiles_tb WHERE th_Email = ?";
+$query = "SELECT th_id, profile_picture, th_position, employee_id, department, subject_expertise FROM teachers_profiles_tb WHERE th_Email = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $user_email);
 $stmt->execute();
@@ -16,6 +16,12 @@ $result = $stmt->get_result();
 if ($result->num_rows > 0) {
     $row = $result->fetch_assoc();
     $teacherId = $row['th_id'];
+    $profile_picture = $row['profile_picture'];
+    $th_position = $row['th_position'];
+    $employee_id = $row['employee_id'];
+    $department = $row['department'];
+    $subject_expertise = $row['subject_expertise'];
+    $_SESSION['profile_picture'] = $profile_picture;
 }
 
 // Get teacher's classes

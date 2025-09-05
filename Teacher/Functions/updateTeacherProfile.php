@@ -13,12 +13,16 @@ $th_id = $user_id;
 
 $name = $_POST['teacher_name'];
 $email = $_POST['teacher_email'];
+$employee_id = $_POST['employee_id'] ?? '';
+$department = $_POST['department'] ?? '';
+$subject_expertise = $_POST['subject_expertise'] ?? '';
 $new_password = $_POST['new_password'] ?? '';
 $current_password = $_POST['current_password'] ?? '';
 
-$updateFields = "th_userName=?, th_Email=?";
-$params = [$name, $email];
-$types = "ss";
+// Add new fields to update
+$updateFields = "th_userName=?, th_Email=?, employee_id=?, department=?, subject_expertise=?";
+$params = [$name, $email, $employee_id, $department, $subject_expertise];
+$types = "sssss";
 
 $userUpdateFields = "userName=?, userEmail=?";
 $userParams = [$name, $email];
@@ -60,7 +64,7 @@ $types .= "s";
 $userParams[] = $user_id;
 $userTypes .= "s";
 
-// Update teachers_profiles_tb (no password update)
+// Update teachers_profiles_tb (with new fields)
 $stmt = $conn->prepare("UPDATE teachers_profiles_tb SET $updateFields WHERE th_id=?");
 $stmt->bind_param($types, ...$params);
 $teacherUpdated = $stmt->execute();
@@ -69,6 +73,33 @@ $teacherUpdated = $stmt->execute();
 $stmt2 = $conn->prepare("UPDATE users_tb SET $userUpdateFields WHERE user_id=?");
 $stmt2->bind_param($userTypes, ...$userParams);
 $userUpdated = $stmt2->execute();
+
+// Handle profile picture upload
+$profilePicName = null;
+if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] === UPLOAD_ERR_OK) {
+    $allowedTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+    $maxSize = 2 * 1024 * 1024; // 2MB
+
+    $fileTmp = $_FILES['profile_picture']['tmp_name'];
+    $fileType = mime_content_type($fileTmp);
+    $fileSize = $_FILES['profile_picture']['size'];
+
+    if (in_array($fileType, $allowedTypes) && $fileSize <= $maxSize) {
+        $ext = pathinfo($_FILES['profile_picture']['name'], PATHINFO_EXTENSION);
+        $profilePicName = $_SESSION['user_id'] . '_' . uniqid() . '.' . $ext;
+        $destPath = '../../Uploads/ProfilePictures/' . $profilePicName;
+        move_uploaded_file($fileTmp, $destPath);
+
+        // Update profile picture in DB
+        $updatePicQuery = "UPDATE teachers_profiles_tb SET profile_picture = ? WHERE th_Email = ?";
+        $updatePicStmt = $conn->prepare($updatePicQuery);
+        $updatePicStmt->bind_param("ss", $profilePicName, $_SESSION['user_email']);
+        $updatePicStmt->execute();
+
+        // Also update session variable
+        $_SESSION['profile_picture'] = $profilePicName;
+    }
+}
 
 if ($teacherUpdated && $userUpdated) {
     $_SESSION['user_name'] = $name;

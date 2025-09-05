@@ -15,9 +15,13 @@
             <div class="relative">
                 <button id="teacherProfileTrigger" class="flex items-center gap-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
                     onclick="toggleTeacherProfileDropdown(event)" aria-haspopup="true" aria-expanded="false" aria-label="Open profile menu">
-                    <div class="w-9 h-9 bg-blue-600 rounded-full flex items-center justify-center">
-                        <span class="text-white font-medium text-sm"><?php echo strtoupper(htmlspecialchars(substr($user_name, 0, 1))); ?></span>
-                    </div>
+                    <!-- Profile Picture Avatar -->
+                    <img 
+                        src="<?php echo !empty($profile_picture) ? '../../../Uploads/ProfilePictures/' . htmlspecialchars($profile_picture) : '../../../Assets/Images/default_profile.png'; ?>" 
+                        alt="Profile Picture" 
+                        class="w-9 h-9 rounded-full object-cover border border-gray-300 bg-gray-100"
+                        onerror="this.onerror=null;this.src='../../../Assets/Images/default_profile.png';"
+                    >
                     <div class="hidden md:flex items-center gap-2">
                         <div class="text-left">
                             <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($user_name); ?></p>
