@@ -28,7 +28,7 @@
                             }
                             ?>
                         </div>
-                        <div class="text-xs text-gray-500 font-medium">Total</div>
+                        <div class="text-xs text-gray-500 font-medium">Total for This Class</div>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                             ?>
                         </div>
                         <div class="text-xs text-gray-500 font-medium">
-                            Total
+                            Total for This Class
                             <?php if ($activeQuizCount > 0): ?>
                                 <span class="ml-1">(<?php echo $activeQuizCount; ?> active)</span>
                             <?php endif; ?>
