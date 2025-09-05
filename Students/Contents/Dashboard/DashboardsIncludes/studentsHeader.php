@@ -16,8 +16,8 @@
                     onclick="toggleProfileDropdown(event)" aria-haspopup="true" aria-expanded="false" aria-label="Open profile menu">
                     <div class="w-9 h-9 rounded-full flex items-center justify-center overflow-hidden bg-blue-600">
                         <?php
-                            $profile_picture = isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '';
-                            $profile_picture_path = '../../../Uploads/ProfilePictures/' . $profile_picture;
+                        $profile_picture = isset($_SESSION['profile_picture']) ? $_SESSION['profile_picture'] : '';
+                        $profile_picture_path = '../../../Uploads/ProfilePictures/' . $profile_picture;
                         ?>
                         <?php if (!empty($profile_picture) && file_exists($profile_picture_path)): ?>
                             <img src="<?php echo $profile_picture_path; ?>" alt="Profile" class="w-full h-full object-cover">
@@ -40,13 +40,7 @@
                 <div id="profileDropdown" class="absolute top-full right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50 hidden overflow-hidden" role="menu" aria-label="Profile options">
                     <div class="px-4 py-3 bg-gray-50">
                         <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-full overflow-hidden bg-blue-600 flex items-center justify-center">
-                                <?php if (!empty($profile_picture) && file_exists($profile_picture_path)): ?>
-                                    <img src="<?php echo $profile_picture_path; ?>" alt="Profile" class="w-full h-full object-cover">
-                                <?php else: ?>
-                                    <span class="text-white font-medium text-sm"><?php echo strtoupper(htmlspecialchars(substr($user_name, 0, 1))); ?></span>
-                                <?php endif; ?>
-                            </div>
+
                             <div>
                                 <p class="text-sm font-medium text-gray-900"><?php echo htmlspecialchars($user_name); ?></p>
                                 <p class="text-xs text-gray-500">Student Account</p>
@@ -128,6 +122,7 @@
         document.getElementById('profileDropdown').classList.add('hidden'); // Close profile dropdown when opening logout modal
         document.getElementById('userProfileTrigger').setAttribute('aria-expanded', 'false');
     }
+
     function closeLogoutModal() {
         document.getElementById('logoutModal').classList.add('hidden');
     }
@@ -136,6 +131,7 @@
         document.getElementById('editProfileModal').classList.remove('hidden');
         document.getElementById('profileDropdown').classList.add('hidden'); // Close profile dropdown when opening edit modal
     }
+
     function closeEditProfileModal() {
         document.getElementById('editProfileModal').classList.add('hidden');
     }
