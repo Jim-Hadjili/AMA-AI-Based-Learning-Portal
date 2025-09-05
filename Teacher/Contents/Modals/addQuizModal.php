@@ -2,7 +2,7 @@
 <div id="addQuizModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
     <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 border border-gray-100 transform transition-all duration-300">
         <!-- Header -->
-        <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-50 to-purple-100 rounded-t-2xl">
+        <div class="flex justify-between items-center px-6 py-5 border-b border-gray-100 bg-gradient-to-r from-purple-100 to-purple-200 rounded-t-2xl">
             <h3 class="text-xl font-bold text-purple-900 flex items-center gap-2">
                 <span class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-2">
                     <i class="fas fa-file-alt text-purple-600"></i>

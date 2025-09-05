@@ -6,7 +6,7 @@
             <i class="fas fa-times text-lg"></i>
         </button>
 
-        <div class="px-0 py-0 flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-purple-50 to-white rounded-t-xl -mx-6 -mt-6 px-6 py-5">
+        <div class="flex items-center justify-between border-b border-gray-200 bg-gradient-to-r from-purple-100 to-purple-200 rounded-t-xl -mx-6 -mt-6 px-6 py-5">
             <h3 class="text-lg font-semibold text-gray-800 flex items-center">
                 <span class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center mr-3">
                     <i class="fas fa-edit text-purple-600"></i>
