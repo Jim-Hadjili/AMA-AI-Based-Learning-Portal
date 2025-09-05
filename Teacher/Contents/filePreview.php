@@ -27,10 +27,15 @@
 </head>
 
 <body class="bg-gray-100 min-h-screen font-[sans-serif]">
+
     <!-- Main Content -->
     <div class="max-w-9xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+
         <!-- Header with Navigation -->
         <?php include "./FilePreviewComponents/filePreviewBreadcrumb.php"; ?>
+
+        <!-- File Preview Stats Section -->
+        <?php include "./FilePreviewComponents/filePreviewSectionStats.php"; ?>
 
         <!-- File Information -->
         <?php include "./FilePreviewComponents/fileInfoSection.php"; ?>

@@ -106,12 +106,14 @@
 
         // Open download modal when download button is clicked
         if (downloadBtn) {
-            downloadBtn.addEventListener('click', function() {
-                materialTitleToDownload.textContent = '<?php echo htmlspecialchars($material['file_name']); ?>';
-                window.materialDownloadPath = '<?php echo $file_path; ?>';
-                window.materialDownloadFilename = '<?php echo htmlspecialchars($material['file_name']); ?>';
+            downloadBtn.addEventListener('click', function(e) {
+                e.preventDefault();
                 downloadConfirmationModal.classList.remove('hidden');
                 document.body.classList.add('overflow-hidden');
+                // Set the material title in the modal
+                if (materialTitleToDownload) {
+                    materialTitleToDownload.textContent = "<?php echo htmlspecialchars($material['material_title']); ?>";
+                }
             });
         }
 
@@ -133,15 +135,13 @@
         // Confirm download
         if (confirmDownloadBtn) {
             confirmDownloadBtn.addEventListener('click', function() {
-                // Create a temporary anchor element to trigger the download
-                const downloadLink = document.createElement('a');
-                downloadLink.href = window.materialDownloadPath;
-                downloadLink.download = window.materialDownloadFilename;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
-
-                // Close the modal
+                // Force download using a temporary anchor
+                const link = document.createElement('a');
+                link.href = "<?php echo $file_path; ?>";
+                link.download = "<?php echo htmlspecialchars($material['file_name']); ?>";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
                 closeDownloadModal();
             });
         }

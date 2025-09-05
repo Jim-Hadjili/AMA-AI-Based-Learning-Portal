@@ -19,7 +19,7 @@ $material_id = intval($_GET['id']);
 $teacher_id = $_SESSION['user_id'];
 
 // Get material details
-$stmt = $conn->prepare("SELECT m.*, c.class_name FROM learning_materials_tb m 
+$stmt = $conn->prepare("SELECT m.*, c.class_name, c.class_code FROM learning_materials_tb m 
                        JOIN teacher_classes_tb c ON m.class_id = c.class_id 
                        WHERE m.material_id = ? AND m.teacher_id = ?");
 $stmt->bind_param("is", $material_id, $teacher_id);

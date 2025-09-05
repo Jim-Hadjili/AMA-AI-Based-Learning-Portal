@@ -7,12 +7,21 @@
                     File Preview
                 </h2>
                 <div class="flex flex-row gap-4">
-                    <a href="<?php echo $file_path; ?>" download="<?php echo htmlspecialchars($material['file_name']); ?>"
-                        class="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-4 py-2 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
-                        <i class="fas fa-download mr-2"></i> Download File
-                    </a>
-                    <button id="deleteBtn" class="bg-gradient-to-r from-red-500 to-pink-600 hover:from-red-600 hover:to-pink-700 text-white px-4 py-2 rounded-lg flex items-center justify-center text-sm font-medium transition-all duration-200 shadow-lg hover:shadow-xl">
-                        <i class="fas fa-trash-alt mr-2"></i> Delete Material
+                    <button
+                        id="downloadBtn"
+                        type="button"
+                        class="group relative inline-flex items-center justify-center px-6 py-3 bg-blue-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden mt-4 md:mt-0"
+                        aria-label="Download File">
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        <i class="fas fa-download h-5 w-5 mr-2 pt-[2px] group-hover:rotate-90 transition-transform duration-300"></i>
+                        <span class="relative">Download File</span>
+                    </button>
+                    <button id="deleteBtn"
+                        class="group relative inline-flex items-center justify-center px-6 py-3 bg-red-600 hover:from-red-600 hover:to-pink-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-red-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden mt-4 md:mt-0"
+                        aria-label="Delete Material">
+                        <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                        <i class="fas fa-trash-alt h-5 w-5 mr-2 pt-[2px] group-hover:rotate-90 transition-transform duration-300"></i>
+                        <span class="relative">Delete Material</span>
                     </button>
                 </div>
             </div>
