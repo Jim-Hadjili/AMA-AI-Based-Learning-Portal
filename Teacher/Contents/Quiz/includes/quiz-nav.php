@@ -1,6 +1,7 @@
 <?php
 // Helper function to get subject from class name
-function getSubjectFromClassName($className) {
+function getSubjectFromClassName($className)
+{
     $classNameLower = strtolower($className);
     $subjectKeywords = [
         'english' => 'English',
@@ -133,33 +134,62 @@ $subjectStyles = [
     ],
     'Default' => [
         'strip' => 'bg-gray-500',
-    'icon_bg' => 'bg-gray-100',
-    'icon_color' => 'text-gray-600',
-    'border' => 'border-gray-200',
-    'link_color' => 'text-gray-600 hover:text-gray-800',
-    'icon_class' => 'fas fa-graduation-cap'
+        'icon_bg' => 'bg-gray-100',
+        'icon_color' => 'text-gray-600',
+        'border' => 'border-gray-200',
+        'link_color' => 'text-gray-600 hover:text-gray-800',
+        'icon_class' => 'fas fa-graduation-cap'
     ]
 ];
 $style = $subjectStyles[$subject] ?? $subjectStyles['Default'];
 ?>
 
-<!-- Quiz Nav Styled Like Class Details Header -->
-<div class="bg-white rounded-2xl shadow-lg border border-gray-200 mb-8 overflow-hidden">
-            <div class="h-2 <?php echo $style['icon_bg']; ?>"></div>
-            <div class="px-8 py-6 flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6">
+<div class="bg-white shadow-lg rounded-2xl overflow-hidden border border-white/50 mb-6">
+    <div class="h-2 <?php echo $style['icon_bg']; ?>"></div>
+    <div class="bg-white border-b-2 border-gray-200 px-6 py-5">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center justify-center gap-3">
                 <div class="flex items-center gap-5">
                     <div class="w-16 h-16 rounded-xl <?php echo $style['icon_bg']; ?> flex items-center justify-center border-2 border-gray-200">
                         <i class="<?php echo $style['icon_class']; ?> text-2xl <?php echo $style['icon_color']; ?>"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold text-gray-900 mb-2">Edit Quiz: <?php echo htmlspecialchars($quiz['quiz_title']); ?></h1>
-                        <p class="text-gray-600 text-base"><?php echo htmlspecialchars($quiz['class_name']); ?> • <?php echo htmlspecialchars($quiz['class_code']); ?></p>
+                        <h1 class="text-2xl font-semibold text-gray-600 uppercase tracking-wide ">Quiz Name</h1>
+                        <h3 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"><?php echo htmlspecialchars($quiz['quiz_title']); ?></h3>
                     </div>
                 </div>
-                <div>
-                    <button id="saveQuizBtn" class="inline-flex items-center px-5 py-2.5 rounded-xl bg-purple-600 text-white font-semibold shadow hover:bg-purple-700 transition">
-                        <i class="fas fa-save mr-2"></i> Save Changes
-                    </button>
-                </div>
+            </div>
+            <div class="flex gap-2">
+                <button
+                    id="saveQuizBtn"
+                    type="button"
+                    class="group relative inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-2xl transition-all duration-300 shadow-lg hover:shadow-xl focus:outline-none focus:ring-4 focus:ring-blue-500/30 focus:ring-offset-2 w-full lg:w-auto transform hover:scale-105 overflow-hidden mt-4 md:mt-0"
+                    aria-label="Save Changes">
+                    <div class="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+                    <i class="fas fa-save h-5 w-5 mr-2 pt-[2px] group-hover:rotate-90 transition-transform duration-300"></i>
+                    <span class="relative">Save Changes</span>
+                </button>
             </div>
         </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+        <div class="group relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-indigo-400 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden flex items-center">
+            <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg mr-4 group-hover:rotate-12 transition-transform duration-300">
+                <i class="fas fa-chalkboard text-white text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Class Name</h3>
+                <p class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"><?php echo htmlspecialchars($quiz['class_name']); ?></p>
+            </div>
+        </div>
+        <div class="group relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-green-400 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden flex items-center">
+            <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-2xl flex items-center justify-center shadow-lg mr-4 group-hover:rotate-12 transition-transform duration-300">
+                <i class="fas fa-hashtag text-white text-xl"></i>
+            </div>
+            <div>
+                <h3 class="text-sm font-semibold text-gray-600 uppercase tracking-wide mb-1">Class Code</h3>
+                <p class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"><?php echo htmlspecialchars($quiz['class_code']); ?></p>
+            </div>
+        </div>
+    </div>
+</div>
