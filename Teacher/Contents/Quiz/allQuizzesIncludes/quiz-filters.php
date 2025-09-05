@@ -31,7 +31,6 @@
                     <option value="all" <?php echo $statusFilter === 'all' ? 'selected' : ''; ?>>All Quizzes</option>
                     <option value="published" <?php echo $statusFilter === 'published' ? 'selected' : ''; ?>>Published</option>
                     <option value="draft" <?php echo $statusFilter === 'draft' ? 'selected' : ''; ?>>Drafts</option>
-                    <option value="archived" <?php echo $statusFilter === 'archived' ? 'selected' : ''; ?>>Archived</option>
                 </select>
             </div>
             <!-- Sort Filter -->
