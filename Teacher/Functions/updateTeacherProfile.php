@@ -90,11 +90,17 @@ if (isset($_FILES['profile_picture']) && $_FILES['profile_picture']['error'] ===
         $destPath = '../../Uploads/ProfilePictures/' . $profilePicName;
         move_uploaded_file($fileTmp, $destPath);
 
-        // Update profile picture in DB
+        // Update profile picture in teachers_profiles_tb
         $updatePicQuery = "UPDATE teachers_profiles_tb SET profile_picture = ? WHERE th_Email = ?";
         $updatePicStmt = $conn->prepare($updatePicQuery);
         $updatePicStmt->bind_param("ss", $profilePicName, $_SESSION['user_email']);
         $updatePicStmt->execute();
+
+        // Update profile picture in users_tb
+        $updateUserPicQuery = "UPDATE users_tb SET profile_picture = ? WHERE user_id = ?";
+        $updateUserPicStmt = $conn->prepare($updateUserPicQuery);
+        $updateUserPicStmt->bind_param("ss", $profilePicName, $_SESSION['user_id']);
+        $updateUserPicStmt->execute();
 
         // Also update session variable
         $_SESSION['profile_picture'] = $profilePicName;
