@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 23, 2025 at 02:48 PM
+-- Generation Time: Sep 05, 2025 at 06:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -54,19 +54,6 @@ CREATE TABLE `class_enrollments_tb` (
   `status` enum('active','inactive','pending') DEFAULT 'active',
   `strand` varchar(50) DEFAULT NULL,
   `student_id` varchar(50) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `generated_quizzes_tb`
---
-
-CREATE TABLE `generated_quizzes_tb` (
-  `id` int(11) NOT NULL,
-  `quiz_id` int(11) NOT NULL,
-  `original_quiz_id` int(11) NOT NULL,
-  `generation_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -141,7 +128,8 @@ CREATE TABLE `quizzes_tb` (
   `status` enum('draft','published','archived') NOT NULL DEFAULT 'draft',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `parent_quiz_id` int(11) DEFAULT NULL
+  `parent_quiz_id` int(11) DEFAULT NULL,
+  `quiz_type` varchar(50) DEFAULT 'manual'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -157,7 +145,17 @@ CREATE TABLE `quiz_attempts_tb` (
   `start_time` datetime NOT NULL,
   `end_time` datetime DEFAULT NULL,
   `score` float DEFAULT NULL,
-  `status` enum('in-progress','completed','timed-out','abandoned') NOT NULL DEFAULT 'in-progress'
+  `result` enum('passed','failed') DEFAULT NULL,
+  `status` enum('in-progress','completed','timed-out','abandoned') NOT NULL DEFAULT 'in-progress',
+  `student_name` varchar(255) DEFAULT NULL,
+  `student_email` varchar(255) DEFAULT NULL,
+  `grade_level` varchar(50) DEFAULT NULL,
+  `strand` varchar(50) DEFAULT NULL,
+  `student_id` varchar(50) DEFAULT NULL,
+  `th_id` varchar(255) DEFAULT NULL,
+  `quiz_title` varchar(255) DEFAULT NULL,
+  `parent_quiz_id` int(11) DEFAULT NULL,
+  `quiz_type` varchar(50) DEFAULT 'manual'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -207,7 +205,8 @@ CREATE TABLE `students_profiles_tb` (
   `grade_level` varchar(20) NOT NULL,
   `strand` varchar(50) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `profile_picture` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -244,7 +243,8 @@ CREATE TABLE `teachers_profiles_tb` (
   `department` varchar(50) NOT NULL,
   `subject_expertise` varchar(255) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `profile_picture` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -263,7 +263,13 @@ CREATE TABLE `teacher_classes_tb` (
   `strand` varchar(50) DEFAULT NULL,
   `status` enum('active','inactive','archived') NOT NULL DEFAULT 'active',
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `teacher_name` varchar(255) NOT NULL,
+  `teacher_email` varchar(255) NOT NULL,
+  `teacher_position` varchar(255) DEFAULT NULL,
+  `teacher_employee_id` varchar(50) DEFAULT NULL,
+  `teacher_department` varchar(50) DEFAULT NULL,
+  `teacher_subject_expertise` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -279,6 +285,7 @@ CREATE TABLE `users_tb` (
   `userEmail` varchar(255) NOT NULL,
   `userPosition` varchar(255) NOT NULL,
   `userPassword` varchar(255) NOT NULL,
+  `profile_picture` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -316,14 +323,6 @@ ALTER TABLE `class_enrollments_tb`
   ADD KEY `class_id` (`class_id`);
 
 --
--- Indexes for table `generated_quizzes_tb`
---
-ALTER TABLE `generated_quizzes_tb`
-  ADD PRIMARY KEY (`id`),
-  ADD KEY `quiz_id` (`quiz_id`),
-  ADD KEY `original_quiz_id` (`original_quiz_id`);
-
---
 -- Indexes for table `learning_materials_tb`
 --
 ALTER TABLE `learning_materials_tb`
@@ -353,7 +352,8 @@ ALTER TABLE `quizzes_tb`
   ADD PRIMARY KEY (`quiz_id`),
   ADD KEY `class_id` (`class_id`),
   ADD KEY `th_id` (`th_id`),
-  ADD KEY `parent_quiz_fk` (`parent_quiz_id`);
+  ADD KEY `parent_quiz_fk` (`parent_quiz_id`),
+  ADD KEY `parent_quiz_id` (`parent_quiz_id`);
 
 --
 -- Indexes for table `quiz_attempts_tb`
@@ -441,12 +441,6 @@ ALTER TABLE `class_enrollments_tb`
   MODIFY `enrollment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `generated_quizzes_tb`
---
-ALTER TABLE `generated_quizzes_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `learning_materials_tb`
 --
 ALTER TABLE `learning_materials_tb`
@@ -468,19 +462,19 @@ ALTER TABLE `question_options_tb`
 -- AUTO_INCREMENT for table `quizzes_tb`
 --
 ALTER TABLE `quizzes_tb`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=99;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `quiz_attempts_tb`
 --
 ALTER TABLE `quiz_attempts_tb`
-  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `attempt_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `quiz_questions_tb`
 --
 ALTER TABLE `quiz_questions_tb`
-  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=160;
+  MODIFY `question_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `short_answer_tb`
@@ -492,7 +486,7 @@ ALTER TABLE `short_answer_tb`
 -- AUTO_INCREMENT for table `students_profiles_tb`
 --
 ALTER TABLE `students_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `student_answers_tb`
@@ -504,19 +498,19 @@ ALTER TABLE `student_answers_tb`
 -- AUTO_INCREMENT for table `teachers_profiles_tb`
 --
 ALTER TABLE `teachers_profiles_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `teacher_classes_tb`
 --
 ALTER TABLE `teacher_classes_tb`
-  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `class_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users_tb`
 --
 ALTER TABLE `users_tb`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- Constraints for dumped tables
@@ -527,13 +521,6 @@ ALTER TABLE `users_tb`
 --
 ALTER TABLE `class_enrollments_tb`
   ADD CONSTRAINT `class_enrollments_tb_ibfk_1` FOREIGN KEY (`class_id`) REFERENCES `teacher_classes_tb` (`class_id`) ON DELETE CASCADE;
-
---
--- Constraints for table `generated_quizzes_tb`
---
-ALTER TABLE `generated_quizzes_tb`
-  ADD CONSTRAINT `generated_quiz_fk` FOREIGN KEY (`quiz_id`) REFERENCES `quizzes_tb` (`quiz_id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `original_quiz_fk` FOREIGN KEY (`original_quiz_id`) REFERENCES `quizzes_tb` (`quiz_id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `question_options_tb`
