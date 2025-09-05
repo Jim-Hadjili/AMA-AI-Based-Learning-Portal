@@ -24,7 +24,7 @@
             </div>
         </div>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-4 gap-6 p-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
         <div class="group relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-indigo-400 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden flex items-center">
             <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg mr-4 group-hover:rotate-12 transition-transform duration-300">
                 <i class="fas fa-tasks text-white text-xl"></i>
@@ -56,15 +56,6 @@
             <div>
                 <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Drafts</p>
                 <p class="text-lg font-bold bg-gradient-to-r from-yellow-600 to-yellow-800 bg-clip-text text-transparent"><?php echo $statsData['drafts']; ?></p>
-            </div>
-        </div>
-        <div class="group relative bg-white/80 backdrop-blur-sm p-6 rounded-2xl border border-blue-400 shadow-sm hover:shadow-xl hover:scale-105 transition-all duration-300 overflow-hidden flex items-center">
-            <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg mr-4 group-hover:rotate-12 transition-transform duration-300">
-                <i class="fas fa-clipboard-check text-white text-xl"></i>
-            </div>
-            <div>
-                <p class="text-xs font-semibold text-gray-500 uppercase tracking-wide">Total Attempts</p>
-                <p class="text-lg font-bold bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent"><?php echo $statsData['attempts']; ?></p>
             </div>
         </div>
     </div>

@@ -46,9 +46,14 @@
 
             </div>
             <?php if (!empty($material['material_description'])): ?>
-                <div class="mt-4 p-4 border-t border-gray-200">
-                    <h3 class="text-sm font-medium text-gray-500 mb-2">Description</h3>
-                    <p class="text-base"><?php echo nl2br(htmlspecialchars($material['material_description'])); ?></p>
+                <div class="p-4 border-gray-200 flex items-start gap-3">
+                    <div class="w-10 h-10 bg-gradient-to-br from-purple-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg mt-1 flex-shrink-0" style="min-width: 2.5rem;">
+                        <i class="fas fa-align-left text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-sm font-medium text-gray-500 mb-2">Description</h3>
+                        <p class="text-base text-justify"><?php echo nl2br(htmlspecialchars($material['material_description'])); ?></p>
+                    </div>
                 </div>
             <?php endif; ?>
         </div>

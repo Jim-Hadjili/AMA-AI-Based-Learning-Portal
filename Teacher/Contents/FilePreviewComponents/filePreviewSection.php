@@ -17,18 +17,18 @@
                 </div>
             </div>
 
-            <div class="preview-container mt-8 border border-gray-300 rounded-lg overflow-hidden bg-white">
+            <div class="preview-container mt-8 border border-gray-300 rounded-lg overflow-hidden bg-white" style="height: 900px; min-height: 900px;">
                 <?php if ($extension === 'pdf'): ?>
                     <!-- PDF Preview -->
-                    <div id="pdf-viewer" class="w-full h-full"></div>
+                    <div id="pdf-viewer" class="w-full h-full" style="height: 100%; min-height: 900px;"></div>
                 <?php elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])): ?>
                     <!-- Image Preview -->
-                    <div class="flex items-center justify-center h-full bg-gray-100">
+                    <div class="flex items-center justify-center h-full bg-gray-100" style="height: 100%; min-height: 900px;">
                         <img src="<?php echo $file_path; ?>" alt="<?php echo htmlspecialchars($material['material_title']); ?>" class="max-w-full max-h-full object-contain rounded-lg shadow">
                     </div>
                 <?php elseif (in_array($extension, ['mp4', 'avi', 'mov'])): ?>
                     <!-- Video Preview -->
-                    <div class="flex items-center justify-center h-full bg-gray-900">
+                    <div class="flex items-center justify-center h-full bg-gray-900" style="height: 100%; min-height: 900px;">
                         <video controls class="max-w-full max-h-full rounded-lg shadow">
                             <source src="<?php echo $file_path; ?>" type="video/<?php echo $extension === 'mov' ? 'quicktime' : $extension; ?>">
                             Your browser does not support the video tag.
@@ -36,7 +36,7 @@
                     </div>
                 <?php else: ?>
                     <!-- Other File Types -->
-                    <div class="flex flex-col items-center justify-center h-full bg-gray-50 text-center p-8">
+                    <div class="flex flex-col items-center justify-center h-full bg-gray-50 text-center p-8" style="height: 100%; min-height: 900px;">
                         <div class="text-6xl text-gray-400 mb-4">
                             <i class="fas fa-file<?php
                                 if (in_array($extension, ['doc', 'docx'])) echo '-word';
