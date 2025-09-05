@@ -15,64 +15,106 @@ if (!isset($_SESSION['user_id']) || $_SESSION['user_position'] !== 'teacher') {
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Get teacher ID from session
     $teacher_id = $_SESSION['user_id'];
-    
+
+    // Get teacher info from DB
+    $teacherQuery = "SELECT th_userName, th_Email, th_position, employee_id, department, subject_expertise FROM teachers_profiles_tb WHERE th_id = ?";
+    $teacherStmt = $conn->prepare($teacherQuery);
+    $teacherStmt->bind_param("s", $teacher_id);
+    $teacherStmt->execute();
+    $teacherResult = $teacherStmt->get_result();
+
+    if ($teacherResult->num_rows === 0) {
+        echo json_encode(['success' => false, 'message' => 'Teacher profile not found']);
+        exit;
+    }
+    $teacherRow = $teacherResult->fetch_assoc();
+
     // Get form data
     $class_name = trim($_POST['class_name'] ?? '');
     $class_code = trim($_POST['class_code'] ?? '');
     $class_description = trim($_POST['class_description'] ?? '');
     $grade_level = trim($_POST['grade_level'] ?? '');
     $strand = trim($_POST['strand'] ?? '');
-    
+
     // Validate inputs
     if (empty($class_name)) {
         echo json_encode(['success' => false, 'message' => 'Class name is required']);
         exit;
     }
-    
     if (empty($class_code)) {
         echo json_encode(['success' => false, 'message' => 'Class code is required']);
         exit;
     }
-    
     if (empty($grade_level)) {
         echo json_encode(['success' => false, 'message' => 'Grade level is required']);
         exit;
     }
-    
+
     // Check if class code already exists
     $check_code_sql = "SELECT class_id FROM teacher_classes_tb WHERE class_code = ?";
     $check_stmt = $conn->prepare($check_code_sql);
     $check_stmt->bind_param("s", $class_code);
     $check_stmt->execute();
     $result = $check_stmt->get_result();
-    
+
     if ($result->num_rows > 0) {
         echo json_encode(['success' => false, 'message' => 'Class code already exists. Please use a different code.']);
         exit;
     }
-    
-    // Insert the new class into the database
-    $sql = "INSERT INTO teacher_classes_tb (th_id, class_name, class_code, class_description, grade_level, strand, status) 
-            VALUES (?, ?, ?, ?, ?, ?, 'active')";
-    
+
+    // Insert the new class into the database, including all teacher info
+    $sql = "INSERT INTO teacher_classes_tb (
+        th_id, class_name, class_code, class_description, grade_level, strand, status, teacher_name,
+        teacher_email, teacher_position, teacher_employee_id, teacher_department, teacher_subject_expertise
+    ) VALUES (?, ?, ?, ?, ?, ?, 'active', ?, ?, ?, ?, ?, ?)";
+
+    $teacher_name = $teacherRow['th_userName'];
+    $teacher_email = $teacherRow['th_Email'];
+    $teacher_position = $teacherRow['th_position'];
+    $teacher_employee_id = $teacherRow['employee_id'];
+    $teacher_department = $teacherRow['department'];
+    $teacher_subject_expertise = $teacherRow['subject_expertise'];
+
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ssssss", $teacher_id, $class_name, $class_code, $class_description, $grade_level, $strand);
-    
+    $stmt->bind_param(
+        "ssssssssssss",
+        $teacher_id,
+        $class_name,
+        $class_code,
+        $class_description,
+        $grade_level,
+        $strand,
+        $teacher_name,
+        $teacher_email,
+        $teacher_position,
+        $teacher_employee_id,
+        $teacher_department,
+        $teacher_subject_expertise
+    );
+
     if ($stmt->execute()) {
         $class_id = $conn->insert_id;
         echo json_encode([
-            'success' => true, 
+            'success' => true,
             'message' => 'Class created successfully!',
             'class' => [
                 'id' => $class_id,
                 'name' => $class_name,
-                'code' => $class_code
+                'code' => $class_code,
+                'teacher' => [
+                    'name' => $teacherRow['th_userName'],
+                    'email' => $teacherRow['th_Email'],
+                    'position' => $teacherRow['th_position'],
+                    'employee_id' => $teacherRow['employee_id'],
+                    'department' => $teacherRow['department'],
+                    'subject_expertise' => $teacherRow['subject_expertise']
+                ]
             ]
         ]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Error creating class: ' . $conn->error]);
     }
-    
+
     $stmt->close();
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method']);
